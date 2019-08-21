@@ -14,7 +14,7 @@
 # define RTV1_H
 
 # include "math.h"
-# include "mlx.h"
+//# include "mlx.h"
 # include "pthread.h"
 # include "stdlib.h"
 # include "stdio.h"
@@ -69,8 +69,8 @@
 # define KEY_ESC 53
 # define KEY_TAB 48
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 100
+# define HEIGHT 100
 
 typedef struct	s_image
 {
@@ -136,6 +136,16 @@ float	vec3_norm2(t_vec3 v)
 	return (vec3_dot(v, v));
 }
 
+/*
+**substract b vector from a vector store result in dest
+*/
+void	vec3_sub(t_vec3 a, t_vec3 b, t_vec3 dest)
+{
+  dest[0] = a[0] - b[0];
+  dest[1] = a[1] - b[1];
+  dest[2] = a[2] - b[2];
+}
+
 enum
 {
 	ox,oy,oz
@@ -146,10 +156,10 @@ int		main(int ac, char **av)
 	t_obj	sphere;
 	t_ray	ray;
 
-	sphere.origin[ox] = 400;
-	sphere.origin[oy] = 400;
+	sphere.origin[ox] = 50;
+	sphere.origin[oy] = 50;
 	sphere.origin[oz] = 0;
-	sphere.r = 50;
+	sphere.r = 21;
 
 	ray.point[0] = 0;
 	ray.point[1] = 0;
@@ -158,26 +168,35 @@ int		main(int ac, char **av)
 	ray.vec[1] = 0.0f;
 	ray.vec[2] = 1.0f;
 
-	p.mlx_ptr = mlx_init();
-	p.win_ptr = mlx_new_window(p.mlx_ptr, WIDTH, HEIGHT, "<3");
-	p.img.ptr = mlx_new_image(p.mlx_ptr, WIDTH, HEIGHT);
-	p.img.data = mlx_get_data_addr(p.img.ptr, &p.img.bpp, &p.img.size_line, &p.img.endian);
+	//p.mlx_ptr = mlx_init();
+	//p.win_ptr = mlx_new_window(p.mlx_ptr, WIDTH, HEIGHT, "<3");
+	//p.img.ptr = mlx_new_image(p.mlx_ptr, WIDTH, HEIGHT);
+	//p.img.data = mlx_get_data_addr(p.img.ptr, &p.img.bpp, &p.img.size_line, &p.img.endian);
 	
+	FILE *f = fopen("test", "w");
 	for (int i = 0; i < WIDTH; i++)
+	{
 		for (int j = 0; j < HEIGHT; j++)
 		{
 			ray.point[0] = i;
 			ray.point[1] = j;
 			float a = vec3_norm2(ray.vec);
-			float b = 2 * vec3_dot(ray.vec, ray.point);
-			float c = vec3_norm2(ray.point) - sphere.r * sphere.r;
-			if (b * b - 4 * a * c > 1)
+			t_vec3 dest;
+			vec3_sub(ray.point, sphere.origin, dest);
+			float b = 2 * vec3_dot(ray.vec, dest);
+			float c = vec3_norm2(dest) - sphere.r * sphere.r;
+			if (b * b - 4 * a * c >= 1.0f)
 			{
-				put_pixel(&p.img, i, j, 0x00ff0000);
+				fprintf(f, "  ", i, j);
+				//put_pixel(&p.img, i, j, 0x00ff0000);
 			}
+			else
+				fprintf(f, "▌▌");
 		}
-	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);
-	mlx_loop(p.mlx_ptr);
+		fprintf(f, "\n");
+	}
+	//mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);
+	//mlx_loop(p.mlx_ptr);
 	return (0);
 }
 
