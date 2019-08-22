@@ -1,56 +1,41 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/08/22 16:03:13 by dwalda-r          #+#    #+#              #
+#    Updated: 2019/08/22 16:03:55 by dwalda-r         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = gcc
-RM = rm -rf
+FLAGS = -Wall -Werror -Wextra
+SRC_DIR = src/
+INC_DIR = includes/
+LIB_DIR = libft/
+LIB_NAME = libft.a
+SRCS = *.c
+INCS = *.h
+OBJ = $(SRCS:.c=.o)
+NAME = RTv1
 
-CFLAGS = \
-		 -I.\
-		 -I$(INCDIR)\
-		 -I$(LIBFTINC)
+all: $(LIB_NAME) $(NAME)
 
-LDLIBS = -lft\
-		-L$(LIBFTDIR)\
-		-lmlx\
-		-framework OpenGL\
-		-framework AppKit
-LDFLAGS	= 
+$(LIB_NAME):
+	make -C $(LIB_DIR) $(LIB_NAME)
 
-LIBFT = libft.a
-LIBFTDIR = ./libft
-LIBFTINC = $(LIBFTDIR)/includes
+$(NAME): $(LIB_NAME)
+	$(CC) -c $(SRC_DIR)$(SRCS) -I $(INC_DIR) -I $(LIB_DIR) $(FLAGS)
+	$(CC) $(OBJ) -o $(NAME) -L $(LIB_DIR) -lft -lmlx -framework OpenGL -framework AppKit
 
-INCDIR = ./include
-SRCSDIR = ./
-SRCS = main.c
-OBJS = $(SRCS:.c=.o)
-TARGET = RTv1
-
-.PHONY: all
-all: $(LIBFT) $(TARGET)
-
-$(LIBFT):
-	make -C $(LIBFTDIR)
-
-$(TARGET): $(OBJS) $(LIB)
-	@echo 'making executable'
-	@$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
-	@echo DONE!
-
-$(OBJS): %.o: $(SRCSDIR)%.c $(INCDIR)/
-	@$(CC) -c $< $(CFLAGS)
-
-#.h
-$(INCDIR)/:
-
-.PHONY: clean
 clean:
-	@echo deliting object files
-	@$(RM) $(OBJS)
-	@make -C $(LIBFTDIR) clean
+	make -C $(LIB_DIR) clean
+	rm -f $(OBJ)
 
-.PHONY: fclean
 fclean: clean
-	@echo deliting executable file
-	@$(RM) $(TARGET)
-	@make -C $(LIBFTDIR) fclean
+	make -C $(LIB_DIR) fclean
+	rm -f $(NAME)
 
-.PHONY: re
-re:	fclean all
+re: fclean all

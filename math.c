@@ -41,11 +41,11 @@ enum
 };
 
 /*
- __     __                _                      _  _   
- \ \   / /   ___    ___  | |_    ___    _ __    | || |  
-  \ \ / /   / _ \  / __| | __|  / _ \  | '__|   | || |_ 
+ __     __                _                      _  _
+ \ \   / /   ___    ___  | |_    ___    _ __    | || |
+  \ \ / /   / _ \  / __| | __|  / _ \  | '__|   | || |_
    \ V /   |  __/ | (__  | |_  | (_) | | |      |__   _|
-    \_/     \___|  \___|  \__|  \___/  |_|         |_|  
+    \_/     \___|  \___|  \__|  \___/  |_|         |_|
 */
 
 #define VEC4_ONE_INIT   {1.0f, 1.0f, 1.0f, 1.0f}
@@ -165,7 +165,7 @@ void	vec4_sub(vec4 a, vec4 b, vec4 dest)
 }
 
 /*
-**substract scalar from v vector sore result in dest (d = v - vec(s)) 
+**substract scalar from v vector sore result in dest (d = v - vec(s))
 */
 void	vec4_subs(vec4 v, float s, vec4 dest)
 {
@@ -350,11 +350,11 @@ void	vec4_muladds(vec4 a, float s, vec4 dest)
 }
 
 /*
- __     __                _                      _____ 
- \ \   / /   ___    ___  | |_    ___    _ __    |___ / 
-  \ \ / /   / _ \  / __| | __|  / _ \  | '__|     |_ \ 
+ __     __                _                      _____
+ \ \   / /   ___    ___  | |_    ___    _ __    |___ /
+  \ \ / /   / _ \  / __| | __|  / _ \  | '__|     |_ \
    \ V /   |  __/ | (__  | |_  | (_) | | |       ___) |
-    \_/     \___|  \___|  \__|  \___/  |_|      |____/ 
+    \_/     \___|  \___|  \__|  \___/  |_|      |____/
 */
 
 #define VEC3_ONE_INIT	{1.0f, 1.0f, 1.0f}
@@ -728,11 +728,11 @@ void	normalize_to(vec3 v, vec3 dest)
 }
 
 /*
-  __  __    _  _____ ____  _____  __  _____ 
- |  \/  |  / \|_   _|  _ \|_ _\ \/ / |___ / 
- | |\/| | / _ \ | | | |_) || | \  /    |_ \ 
+  __  __    _  _____ ____  _____  __  _____
+ |  \/  |  / \|_   _|  _ \|_ _\ \/ / |___ /
+ | |\/| | / _ \ | | | |_) || | \  /    |_ \
  | |  | |/ ___ \| | |  _ < | | /  \   ___) |
- |_|  |_/_/   \_\_| |_| \_\___/_/\_\ |____/                                          
+ |_|  |_/_/   \_\_| |_| \_\___/_/\_\ |____/
  */
 
 #define MAT3_IDENTITY_INIT  {{1.f, .0f, .0f}, {.0f, 1.f, .0f}, {.0f, .0f, 1.f}}
@@ -1077,7 +1077,7 @@ void	mat4_copy(mat4 mat, mat4 dest)
 }
 
 /*
- * make given matrix identity. It is identical with below, 
+ * make given matrix identity. It is identical with below,
  *      but it is more easy to do that with this func especially for members
  *      e.g. mat4_identity(aStruct->aMatrix);
  *
@@ -1372,7 +1372,7 @@ void	mat4_transpose(mat4 m)
 void	mat4_scale(mat4 m, float s)
 {
 	m[0][0] *= s;
-	m[0][1] *= s; 
+	m[0][1] *= s;
 	m[0][2] *= s;
 	m[0][3] *= s;
 	m[1][0] *= s;
