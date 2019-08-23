@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/23 14:36:10 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/23 14:53:43 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,11 @@ typedef struct	s_ray
 	t_vec3		point;
 	t_vec3		vec;
 }				t_ray;
+
+typedef struct	s_camera
+{
+	t_vec4		pos;
+}				t_camera;
 
 int				close_w(void *param);
 int				key_press(int keycode, void *param);
