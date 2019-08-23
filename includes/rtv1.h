@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/23 16:32:50 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/23 17:59:20 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ typedef struct	s_ray
 typedef	struct	s_world
 {
 	t_obj		*objects;
+	int			nobjects;
 }				t_world;
 
 typedef struct	s_camera
@@ -150,8 +151,9 @@ typedef struct	s_param
 	t_camera	camera;
 }				t_param;
 
-int				close_w(void *param);
-int				key_press(int keycode, void *param);
-void			calc_all(t_param *ptr);
-
+int		close_w(void *param);
+int		key_press(int keycode, void *param);
+void	calc_all(t_param *ptr);
+void	render(t_param *p);
+	
 #endif

@@ -2,5 +2,9 @@
 	"files.associations": {
 		"complex": "c",
 		"math.h": "c"
-	}
+	},
+	"C_Cpp.default.includePath": [
+		"./includes/",
+		"./libft/includes"
+	]
 }

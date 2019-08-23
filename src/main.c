@@ -6,22 +6,48 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/23 16:28:51 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/23 18:18:09 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-int	main(int ac, char **arg)
+/*
+** конвеер
+** local space->world space->camera space->clip space->window space.
+*/
+
+/*
+** get all our objects in this function
+*/
+
+int		get_objects(t_param *p)
+{
+	p->world.objects = malloc(10);
+	p->world.objects[0].type = sphere;
+	p->world.objects[0].origin[0] = 400;
+	p->world.objects[0].origin[1] = 400;
+	p->world.objects[0].r = 33;
+	p->world.objects[1].type = sphere;
+	p->world.objects[1].origin[0] = 600;
+	p->world.objects[1].origin[1] = 600;
+	p->world.objects[1].r = 33;
+	p->world.nobjects = 2;
+	return (0.0);
+}
+
+int		main(int ac, char **arg)
 {
 	t_param	p;
-	(void)ac;
-	(void)arg;
+
 	p.mlx_ptr = mlx_init();
 	p.win_ptr = mlx_new_window(p.mlx_ptr, WIDTH, HEIGHT, "<3");
 	p.img.ptr = mlx_new_image(p.mlx_ptr, WIDTH, HEIGHT);
 	p.img.data = mlx_get_data_addr(p.img.ptr, &p.img.bpp, &p.img.size_line, &p.img.endian);
-	calc_all(&p);
+	get_objects(&p);
+	//calc_all(&p);
+	render(&p);
+	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);
 	mlx_hook(p.win_ptr, 2, 0, key_press, &p);
 	mlx_hook(p.win_ptr, 14, 0, close_w, &p);
 	mlx_loop(p.mlx_ptr);
