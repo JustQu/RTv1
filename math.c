@@ -29,11 +29,11 @@
 # define _SQRT1_2		0.707106781186547524400844362104849039
 
 typedef float	vec2[2];
-typedef float	vec3[3];
-typedef float	vec4[4];
+typedef float	t_vec3[3];
+typedef float	t_vec4[4];
 typedef float	mat3[3][3];
 typedef float	mat4[4][4];
-typedef vec4	versor;
+typedef t_vec4	versor;
 
 enum
 {
@@ -50,13 +50,13 @@ enum
 
 #define VEC4_ONE_INIT   {1.0f, 1.0f, 1.0f, 1.0f}
 #define VEC4_ZERO_INIT  {0.0f, 0.0f, 0.0f, 0.0f}
-#define VEC4_ONE        ((vec4)VEC4_ONE_INIT)
-#define VEC4_ZERO       ((vec4)VEC4_ZERO_INIT)
+#define VEC4_ONE        ((t_vec4)VEC4_ONE_INIT)
+#define VEC4_ZERO       ((t_vec4)VEC4_ZERO_INIT)
 
 /*
 ** init vec4 using vec3
 */
-void	vec3_to_vec4(vec3 v3, float last, vec4 dest)
+void	vec3_to_vec4(t_vec3 v3, float last, t_vec4 dest)
 {
 	dest[0] = v3[0];
 	dest[1] = v3[1];
@@ -67,7 +67,7 @@ void	vec3_to_vec4(vec3 v3, float last, vec4 dest)
 /*
 **copy ferst 3 members of [a] to [dest]
 */
-void	vec4_copy3(vec4 a, vec3 dest)
+void	vec4_copy3(t_vec4 a, t_vec3 dest)
 {
 	dest[0] = a[0];
 	dest[1] = a[1];
@@ -77,7 +77,7 @@ void	vec4_copy3(vec4 a, vec3 dest)
 /*
 **copy all members of [v] to dest
 */
-void	vec4_copy(vec4 v, vec4 dest)
+void	vec4_copy(t_vec4 v, t_vec4 dest)
 {
 	dest[0] = v[0];
 	dest[1] = v[1];
@@ -88,7 +88,7 @@ void	vec4_copy(vec4 v, vec4 dest)
 /*
 **make vector zero
 */
-void	vec4_zero(vec4 v)
+void	vec4_zero(t_vec4 v)
 {
 	v[0] = 0.0f;
 	v[1] = 0.0f;
@@ -99,7 +99,7 @@ void	vec4_zero(vec4 v)
 /*
 **make vector one
 */
-void	vec4_one(vec4 v)
+void	vec4_one(t_vec4 v)
 {
 	v[0] = 1.0f;
 	v[1] = 1.0f;
@@ -110,7 +110,7 @@ void	vec4_one(vec4 v)
 /*
 **vec4 dot product
 */
-float	vec4_dot(vec4 a, vec4 b)
+float	vec4_dot(t_vec4 a, t_vec4 b)
 {
 	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
 }
@@ -118,23 +118,23 @@ float	vec4_dot(vec4 a, vec4 b)
 /*
 **norm * norm(magnitude) of vec
 */
-float	vec4_norm2(vec4 v)
+float	vec4_norm2(t_vec4 v)
 {
-	return (vec4_dot(v, v));
+	return (t_vec4_dot(v, v));
 }
 
 /*
 **norm(magnitude) of vec4
 */
-float	vec4_norm(vec4 v)
+float	vec4_norm(t_vec4 v)
 {
-	return (sqrtf(vec4_dot(v, v)));
+	return (sqrtf(t_vec4_dot(v, v)));
 }
 
 /*
 **add b vector to a vector store result in dest
 */
-void	vec4_sum(vec4 a, vec4 b, vec4 dest)
+void	vec4_sum(t_vec4 a, t_vec4 b, t_vec4 dest)
 {
 	dest[0] = a[0] + b[0];
 	dest[1] = a[1] + b[1];
@@ -145,7 +145,7 @@ void	vec4_sum(vec4 a, vec4 b, vec4 dest)
 /*
 **add scalar to v vector store result in dest (d = v + vec(s))
 */
-void	vec4_adds(vec4 v, float s, vec4 dest)
+void	vec4_adds(t_vec4 v, float s, t_vec4 dest)
 {
 	dest[0] = v[0] + s;
 	dest[1] = v[1] + s;
@@ -156,7 +156,7 @@ void	vec4_adds(vec4 v, float s, vec4 dest)
 /*
 **substract b vector from a vector store result in dest (d = a - b)
 */
-void	vec4_sub(vec4 a, vec4 b, vec4 dest)
+void	vec4_sub(t_vec4 a, t_vec4 b, t_vec4 dest)
 {
 	dest[0] = a[0] - b[0];
 	dest[1] = a[1] - b[1];
@@ -167,7 +167,7 @@ void	vec4_sub(vec4 a, vec4 b, vec4 dest)
 /*
 **substract scalar from v vector sore result in dest (d = v - vec(s))
 */
-void	vec4_subs(vec4 v, float s, vec4 dest)
+void	vec4_subs(t_vec4 v, float s, t_vec4 dest)
 {
 	dest[0] = v[0] - s;
 	dest[1] = v[1] - s;
@@ -178,7 +178,7 @@ void	vec4_subs(vec4 v, float s, vec4 dest)
 /*
 **multiply two vector (component-wise multuplication)
 */
-void	vec4_mul(vec4 a, vec4 b, vec4 dest)
+void	vec4_mul(t_vec4 a, t_vec4 b, t_vec4 dest)
 {
 	dest[0] = a[0] * b[0];
 	dest[1] = a[1] * b[1];
@@ -189,7 +189,7 @@ void	vec4_mul(vec4 a, vec4 b, vec4 dest)
 /*
 **multiply/scale vec4 vector with scalar: result = v * s
 */
-void	vec4_scale(vec4 a, float s, vec4 dest)
+void	vec4_scale(t_vec4 a, float s, t_vec4 dest)
 {
 	dest[0] = a[0] * s;
 	dest[1] = a[1] * s;
@@ -200,7 +200,7 @@ void	vec4_scale(vec4 a, float s, vec4 dest)
 /*
 **make vec4 vector scale as specified: result = unit(v) * s
 */
-void	vec4_scale_as(vec4 v, float s, vec4 dest)
+void	vec4_scale_as(t_vec4 v, float s, t_vec4 dest)
 {
 	float	norm;
 
@@ -216,7 +216,7 @@ void	vec4_scale_as(vec4 v, float s, vec4 dest)
 /*
 **negate vector components and store result in dest
 */
-void	vec4_negate_to(vec4 v, vec4 dest)
+void	vec4_negate_to(t_vec4 v, t_vec4 dest)
 {
 	dest[0] = -v[0];
 	dest[1] = -v[1];
@@ -227,7 +227,7 @@ void	vec4_negate_to(vec4 v, vec4 dest)
 /*
 **flip sign of all vec4 members
 */
-void 	vec4_negate(vec4 v)
+void 	vec4_negate(t_vec4 v)
 {
 	vec4_negate_to(v, v);
 }
@@ -235,7 +235,7 @@ void 	vec4_negate(vec4 v)
 /*
 **normalize vec4 to dest
 */
-void	vec4_normalize_to(vec4 v, vec4 dest)
+void	vec4_normalize_to(t_vec4 v, t_vec4 dest)
 {
 	float	norm;
 
@@ -251,7 +251,7 @@ void	vec4_normalize_to(vec4 v, vec4 dest)
 /*
 **normalize vec4 and store result in same vec
 */
-void	vec4_normalize(vec4 v)
+void	vec4_normalize(t_vec4 v)
 {
 	vec4_normalize_to(v, v);
 }
@@ -267,7 +267,7 @@ float	pow2(float x)
 /*
 **distance between two vectors
 */
-float	vec4_distance(vec4 a, vec4 b)
+float	vec4_distance(t_vec4 a, t_vec4 b)
 {
 	return (sqrtf(pow2(b[0] - a[0])
 				+ pow2(b[1] - a[1])
@@ -314,7 +314,7 @@ float	clamp_zo(float val)
 /*
 **fill a vectir with specified value
 */
-void	vec4_broadcast(float val, vec4 d)
+void	vec4_broadcast(float val, t_vec4 d)
 {
 	d[0] = val;
 	d[1] = val;
@@ -327,10 +327,10 @@ void	vec4_broadcast(float val, vec4 d)
 **formula: from + s * (to - from)
 **t - interpolant (amount) clamped between 0 and 1
 */
-vec4_lerp(vec4 from, vec4 to, float t, vec4 dest)
+vec4_lerp(t_vec4 from, t_vec4 to, float t, t_vec4 dest)
 {
-	vec4 s;
-	vec4 v;
+	t_vec4 s;
+	t_vec4 v;
 
 	vec4_broadcast(clamp_zo(t), s);
 	vec4_sub(to, from, v);
@@ -341,7 +341,7 @@ vec4_lerp(vec4 from, vec4 to, float t, vec4 dest)
 /*
 **mul vector with scalar and add result to sum
 */
-void	vec4_muladds(vec4 a, float s, vec4 dest)
+void	vec4_muladds(t_vec4 a, float s, t_vec4 dest)
 {
 	dest[0] += a[0] * s;
 	dest[1] += a[1] * s;
@@ -359,16 +359,16 @@ void	vec4_muladds(vec4 a, float s, vec4 dest)
 
 #define VEC3_ONE_INIT	{1.0f, 1.0f, 1.0f}
 #define VEC3_ZERO_INIT	{0.0f, 0.0f, 0.0f}
-#define VEC3_ONE		((vec3)VEC3_ONE_INIT)
-#define VEC3_ZERO		((vec3)VEC3_ZERO_INIT)
-#define YUP				((vec3){0.0f, 1.0f, 0.0f})
-#define ZUP				((vec3){0.0f, 0.0f, 1.0f})
-#define XUP				((vec3){1.0f, 0.0f, 0.0f})
+#define VEC3_ONE		((t_vec3)VEC3_ONE_INIT)
+#define VEC3_ZERO		((t_vec3)VEC3_ZERO_INIT)
+#define YUP				((t_vec3){0.0f, 1.0f, 0.0f})
+#define ZUP				((t_vec3){0.0f, 0.0f, 1.0f})
+#define XUP				((t_vec3){1.0f, 0.0f, 0.0f})
 
 /*
 **init vec3 using vec4
 */
-void	vec4_to_vec3(vec4 v4, vec3 dest)
+void	vec4_to_vec3(t_vec4 v4, t_vec3 dest)
 {
   dest[0] = v4[0];
   dest[1] = v4[1];
@@ -378,7 +378,7 @@ void	vec4_to_vec3(vec4 v4, vec3 dest)
 /*
 **copy all members of [a] to [dest]
 */
-void	vec3_copy(vec3 a, vec3 dest)
+void	vec3_copy(t_vec3 a, t_vec3 dest)
 {
   dest[0] = a[0];
   dest[1] = a[1];
@@ -388,7 +388,7 @@ void	vec3_copy(vec3 a, vec3 dest)
 /*
 **make vector zero
 */
-void	vec3_zero(vec3 v)
+void	vec3_zero(t_vec3 v)
 {
 	v[0] = 0.0f;
 	v[1] = 0.0f;
@@ -398,7 +398,7 @@ void	vec3_zero(vec3 v)
 /*
 **make vector one
 */
-void	vec3_one(vec3 v)
+void	vec3_one(t_vec3 v)
 {
 	v[0] = 1.0f;
 	v[1] = 1.0f;
@@ -408,7 +408,7 @@ void	vec3_one(vec3 v)
 /*
 **vec3 dot product
 */
-float	vec3_dot(vec3 a, vec3 b)
+float	vec3_dot(t_vec3 a, t_vec3 b)
 {
 	return a[0] * b[0] + a[1] * b[1] + a[1] * b[1];
 }
@@ -416,23 +416,23 @@ float	vec3_dot(vec3 a, vec3 b)
 /*
 **norm * norm (magnitude) of vec
 */
-float	vec3_norm2(vec3 v)
+float	vec3_norm2(t_vec3 v)
 {
-  return (vec3_dot(v, v));
+  return (t_vec3_dot(v, v));
 }
 
 /*
 **norm (magnitude of vec3)
 */
-float	vec3_norm(vec3 v)
+float	vec3_norm(t_vec3 v)
 {
-  return (sqrtf(vec3_norm2(v)));
+  return (sqrtf(t_vec3_norm2(v)));
 }
 
 /*
 **add scalar to v vector store result in dest (d = v + s)
 */
-void	vec3_adds(vec3 v, float s, vec3 dest)
+void	vec3_adds(t_vec3 v, float s, t_vec3 dest)
 {
   dest[0] = v[0] + s;
   dest[1] = v[1] + s;
@@ -442,7 +442,7 @@ void	vec3_adds(vec3 v, float s, vec3 dest)
 /*
 **substract scalar from v vector store result in dest (d = v - s)
 */
-void	vec3_subs(vec3 v, float s, vec3 dest)
+void	vec3_subs(t_vec3 v, float s, t_vec3 dest)
 {
   dest[0] = v[0] - s;
   dest[1] = v[1] - s;
@@ -452,7 +452,7 @@ void	vec3_subs(vec3 v, float s, vec3 dest)
 /*
 **add a vector to b vector store result in dest
 */
-void	vec3_sum(vec3 a, vec3 b, vec3 dest)
+void	vec3_sum(t_vec3 a, t_vec3 b, t_vec3 dest)
 {
   dest[0] = a[0] + b[0];
   dest[1] = a[1] + b[1];
@@ -462,7 +462,7 @@ void	vec3_sum(vec3 a, vec3 b, vec3 dest)
 /*
 **substract b vector from a vector store result in dest
 */
-void	vec3_sub(vec3 a, vec3 b, vec3 dest)
+void	vec3_sub(t_vec3 a, t_vec3 b, t_vec3 dest)
 {
   dest[0] = a[0] - b[0];
   dest[1] = a[1] - b[1];
@@ -472,7 +472,7 @@ void	vec3_sub(vec3 a, vec3 b, vec3 dest)
 /*
 **multiply/scale vec4 vector with scalar: result = v * s
 */
-void	vec3_scale(vec3 v, float s, vec3 dest)
+void	vec3_scale(t_vec3 v, float s, t_vec3 dest)
 {
   dest[0] = v[0] * s;
   dest[1] = v[1] * s;
@@ -482,7 +482,7 @@ void	vec3_scale(vec3 v, float s, vec3 dest)
 /*
 **multiply two vector (component-wise multiplication)
 */
-void	vec3_mul(vec3 a, vec3 b, vec3 dest)
+void	vec3_mul(t_vec3 a, t_vec3 b, t_vec3 dest)
 {
   dest[0] = a[0] * b[0];
   dest[1] = a[1] * b[1];
@@ -492,7 +492,7 @@ void	vec3_mul(vec3 a, vec3 b, vec3 dest)
 /*
 **negate vector components and store result in dest
 */
-void	vec3_negate_to(vec3 v, vec3 dest)
+void	vec3_negate_to(t_vec3 v, t_vec3 dest)
 {
   dest[0] = -v[0];
   dest[1] = -v[1];
@@ -502,7 +502,7 @@ void	vec3_negate_to(vec3 v, vec3 dest)
 /*
 **negate vector components
 */
-void	vec3_negate(vec3 v)
+void	vec3_negate(t_vec3 v)
 {
   vec3_negate_to(v, v);
 }
@@ -510,7 +510,7 @@ void	vec3_negate(vec3 v)
 /*
 **normalize vec3 and store result in same vec
 */
-void	vec3_normalize(vec3 v)
+void	vec3_normalize(t_vec3 v)
 {
 	float norm;
 
@@ -525,7 +525,7 @@ void	vec3_normalize(vec3 v)
 	vec3_scale(v, 1.0f / norm, v);
 }
 
-void	vec3_normalize_to(vec3 v, vec3 dest)
+void	vec3_normalize_to(t_vec3 v, t_vec3 dest)
 {
 	float norm;
 
@@ -542,7 +542,8 @@ void	vec3_normalize_to(vec3 v, vec3 dest)
 **cross product of two vector
 **(u2.v3 - u3.v2, u3.v1 - u1.v3, u1.v2 - u2.v1)
 */
-void	vec3_cross(vec3 a, vec3 b, vec3 dest)
+
+void	vec3_cross(t_vec3 a, t_vec3 b, t_vec3 dest)
 {
 	dest[0] = a[1] * b[2] - a[2] * b[1];
 	dest[1] = a[2] * b[0] - a[0] * b[2];
@@ -552,7 +553,8 @@ void	vec3_cross(vec3 a, vec3 b, vec3 dest)
 /*
 ** angle between two vector
 */
-float	vec3_angle(vec3 a, vec3 b)
+
+float	vec3_angle(t_vec3 a, t_vec3 b)
 {
 	float	norm;
 	float	dot;
@@ -570,11 +572,11 @@ float	vec3_angle(vec3 a, vec3 b)
 /*
 ** rotate vec3 around axis by angle using Rodrigues' rotation formula
 */
-void	vec3_rotate(vec3 v, float angle, vec3 axis)
+void	vec3_rotate(t_vec3 v, float angle, t_vec3 axis)
 {
-	vec3	v1;
-	vec3	v2;
-	vec3	k;
+	t_vec3	v1;
+	t_vec3	v2;
+	t_vec3	k;
 	float	c;
 	float	s;
 
@@ -594,46 +596,47 @@ void	vec3_rotate(vec3 v, float angle, vec3 axis)
 /*
 ** apply rotation matrix to vector
 */
-void	vec3_rotate_m4(mat4 m, vec3 v, vec3 dest)
+void	vec3_rotate_m4(mat4 m, t_vec3 v, t_vec3 dest)
 {
-  vec4	x;
-  vec4	y;
-  vec4	z;
-  vec4	res;
+	t_vec4	x;
+	t_vec4	y;
+	t_vec4	z;
+	t_vec4	res;
 
-  vec4_normalize_to(m[0], x);
-  vec4_normalize_to(m[1], y);
-  vec4_normalize_to(m[2], z);
+	vec4_normalize_to(m[0], x);
+	vec4_normalize_to(m[1], y);
+	vec4_normalize_to(m[2], z);
 
-  vec4_scale(x, v[0], res);
-  vec4_muladds(y, v[1], res);
-  vec4_muladds(z, v[2], res);
+	vec4_scale(x, v[0], res);
+	vec4_muladds(y, v[1], res);
+	vec4_muladds(z, v[2], res);
 
-  vec4_to_vec3(res, dest);
+	vec4_to_vec3(res, dest);
 }
 
-void	vec3_rotate_m3(mat3 m, vec3 v, vec3 dest) {
-  vec4	res;
-  vec4	x;
-  vec4	y;
-  vec4	z;
+void	vec3_rotate_m3(mat3 m, t_vec3 v, t_vec3 dest)
+{
+	t_vec4	res;
+	t_vec4	x;
+	t_vec4	y;
+	t_vec4	z;
 
-  vec3_to_vec4(m[0], 0.0f, x);
-  vec3_to_vec4(m[1], 0.0f, y);
-  vec3_to_vec4(m[2], 0.0f, z);
-  vec4_normalize(x);
-  vec4_normalize(y);
-  vec4_normalize(z);
-  vec4_scale(x, v[0], res);
-  vec4_muladds(y, v[1], res);
-  vec4_muladds(z, v[2], res);
-  vec4_to_vec3(res, dest);
+	vec3_to_vec4(m[0], 0.0f, x);
+	vec3_to_vec4(m[1], 0.0f, y);
+	vec3_to_vec4(m[2], 0.0f, z);
+	vec4_normalize(x);
+	vec4_normalize(y);
+	vec4_normalize(z);
+	vec4_scale(x, v[0], res);
+	vec4_muladds(y, v[1], res);
+	vec4_muladds(z, v[2], res);
+	vec4_to_vec3(res, dest);
 }
 
 /*
 **project a vector onto b vector
 */
-void	vec3_proj(vec3 a, vec3 b, vec3 dest)
+void	vec3_proj(t_vec3 a, t_vec3 b, t_vec3 dest)
 {
 	vec3_scale(b, vec3_dot(a, b) / vec3_norm2(b), dest);
 }
@@ -641,7 +644,7 @@ void	vec3_proj(vec3 a, vec3 b, vec3 dest)
 /*
 **find center point fo two vector
 */
-void	vec3_center(vec3 a, vec3 b, vec3 dest)
+void	vec3_center(t_vec3 a, t_vec3 b, t_vec3 dest)
 {
 	vec3_sum(a, b, dest);
 	vec3_scale(dest, 0.5f, dest);
@@ -650,7 +653,7 @@ void	vec3_center(vec3 a, vec3 b, vec3 dest)
 /*
 **squared distance between two vectors
 */
-float	vec3_distance2(vec3 a, vec3 b)
+float	t_vec3_distance2(t_vec3 a, t_vec3 b)
 {
 	return (pow2(b[0] - a[0])
 			+ pow2(b[1] - a[1])
@@ -660,15 +663,15 @@ float	vec3_distance2(vec3 a, vec3 b)
 /*
 **distance beween two vector
 */
-float vec3_distance(vec3 a, vec3 b)
+float vec3_distance(t_vec3 a, t_vec3 b)
 {
-	return (sqrtf(vec3_distance2(a, b)));
+	return (sqrtf(t_vec3_distance2(a, b)));
 }
 
 /*
 **fill a vector with specified value
 */
-void	vec3_broadcast(float val, vec3 d)
+void	vec3_broadcast(float val, t_vec3 d)
 {
 	d[0] = val;
 	d[1] = val;
@@ -680,10 +683,10 @@ void	vec3_broadcast(float val, vec3 d)
 **formula: from + s * (to - from)
 **t	interpolant (amount) clamped between 0 and 1
 */
-void	vec3_lerp(vec3 from, vec3 to, float t, vec3 dest)
+void	vec3_lerp(t_vec3 from, t_vec3 to, float t, t_vec3 dest)
 {
-	vec3 s;
-	vec3 v;
+	t_vec3 s;
+	t_vec3 v;
 
 	vec3_broadcast(clamp_zo(t), s);
 	vec3_sub(to, from, v);
@@ -695,7 +698,7 @@ void	vec3_lerp(vec3 from, vec3 to, float t, vec3 dest)
 **vec3 cross product
 **this is just convenient wrapper
 */
-void	cross(vec3 a, vec3 b, vec3 d)
+void	cross(t_vec3 a, t_vec3 b, t_vec3 d)
 {
   vec3_cross(a, b, d);
 }
@@ -704,7 +707,7 @@ void	cross(vec3 a, vec3 b, vec3 d)
 **vec3 dot product
 **this is just convenient wrapper
 */
-float	dot(vec3 a, vec3 b)
+float	dot(t_vec3 a, t_vec3 b)
 {
   return (vec3_dot(a, b));
 }
@@ -713,7 +716,7 @@ float	dot(vec3 a, vec3 b)
 **normalize vec3 and store result in same vec
 **this is just convenient wrapper
 */
-void	normalize(vec3 v)
+void	normalize(t_vec3 v)
 {
 	vec3_normalize(v);
 }
@@ -722,7 +725,7 @@ void	normalize(vec3 v)
 **normalize vec3 to dest
 **this is just convenient wrapper
 */
-void	normalize_to(vec3 v, vec3 dest)
+void	normalize_to(t_vec3 v, t_vec3 dest)
 {
   vec3_normalize_to(v, dest);
 }
@@ -872,7 +875,7 @@ void	mat3_transpose(mat3 m)
 /*
 ** multiply mat3 with vec3 (column vector) and store in dest vector
 */
-void	mat3_mulv(mat3 m, vec3 v, vec3 dest)
+void	mat3_mulv(mat3 m, t_vec3 v, t_vec3 dest)
 {
   dest[0] = m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2];
   dest[1] = m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2];
@@ -992,11 +995,11 @@ void	mat3_inv(mat3 mat, mat3 dest)
 */
 void	mat3_swap_col(mat3 mat, int col1, int col2)
 {
-	vec3 tmp;
+	t_vec3 tmp;
 
-	vec3_copy(mat[col1], tmp);
-	vec3_copy(mat[col2], mat[col1]);
-	vec3_copy(tmp, mat[col2]);
+	t_vec3_copy(mat[col1], tmp);
+	t_vec3_copy(mat[col2], mat[col1]);
+	t_vec3_copy(tmp, mat[col2]);
 }
 
 /*
@@ -1005,17 +1008,17 @@ void	mat3_swap_col(mat3 mat, int col1, int col2)
 
 void	mat3_swap_row(mat3 mat, int row1, int row2)
 {
-  vec3 tmp;
+	t_vec3 tmp;
 
-  tmp[0] = mat[0][row1];
-  tmp[1] = mat[1][row1];
-  tmp[2] = mat[2][row1];
-  mat[0][row1] = mat[0][row2];
-  mat[1][row1] = mat[1][row2];
-  mat[2][row1] = mat[2][row2];
-  mat[0][row2] = tmp[0];
-  mat[1][row2] = tmp[1];
-  mat[2][row2] = tmp[2];
+	tmp[0] = mat[0][row1];
+	tmp[1] = mat[1][row1];
+	tmp[2] = mat[2][row1];
+	mat[0][row1] = mat[0][row2];
+	mat[1][row1] = mat[1][row2];
+	mat[2][row1] = mat[2][row2];
+	mat[0][row2] = tmp[0];
+	mat[1][row2] = tmp[1];
+	mat[2][row2] = tmp[2];
 }
 
 /*
@@ -1024,12 +1027,12 @@ void	mat3_swap_row(mat3 mat, int row1, int row2)
  * the result is scalar because R * M = Matrix1x3 (row vector),
  * then Matrix1x3 * Vec3 (column vector) = Matrix1x1 (Scalar)
  */
-float	mat3_rmc(vec3 r, mat3 m, vec3 c)
+float	mat3_rmc(t_vec3 r, mat3 m, t_vec3 c)
 {
-  vec3	tmp;
+	t_vec3	tmp;
 
-  mat3_mulv(m, c, tmp);
-  return (vec3_dot(r, tmp));
+  	mat3_mulv(m, c, tmp);
+	return (vec3_dot(r, tmp));
 }
 
 /*
@@ -1219,8 +1222,7 @@ void	mat4_mul(mat4 m1, mat4 m2, mat4 dest)
  * @warning matrices parameter is pointer array not mat4 array!
  */
 
-void
-mat4_mulN(mat4 *matrices[], uint32_t len, mat4 dest)
+void	mat4_mulN(mat4 *matrices[], uint32_t len, mat4 dest)
 {
 	uint32_t i;
 
@@ -1232,9 +1234,9 @@ mat4_mulN(mat4 *matrices[], uint32_t len, mat4 dest)
 /*
  * multiply mat4 with vec4 (column vector) and store in dest vector
 */
-void	mat4_mulv(mat4 m, vec4 v, vec4 dest)
+void	mat4_mulv(mat4 m, t_vec4 v, t_vec4 dest)
 {
-	vec4 res;
+	t_vec4 res;
 
 	res[0] = m[0][0] * v[0] + m[1][0] * v[1] + m[2][0] * v[2] + m[3][0] * v[3];
 	res[1] = m[0][1] * v[0] + m[1][1] * v[1] + m[2][1] * v[2] + m[3][1] * v[3];
@@ -1318,11 +1320,11 @@ void	mat4_quat(mat4 m, versor dest)
  *m    mat4(affine transform)
  *v    vec3
  *last 4th item to make it vec4
- *dest result vector (vec3)
+ *dest result vector (t_vec3)
 */
-void	mat4_mulv3(mat4 m, vec3 v, float last, vec3 dest)
+void	mat4_mulv3(mat4 m, t_vec3 v, float last, t_vec3 dest)
 {
-	vec4 res;
+	t_vec4 res;
 
 	vec3_to_vec4(v, last, res);
 	mat4_mulv(m, res, res);
@@ -1457,7 +1459,7 @@ void	mat4_inv(mat4 mat, mat4 dest)
 void
 mat4_swap_col(mat4 mat, int col1, int col2)
 {
-	vec4 tmp;
+	t_vec4 tmp;
 
   	vec4_copy(mat[col1], tmp);
   	vec4_copy(mat[col2], mat[col1]);
@@ -1469,7 +1471,7 @@ mat4_swap_col(mat4 mat, int col1, int col2)
 */
 void	mat4_swap_row(mat4 mat, int row1, int row2)
 {
-	vec4 tmp;
+	t_vec4 tmp;
 
 	tmp[0] = mat[0][row1];
 	tmp[1] = mat[1][row1];
@@ -1492,9 +1494,9 @@ void	mat4_swap_row(mat4 mat, int row1, int row2)
  * the result is scalar because R * M = Matrix1x4 (row vector),
  * then Matrix1x4 * Vec4 (column vector) = Matrix1x1 (Scalar)
 */
-float	mat4_rmc(vec4 r, mat4 m, vec4 c)
+float	mat4_rmc(t_vec4 r, mat4 m, t_vec4 c)
 {
-	vec4	tmp;
+	t_vec4	tmp;
 
 	mat4_mulv(m, c, tmp);
 	return vec4_dot(r, tmp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/22 17:50:02 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/23 14:36:10 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,11 @@ typedef enum	e_objects
 {
 	sphere
 }				t_obj_type;
+
+/*
+** don't use just 'x' and 'y'
+** if u do so then you can't use them as parameters in fucntion
+*/
 
 typedef enum	e_crds
 {
