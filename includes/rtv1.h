@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/23 17:59:20 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/23 20:04:28 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,6 @@ typedef enum	e_objects
 ** if u do so then you can't use them as parameters in fucntion
 */
 
-typedef enum	e_crds
-{
-	x,
-	y
-}				t_crds;
-
 typedef enum	e_bca
 {
 	b,
@@ -114,33 +108,74 @@ typedef enum	e_bca
 ** actully it is sphere right now
 ** need to make it more common
 */
+
 typedef struct	s_obj
 {
 	t_obj_type	type;
-	t_vec3		origin;
+	t_vec4		origin;
 	float		r;
 }				t_obj;
 
+/*
+** s_ray store information about rays
+** point - coordinate of plane view where ray starts
+** vec - direction of ray at point position
+*/
+
 typedef struct	s_ray
 {
-	t_vec3		point;
-	t_vec3		vec;
+	t_vec4		point;
+	t_vec4		vec;
 }				t_ray;
 
 /*
-** we store here all our objects
+** s_light - light source
+** pos - position of light source
+** intensity - intensity of light source
 */
+
+typedef struct	s_light
+{
+	t_vec3		pos;
+	float		intensity;
+}				t_light;
+
+/*
+** we store here all our objects
+** objects - all object in world
+** nobjects - total number of objects
+** lights - all light sources in world
+** nlights - total number if light sources
+*/
+
 typedef	struct	s_world
 {
 	t_obj		*objects;
 	int			nobjects;
+	t_light		*lights;
+	int			nlights;
 }				t_world;
+
+/*
+** s_camera store information about camera that we control
+** pos - current postion of camera
+** orientation - direction of camera
+*/
 
 typedef struct	s_camera
 {
 	t_vec4		pos;
 	t_vec4		orientation;
 }				t_camera;
+
+/*
+** s_param store all information that we need in our program
+** mlx_ptr - the connection identifier
+** win_ptr - window identifier
+** img - store information about displaying image
+** world - store information about all objects and light sources
+** camera - store information about controlled camera
+*/
 
 typedef struct	s_param
 {
