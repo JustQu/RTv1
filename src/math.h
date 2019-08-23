@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MATH_H
+# define MATH_H
 #include "time.h"
-#include "math.h"
 #include "stdint.h"
+#include "libft.h"
 
 # define _E				2.71828182845904523536028747135266250
 # define _LOG2E			1.44269504088896340735992468100189214
@@ -28,12 +30,12 @@
 # define _SQRT2			1.41421356237309504880168872420969808
 # define _SQRT1_2		0.707106781186547524400844362104849039
 
-typedef float	vec2[2];
+typedef float	t_vec2[2];
 typedef float	t_vec3[3];
 typedef float	t_vec4[4];
-typedef float	mat3[3][3];
-typedef float	mat4[4][4];
-typedef t_vec4	versor;
+typedef float	t_mat3[3][3];
+typedef float	t_mat4[4][4];
+typedef t_vec4	t_versor;
 
 enum
 {
@@ -120,7 +122,7 @@ float	vec4_dot(t_vec4 a, t_vec4 b)
 */
 float	vec4_norm2(t_vec4 v)
 {
-	return (t_vec4_dot(v, v));
+	return (vec4_dot(v, v));
 }
 
 /*
@@ -128,7 +130,7 @@ float	vec4_norm2(t_vec4 v)
 */
 float	vec4_norm(t_vec4 v)
 {
-	return (sqrtf(t_vec4_dot(v, v)));
+	return (sqrtf(vec4_dot(v, v)));
 }
 
 /*
@@ -327,7 +329,7 @@ void	vec4_broadcast(float val, t_vec4 d)
 **formula: from + s * (to - from)
 **t - interpolant (amount) clamped between 0 and 1
 */
-vec4_lerp(t_vec4 from, t_vec4 to, float t, t_vec4 dest)
+void	vec4_lerp(t_vec4 from, t_vec4 to, float t, t_vec4 dest)
 {
 	t_vec4 s;
 	t_vec4 v;
@@ -410,7 +412,7 @@ void	vec3_one(t_vec3 v)
 */
 float	vec3_dot(t_vec3 a, t_vec3 b)
 {
-	return a[0] * b[0] + a[1] * b[1] + a[1] * b[1];
+	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 }
 
 /*
@@ -418,7 +420,7 @@ float	vec3_dot(t_vec3 a, t_vec3 b)
 */
 float	vec3_norm2(t_vec3 v)
 {
-  return (t_vec3_dot(v, v));
+  return (vec3_dot(v, v));
 }
 
 /*
@@ -426,7 +428,7 @@ float	vec3_norm2(t_vec3 v)
 */
 float	vec3_norm(t_vec3 v)
 {
-  return (sqrtf(t_vec3_norm2(v)));
+  return (sqrtf(vec3_norm2(v)));
 }
 
 /*
@@ -596,7 +598,7 @@ void	vec3_rotate(t_vec3 v, float angle, t_vec3 axis)
 /*
 ** apply rotation matrix to vector
 */
-void	vec3_rotate_m4(mat4 m, t_vec3 v, t_vec3 dest)
+void	vec3_rotate_m4(t_mat4 m, t_vec3 v, t_vec3 dest)
 {
 	t_vec4	x;
 	t_vec4	y;
@@ -614,7 +616,7 @@ void	vec3_rotate_m4(mat4 m, t_vec3 v, t_vec3 dest)
 	vec4_to_vec3(res, dest);
 }
 
-void	vec3_rotate_m3(mat3 m, t_vec3 v, t_vec3 dest)
+void	vec3_rotate_m3(t_mat3 m, t_vec3 v, t_vec3 dest)
 {
 	t_vec4	res;
 	t_vec4	x;
@@ -740,13 +742,13 @@ void	normalize_to(t_vec3 v, t_vec3 dest)
 
 #define MAT3_IDENTITY_INIT  {{1.f, .0f, .0f}, {.0f, 1.f, .0f}, {.0f, .0f, 1.f}}
 #define MAT3_ZERO_INIT      {{.0f, .0f, .0f}, {.0f, .0f, .0f}, {.0f, .0f, .0f}}
-#define MAT3_IDENTITY 		((mat3)MAT3_IDENTITY_INIT)
-#define MAT3_ZERO     		((mat3)MAT3_ZERO_INIT)
+#define MAT3_IDENTITY 		((t_mat3)MAT3_IDENTITY_INIT)
+#define MAT3_ZERO     		((t_mat3)MAT3_ZERO_INIT)
 
 /*!
  * @brief copy all members of [mat] to [dest]
  */
-void	mat3_copy(mat3 mat, mat3 dest)
+void	mat3_copy(t_mat3 mat, t_mat3 dest)
 {
 	dest[0][0] = mat[0][0];
 	dest[0][1] = mat[0][1];
@@ -769,7 +771,7 @@ void	mat3_copy(mat3 mat, mat3 dest)
  * mat3 mat = MAT3_IDENTITY_INIT;
  * @endcode
 */
-void	mat3_identity(mat3 mat)
+void	mat3_identity(t_mat3 mat)
 {
 	mat3_copy(MAT3_IDENTITY, mat);
 }
@@ -777,9 +779,9 @@ void	mat3_identity(mat3 mat)
 /*!
  * make given matrix array's each element identity matrix
 */
-void	mat3_identity_array(mat3 *mat, size_t count)
+void	mat3_identity_array(t_mat3 *mat, size_t count)
 {
-	mat3	t;
+	t_mat3	t;
 	size_t	i;
 
 	mat3_identity(t);
@@ -794,7 +796,7 @@ void	mat3_identity_array(mat3 *mat, size_t count)
 /*!
  * make given matrix zero.
 */
-void	mat3_zero(mat3 mat)
+void	mat3_zero(t_mat3 mat)
 {
 	mat3_copy(MAT3_ZERO, mat);
 }
@@ -808,9 +810,9 @@ void	mat3_zero(mat3 mat)
  * mat3 m = MAT3_IDENTITY_INIT;
  * mat3_mul(m, m, m);
 */
-void	mat3_mul(mat3 m1, mat3 m2, mat3 dest)
+void	mat3_mul(t_mat3 m1, t_mat3 m2, t_mat3 dest)
 {
-	mat3	tmp;
+	t_mat3	tmp;
 
 	tmp[0][0] =
 		m1[0][0] * m2[0][0] + m1[0][1] * m2[1][0] + m1[0][2] * m2[2][0];
@@ -838,7 +840,7 @@ void	mat3_mul(mat3 m1, mat3 m2, mat3 dest)
  *
  * source matrix will not be transposed unless dest is m
 */
-void	mat3_transpose_to(mat3 m, mat3 dest)
+void	mat3_transpose_to(t_mat3 m, t_mat3 dest)
 {
 	dest[0][0] = m[0][0];
 	dest[0][1] = m[1][0];
@@ -854,9 +856,9 @@ void	mat3_transpose_to(mat3 m, mat3 dest)
 /*
  *tranpose mat3 and store result in same matrix
 */
-void	mat3_transpose(mat3 m)
+void	mat3_transpose(t_mat3 m)
 {
-	mat3 tmp;
+	t_mat3 tmp;
 
 	tmp[0][1] = m[1][0];
 	tmp[0][2] = m[2][0];
@@ -875,7 +877,7 @@ void	mat3_transpose(mat3 m)
 /*
 ** multiply mat3 with vec3 (column vector) and store in dest vector
 */
-void	mat3_mulv(mat3 m, t_vec3 v, t_vec3 dest)
+void	mat3_mulv(t_mat3 m, t_vec3 v, t_vec3 dest)
 {
   dest[0] = m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2];
   dest[1] = m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2];
@@ -886,7 +888,7 @@ void	mat3_mulv(mat3 m, t_vec3 v, t_vec3 dest)
  * trace of matrix
  * sum of the elements on the main diagonal from upper left to the lower right
 */
-float	mat3_trace(mat3 m)
+float	mat3_trace(t_mat3 m)
 {
 	return (m[0][0] + m[1][1] + m[2][2]);
 }
@@ -895,7 +897,7 @@ float	mat3_trace(mat3 m)
  * @brief convert mat3 to quaternion
  */
 /* it seems using like m12 instead of m[1][2] causes extra instructions */
-void	mat3_quat(mat3 m, versor dest)
+void	mat3_quat(t_mat3 m, t_versor dest)
 {
   float trace;
   float	r;
@@ -944,7 +946,7 @@ void	mat3_quat(mat3 m, versor dest)
  * scale (multiply with scalar) matrix
  * multiply matrix with scalar
  */
-void	mat3_scale(mat3 m, float s)
+void	mat3_scale(t_mat3 m, float s)
 {
   m[0][0] *= s;
   m[0][1] *= s;
@@ -960,7 +962,7 @@ void	mat3_scale(mat3 m, float s)
 /*
  * mat3 determinant
  */
-float	mat3_det(mat3 mat)
+float	mat3_det(t_mat3 mat)
 {
   return (mat[0][0] * (mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1])
   		- mat[0][1] * (mat[1][0] * mat[2][2] - mat[2][0] * mat[1][2])
@@ -970,10 +972,10 @@ float	mat3_det(mat3 mat)
 /*
  * inverse mat3 and store in dest
  */
-void	mat3_inv(mat3 mat, mat3 dest)
+void	mat3_inv(t_mat3 mat, t_mat3 dest)
 {
   	float	det;
-  	mat3	dest1;
+  	t_mat3	dest1;
 
   	dest1[0][0] =   mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1];
   	dest1[0][1] = -(mat[0][1] * mat[2][2] - mat[2][1] * mat[0][2]);
@@ -993,20 +995,20 @@ void	mat3_inv(mat3 mat, mat3 dest)
 /*
  * swap two matrix columns
 */
-void	mat3_swap_col(mat3 mat, int col1, int col2)
+void	mat3_swap_col(t_mat3 mat, int col1, int col2)
 {
 	t_vec3 tmp;
 
-	t_vec3_copy(mat[col1], tmp);
-	t_vec3_copy(mat[col2], mat[col1]);
-	t_vec3_copy(tmp, mat[col2]);
+	vec3_copy(mat[col1], tmp);
+	vec3_copy(mat[col2], mat[col1]);
+	vec3_copy(tmp, mat[col2]);
 }
 
 /*
  * swap two matrix rows
 */
 
-void	mat3_swap_row(mat3 mat, int row1, int row2)
+void	mat3_swap_row(t_mat3 mat, int row1, int row2)
 {
 	t_vec3 tmp;
 
@@ -1027,7 +1029,7 @@ void	mat3_swap_row(mat3 mat, int row1, int row2)
  * the result is scalar because R * M = Matrix1x3 (row vector),
  * then Matrix1x3 * Vec3 (column vector) = Matrix1x1 (Scalar)
  */
-float	mat3_rmc(t_vec3 r, mat3 m, t_vec3 c)
+float	mat3_rmc(t_vec3 r, t_mat3 m, t_vec3 c)
 {
 	t_vec3	tmp;
 
@@ -1053,13 +1055,13 @@ MATRIX 4
                             {0.0f, 0.0f, 0.0f, 0.0f},                    \
                             {0.0f, 0.0f, 0.0f, 0.0f}}
 
-#define MAT4_IDENTITY ((mat4)MAT4_IDENTITY_INIT)
-#define MAT4_ZERO     ((mat4)MAT4_ZERO_INIT)
+#define MAT4_IDENTITY ((t_mat4)MAT4_IDENTITY_INIT)
+#define MAT4_ZERO     ((t_mat4)MAT4_ZERO_INIT)
 
 /*!
  * copy all members of [mat] to [dest]
  */
-void	mat4_copy(mat4 mat, mat4 dest)
+void	mat4_copy(t_mat4 mat, t_mat4 dest)
 {
   	dest[0][0] = mat[0][0];
 	dest[1][0] = mat[1][0];
@@ -1088,7 +1090,7 @@ void	mat4_copy(mat4 mat, mat4 dest)
  * // or
  * mat4 mat = MAT4_IDENTITY_INIT;
  */
-void	mat4_identity(mat4 mat)
+void	mat4_identity(t_mat4 mat)
 {
   	mat4_copy(MAT4_IDENTITY, mat);
 }
@@ -1096,9 +1098,9 @@ void	mat4_identity(mat4 mat)
 /*!
  *make given matrix array's each element identity matrix
 */
-void	mat4_identity_array(mat4 *mat, size_t count)
+void	mat4_identity_array(t_mat4 *mat, size_t count)
 {
-	mat4 	t;
+	t_mat4 	t;
 	size_t 	i;
 
 	mat4_identity(t);
@@ -1113,7 +1115,7 @@ void	mat4_identity_array(mat4 *mat, size_t count)
 /*
  * make given matrix zero.
 */
-void	mat4_zero(mat4 mat)
+void	mat4_zero(t_mat4 mat)
 {
 	mat4_copy(MAT4_ZERO, mat);
 }
@@ -1121,7 +1123,7 @@ void	mat4_zero(mat4 mat)
 /*
  *copy upper-left of mat4 to mat3
 */
-void	mat4_pick3(mat4 mat, mat3 dest)
+void	mat4_pick3(t_mat4 mat, t_mat3 dest)
 {
 	dest[0][0] = mat[0][0];
 	dest[0][1] = mat[0][1];
@@ -1138,7 +1140,7 @@ void	mat4_pick3(mat4 mat, mat3 dest)
  * copy upper-left of mat4 to mat3 (transposed)
  * the postfix t stands for transpose
 */
-void	mat4_pick3t(mat4 mat, mat3 dest)
+void	mat4_pick3t(t_mat4 mat, t_mat3 dest)
 {
 	dest[0][0] = mat[0][0];
 	dest[0][1] = mat[1][0];
@@ -1154,7 +1156,7 @@ void	mat4_pick3t(mat4 mat, mat3 dest)
 /*
  * copy mat3 to mat4's upper-left
 */
-void	mat4_ins3(mat3 mat, mat4 dest)
+void	mat4_ins3(t_mat3 mat, t_mat4 dest)
 {
 	dest[0][0] = mat[0][0];
 	dest[0][1] = mat[0][1];
@@ -1177,7 +1179,7 @@ void	mat4_ins3(mat3 mat, mat4 dest)
  * mat4_mul(m, m, m);
  * @endcode
  */
-void	mat4_mul(mat4 m1, mat4 m2, mat4 dest)
+void	mat4_mul(t_mat4 m1, t_mat4 m2, t_mat4 dest)
 {
 	float a00 = m1[0][0], a01 = m1[0][1], a02 = m1[0][2], a03 = m1[0][3],
         a10 = m1[1][0], a11 = m1[1][1], a12 = m1[1][2], a13 = m1[1][3],
@@ -1222,7 +1224,7 @@ void	mat4_mul(mat4 m1, mat4 m2, mat4 dest)
  * @warning matrices parameter is pointer array not mat4 array!
  */
 
-void	mat4_mulN(mat4 *matrices[], uint32_t len, mat4 dest)
+void	mat4_mulN(t_mat4 *matrices[], uint32_t len, t_mat4 dest)
 {
 	uint32_t i;
 
@@ -1234,7 +1236,7 @@ void	mat4_mulN(mat4 *matrices[], uint32_t len, mat4 dest)
 /*
  * multiply mat4 with vec4 (column vector) and store in dest vector
 */
-void	mat4_mulv(mat4 m, t_vec4 v, t_vec4 dest)
+void	mat4_mulv(t_mat4 m, t_vec4 v, t_vec4 dest)
 {
 	t_vec4 res;
 
@@ -1249,7 +1251,7 @@ void	mat4_mulv(mat4 m, t_vec4 v, t_vec4 dest)
  * trace of matrix
  * sum of the elements on the main diagonal from upper left to the lower right
 */
-float	mat4_trace(mat4 m)
+float	mat4_trace(t_mat4 m)
 {
 	return m[0][0] + m[1][1] + m[2][2] + m[3][3];
 }
@@ -1259,7 +1261,7 @@ float	mat4_trace(mat4 m)
  * sum of the elements on the main diagonal from upper left to the lower right
  */
 
-float	mat4_trace3(mat4 m)
+float	mat4_trace3(t_mat4 m)
 {
 	return m[0][0] + m[1][1] + m[2][2];
 }
@@ -1267,7 +1269,7 @@ float	mat4_trace3(mat4 m)
 /*
  * convert mat4's rotation part to quaternion
 */
-void	mat4_quat(mat4 m, versor dest)
+void	mat4_quat(t_mat4 m, t_versor dest)
 {
 	float	trace;
 	float	r;
@@ -1322,7 +1324,8 @@ void	mat4_quat(mat4 m, versor dest)
  *last 4th item to make it vec4
  *dest result vector (t_vec3)
 */
-void	mat4_mulv3(mat4 m, t_vec3 v, float last, t_vec3 dest)
+
+void	mat4_mulv3(t_mat4 m, t_vec3 v, float last, t_vec3 dest)
 {
 	t_vec4 res;
 
@@ -1336,7 +1339,8 @@ void	mat4_mulv3(mat4 m, t_vec3 v, float last, t_vec3 dest)
  * source matrix will not be transposed unless dest is m
  * todo: error when dest and m is the same matrix
  */
-void	mat4_transpose_to(mat4 m, mat4 dest)
+
+void	mat4_transpose_to(t_mat4 m, t_mat4 dest)
 {
 	dest[0][0] = m[0][0];
 	dest[0][1] = m[1][0];
@@ -1359,9 +1363,9 @@ void	mat4_transpose_to(mat4 m, mat4 dest)
 /*
  * tranpose mat4 and store result in same matrix
 */
-void	mat4_transpose(mat4 m)
+void	mat4_transpose(t_mat4 m)
 {
-	mat4 d;
+	t_mat4 d;
 
 	mat4_transpose_to(m, d);
 	mat4_copy(d, m);
@@ -1371,7 +1375,7 @@ void	mat4_transpose(mat4 m)
  * scale (multiply with scalar) matrix without
  * multiply matrix with scalar
 */
-void	mat4_scale(mat4 m, float s)
+void	mat4_scale(t_mat4 m, float s)
 {
 	m[0][0] *= s;
 	m[0][1] *= s;
@@ -1394,7 +1398,7 @@ void	mat4_scale(mat4 m, float s)
 /*
  * mat4 determinant
 */
-float	mat4_det(mat4 mat)
+float	mat4_det(t_mat4 mat)
 {
 	float t[6];
 	float a = mat[0][0], b = mat[0][1], c = mat[0][2], d = mat[0][3],
@@ -1417,17 +1421,21 @@ float	mat4_det(mat4 mat)
 /*
  * inverse mat4 and store in dest
 */
-void	mat4_inv(mat4 mat, mat4 dest)
+void	mat4_inv(t_mat4 mat, t_mat4 dest)
 {
-  float t[6];
-  float det;
-  float a = mat[0][0], b = mat[0][1], c = mat[0][2], d = mat[0][3],
+	float t[6];
+	float det;
+	float a = mat[0][0], b = mat[0][1], c = mat[0][2], d = mat[0][3],
         e = mat[1][0], f = mat[1][1], g = mat[1][2], h = mat[1][3],
         i = mat[2][0], j = mat[2][1], k = mat[2][2], l = mat[2][3],
         m = mat[3][0], n = mat[3][1], o = mat[3][2], p = mat[3][3];
 
-	t[0] = k * p - o * l; t[1] = j * p - n * l; t[2] = j * o - n * k;
-	t[3] = i * p - m * l; t[4] = i * o - m * k; t[5] = i * n - m * j;
+	t[0] = k * p - o * l;
+	t[1] = j * p - n * l;
+	t[2] = j * o - n * k;
+	t[3] = i * p - m * l;
+	t[4] = i * o - m * k;
+	t[5] = i * n - m * j;
 	dest[0][0] =  f * t[0] - g * t[1] + h * t[2];
 	dest[1][0] =-(e * t[0] - g * t[3] + h * t[4]);
 	dest[2][0] =  e * t[1] - f * t[3] + h * t[5];
@@ -1436,14 +1444,22 @@ void	mat4_inv(mat4 mat, mat4 dest)
 	dest[1][1] =  a * t[0] - c * t[3] + d * t[4];
 	dest[2][1] =-(a * t[1] - b * t[3] + d * t[5]);
 	dest[3][1] =  a * t[2] - b * t[4] + c * t[5];
-	t[0] = g * p - o * h; t[1] = f * p - n * h; t[2] = f * o - n * g;
-	t[3] = e * p - m * h; t[4] = e * o - m * g; t[5] = e * n - m * f;
+	t[0] = g * p - o * h;
+	t[1] = f * p - n * h;
+	t[2] = f * o - n * g;
+	t[3] = e * p - m * h;
+	t[4] = e * o - m * g;
+	t[5] = e * n - m * f;
 	dest[0][2] =  b * t[0] - c * t[1] + d * t[2];
 	dest[1][2] =-(a * t[0] - c * t[3] + d * t[4]);
 	dest[2][2] =  a * t[1] - b * t[3] + d * t[5];
 	dest[3][2] =-(a * t[2] - b * t[4] + c * t[5]);
-	t[0] = g * l - k * h; t[1] = f * l - j * h; t[2] = f * k - j * g;
-	t[3] = e * l - i * h; t[4] = e * k - i * g; t[5] = e * j - i * f;
+	t[0] = g * l - k * h;
+	t[1] = f * l - j * h;
+	t[2] = f * k - j * g;
+	t[3] = e * l - i * h;
+	t[4] = e * k - i * g;
+	t[5] = e * j - i * f;
 	dest[0][3] =-(b * t[0] - c * t[1] + d * t[2]);
 	dest[1][3] =  a * t[0] - c * t[3] + d * t[4];
 	dest[2][3] =-(a * t[1] - b * t[3] + d * t[5]);
@@ -1457,7 +1473,7 @@ void	mat4_inv(mat4 mat, mat4 dest)
  * swap two matrix columns
 */
 void
-mat4_swap_col(mat4 mat, int col1, int col2)
+mat4_swap_col(t_mat4 mat, int col1, int col2)
 {
 	t_vec4 tmp;
 
@@ -1469,7 +1485,7 @@ mat4_swap_col(mat4 mat, int col1, int col2)
 /*!
  * wap two matrix rows
 */
-void	mat4_swap_row(mat4 mat, int row1, int row2)
+void	mat4_swap_row(t_mat4 mat, int row1, int row2)
 {
 	t_vec4 tmp;
 
@@ -1494,7 +1510,7 @@ void	mat4_swap_row(mat4 mat, int row1, int row2)
  * the result is scalar because R * M = Matrix1x4 (row vector),
  * then Matrix1x4 * Vec4 (column vector) = Matrix1x1 (Scalar)
 */
-float	mat4_rmc(t_vec4 r, mat4 m, t_vec4 c)
+float	mat4_rmc(t_vec4 r, t_mat4 m, t_vec4 c)
 {
 	t_vec4	tmp;
 
@@ -1502,30 +1518,22 @@ float	mat4_rmc(t_vec4 r, mat4 m, t_vec4 c)
 	return vec4_dot(r, tmp);
 }
 
-int	main()
-{
-	mat3 m;
+/*
+** convert degree to radians
+*/
 
-	m[0][0] = 1;
-	m[0][1] = 2;
-	m[0][2] = 3;
-	m[1][0] = 4;
-	m[1][1] = 5;
-	m[1][2] = 6;
-	m[2][0] = 7;
-	m[2][1] = 8;
-	m[2][2] = 9;
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-			printf("%f\t", m[i][j]);
-		printf("\n");
-	}
-	mat3_transpose_to(m,m);
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-			printf("%f\t", m[i][j]);
-		printf("\n");
-	}
+float	deg_to_rad(float deg)
+{
+	return (deg * _PI / 180.0f);
 }
+
+/*
+** convert radians to degree
+*/
+
+float	rad_to_deg(float rad)
+{
+	return (rad * 180.0f / _PI);
+}
+
+#endif

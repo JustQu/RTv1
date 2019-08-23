@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/23 14:57:48 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/23 16:29:12 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@
 # define KEY_ESC 53
 # define KEY_TAB 48
 
-# define WIDTH 1024
-# define HEIGHT 1024
+# define WIDTH 1000
+# define HEIGHT 1000
 
 typedef struct	s_image
 {
@@ -81,20 +81,15 @@ typedef struct	s_image
 	int			endian;
 }				t_image;
 
-typedef struct	s_param
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_image		img;
-}				t_param;
-
 typedef float	t_vec2[2];
 typedef float	t_vec3[3];
 typedef float	t_vec4[4];
 
 typedef enum	e_objects
 {
-	sphere
+	sphere,
+	plane,
+	cube,
 }				t_obj_type;
 
 /*
@@ -115,7 +110,10 @@ typedef enum	e_bca
 	a
 }				t_bca;
 
-
+/*
+** actully it is sphere right now
+** need to make it more common
+*/
 typedef struct	s_obj
 {
 	t_obj_type	type;
@@ -129,11 +127,28 @@ typedef struct	s_ray
 	t_vec3		vec;
 }				t_ray;
 
+/*
+** we store here all our objects
+*/
+typedef	struct	s_world
+{
+	t_obj		*objects;
+}				t_world;
+
 typedef struct	s_camera
 {
 	t_vec4		pos;
-	t_vec4		direction;
+	t_vec4		orientation;
 }				t_camera;
+
+typedef struct	s_param
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	t_image		img;
+	t_world		world;
+	t_camera	camera;
+}				t_param;
 
 int				close_w(void *param);
 int				key_press(int keycode, void *param);
