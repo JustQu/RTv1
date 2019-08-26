@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/26 15:21:49 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/26 17:06:59 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ void	find_eq(t_param *p, t_vec3 v3, t_vec2 xy)
 		put_pixel(&p->img, xy[ox], xy[oy], 0xff);
 }
 
+void	draw_cylinder(t_obj obj, t_param *p)
+{
+
+}
 void	draw_sphere(t_obj sp, t_param *p)
 {
 	t_vec2	xy;

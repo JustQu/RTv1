@@ -14,6 +14,7 @@
 # define RTMATH_H
 #include "time.h"
 #include "stdint.h"
+#include "libft.h"
 #include "math.h"
 
 # define _E				2.71828182845904523536028747135266250

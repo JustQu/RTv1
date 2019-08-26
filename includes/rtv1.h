@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/26 15:26:18 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/26 17:07:06 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct	s_obj
 	t_obj_type	type;
 	t_vec4		origin;
 	float		r;
-	
+
 }				t_obj;
 
 /*
