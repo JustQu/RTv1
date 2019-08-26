@@ -32,11 +32,11 @@ $(LIBFT):
 
 $(TARGET): $(OBJS) $(LIB)
 	@echo 'making executable'
-	@$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 	@echo DONE!
 
 $(OBJS): %.o: $(SRCSDIR)%.c $(INCS)
-	@$(CC) -c $< $(CFLAGS)
+	$(CC) -c $< $(CFLAGS)
 
 .PHONY: clean
 clean:

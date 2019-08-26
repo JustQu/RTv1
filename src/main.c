@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/23 19:36:53 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:26:46 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		get_objects(t_param *p)
 	p->world.objects[0].origin[1] = 400;
 	p->world.objects[0].origin[2] = 0;
 	p->world.objects[0].r = 33;
-	
+
 	p->world.objects[1].type = sphere;
 	p->world.objects[1].origin[0] = 600;
 	p->world.objects[1].origin[1] = 600;

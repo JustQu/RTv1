@@ -6,14 +6,13 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/26 14:59:40 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:26:18 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# include "math.h"
 # include "mlx.h"
 # include "pthread.h"
 # include "stdlib.h"
@@ -72,6 +71,12 @@
 # define WIDTH 1000
 # define HEIGHT 1000
 
+typedef float	t_vec2[2];
+typedef float	t_vec3[3];
+typedef float	t_vec4[4];
+typedef float	t_mat3[3][3];
+typedef float	t_mat4[4][4];
+
 typedef struct	s_image
 {
 	void		*ptr;
@@ -80,10 +85,6 @@ typedef struct	s_image
 	int			size_line;
 	int			endian;
 }				t_image;
-
-typedef float	t_vec2[2];
-typedef float	t_vec3[3];
-typedef float	t_vec4[4];
 
 typedef enum	e_objects
 {
@@ -114,6 +115,7 @@ typedef struct	s_obj
 	t_obj_type	type;
 	t_vec4		origin;
 	float		r;
+	
 }				t_obj;
 
 /*
