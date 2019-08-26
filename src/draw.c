@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/26 17:06:59 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/26 21:06:28 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,10 @@ void	init_sphere(t_obj *s, t_vec3 pos, float r)
 
 void	find_eq(t_param *p, t_vec3 v3, t_vec2 xy)
 {
-	if (v3[b] * v3[b] - 4 * v3[a] * v3[c] >= 0.0f)
+	if (v3[0] * v3[0] - 4 * v3[2] * v3[1] >= 0.0f)
 		put_pixel(&p->img, xy[ox], xy[oy], 0xff);
 }
 
-void	draw_cylinder(t_obj obj, t_param *p)
-{
-
-}
 void	draw_sphere(t_obj sp, t_param *p)
 {
 	t_vec2	xy;
@@ -102,9 +98,30 @@ void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
 	c = vec3_norm2(tmp) - obj->r * obj->r;
 	d = b * b - 4 * a * c;
 	if (d > 0.0f)
-	{
 		put_pixel(&p->img, ray->point[0], ray->point[1], 0xf0);
-	}
+}
+
+void	draw_cylinder(t_param *p, t_obj *obj, t_ray *ray)
+{
+	t_vec4	tmp;
+	float	a;
+	float	b;
+	float	c;
+	float	d;
+
+	vec3_sub(ray->point, obj->origin, tmp);
+	a = 
+}
+
+t_obj get_first_intesection(t_param *p, t_ray ray);
+
+t_color		trace_ray(t_param *p, t_ray ray)
+{
+	t_obj	obj;
+	t_color	color;
+
+	obj = get_first_intesection(p, ray);
+	color = get_point_color(obj);
 }
 
 /*
