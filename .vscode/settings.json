@@ -1,6 +1,11 @@
 {
 	"files.associations": {
 		"complex": "c",
-		"math.h": "c"
-	}
+		"math.h": "c",
+		"algorithm": "c"
+	},
+	"C_Cpp.default.includePath": [
+		"./includes/",
+		"./libft/includes"
+	]
 }
