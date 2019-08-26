@@ -11,15 +11,15 @@ LDLIBS = -lft\
 		-lmlx\
 		-framework OpenGL\
 		-framework AppKit
-LDFLAGS	= 
+LDFLAGS	=
 
 LIBFT = libft.a
 LIBFTDIR = ./libft
 LIBFTINC = $(LIBFTDIR)/includes
 
 INCDIR = ./include
-SRCSDIR = ./
-SRCS = main.c
+SRCSDIR = ./src
+SRCS = main.c control.c draw.c
 OBJS = $(SRCS:.c=.o)
 TARGET = RTv1
 
