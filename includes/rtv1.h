@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/22 17:50:02 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/23 16:32:50 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@
 # define KEY_ESC 53
 # define KEY_TAB 48
 
-# define WIDTH 1024
-# define HEIGHT 1024
+# define WIDTH 1000
+# define HEIGHT 1000
 
 typedef struct	s_image
 {
@@ -81,21 +81,21 @@ typedef struct	s_image
 	int			endian;
 }				t_image;
 
-typedef struct	s_param
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_image		img;
-}				t_param;
-
 typedef float	t_vec2[2];
 typedef float	t_vec3[3];
 typedef float	t_vec4[4];
 
 typedef enum	e_objects
 {
-	sphere
+	sphere,
+	plane,
+	cube,
 }				t_obj_type;
+
+/*
+** don't use just 'x' and 'y'
+** if u do so then you can't use them as parameters in fucntion
+*/
 
 typedef enum	e_crds
 {
@@ -110,7 +110,10 @@ typedef enum	e_bca
 	a
 }				t_bca;
 
-
+/*
+** actully it is sphere right now
+** need to make it more common
+*/
 typedef struct	s_obj
 {
 	t_obj_type	type;
@@ -123,6 +126,29 @@ typedef struct	s_ray
 	t_vec3		point;
 	t_vec3		vec;
 }				t_ray;
+
+/*
+** we store here all our objects
+*/
+typedef	struct	s_world
+{
+	t_obj		*objects;
+}				t_world;
+
+typedef struct	s_camera
+{
+	t_vec4		pos;
+	t_vec4		orientation;
+}				t_camera;
+
+typedef struct	s_param
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	t_image		img;
+	t_world		world;
+	t_camera	camera;
+}				t_param;
 
 int				close_w(void *param);
 int				key_press(int keycode, void *param);
