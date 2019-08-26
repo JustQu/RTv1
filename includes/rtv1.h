@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/23 16:32:50 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:51:48 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,6 @@ typedef enum	e_objects
 ** don't use just 'x' and 'y'
 ** if u do so then you can't use them as parameters in fucntion
 */
-
-typedef enum	e_crds
-{
-	x,
-	y
-}				t_crds;
 
 typedef enum	e_bca
 {
