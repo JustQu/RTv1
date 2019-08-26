@@ -2,7 +2,8 @@
 	"files.associations": {
 		"complex": "c",
 		"math.h": "c",
-		"algorithm": "c"
+		"algorithm": "c",
+		"rtv1.h": "c"
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",

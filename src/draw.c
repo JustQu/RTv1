@@ -3,24 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/26 14:59:37 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/26 17:01:48 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+#include "rtmath.h"
 
-static void	set_color(t_image *img, int color, int x, int y)
+void	put_pixel(t_image *img, int x, int y, int color)
 {
-	int	o;
+	char	*p;
 
-	o = (x * img->bpp / 8 + y * img->size_line);
-	img->data[o] = color & 0xff;
-	img->data[++o] = color >> 8 & 0xff;
-	img->data[++o] = color >> 16 & 0xff;
-	img->data[++o] = 0;
+	if (x <= 0 || y <= 0 || x >= WIDTH || y >= HEIGHT)
+		return ;
+	p = img->data;
+	p = (p + img->size_line * y) + ((x * img->bpp) >> 3);
+	*(int *)p = color;
 }
 
 void		create_pic(t_param *p)
@@ -47,6 +48,10 @@ void	find_eq(t_param *p, t_vec3 v3, t_vec2 xy)
 		put_pixel(&p->img, xy[ox], xy[oy], 0xff);
 }
 
+void	draw_cylinder(t_obj obj, t_param *p)
+{
+	
+}
 void	draw_sphere(t_obj sp, t_param *p)
 {
 	t_vec2	xy;
