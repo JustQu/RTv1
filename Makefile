@@ -4,7 +4,8 @@ RM = rm -rf
 CFLAGS = \
 		 -I.\
 		 -I$(INCDIR)\
-		 -I$(LIBFTINC)
+		 -I$(LIBFTINC)\
+		 -g
 
 LDLIBS = -lft\
 		-lmlx\
