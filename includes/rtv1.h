@@ -13,7 +13,7 @@
 #ifndef RTV1_H
 # define RTV1_H
 
-# include "mlx.h"
+//# include "mlx.h"
 # include "pthread.h"
 # include "stdlib.h"
 # include "stdio.h"
@@ -77,6 +77,15 @@ typedef float	t_vec4[4];
 typedef float	t_mat3[3][3];
 typedef float	t_mat4[4][4];
 
+typedef union	u_color
+{
+	char		a;
+	char		r;
+	char		g;
+	char		b;
+	int			color;
+}				t_color;
+
 typedef struct	s_image
 {
 	void		*ptr;
@@ -90,29 +99,39 @@ typedef enum	e_objects
 {
 	sphere,
 	plane,
-	cube,
+	cone
 }				t_obj_type;
 
+enum
+{
+	a, b, c, d
+};
+
+typedef struct	s_material
+{
+	float		color;
+	float		reflect_coef;
+	float		refract_coef;
+	float		mate;
+}				t_material;
+
+typedef struct	s_light_source
+{
+	t_vec4		origin;
+	float		intensity;
+}				t_light_source;
+
 /*
-** actully it is sphere right now
-** need to make it more common
+** 
 */
 
 typedef struct	s_obj
 {
 	t_obj_type	type;
-	t_vec4		origin;
-	float		r;
-
+	void		*data;
+	t_vec4		surface_normal;
+	float		hit_point;
 }				t_obj;
-
-typedef struct	s_cone
-{
-	t_vec3		origin;
-	t_vec3		axis;
-	float		angle;
-}				t_cone;
-
 
 /*
 ** s_ray store information about rays
@@ -126,17 +145,20 @@ typedef struct	s_ray
 	t_vec4		vec;
 }				t_ray;
 
-/*
-** s_light - light source
-** pos - position of light source
-** intensity - intensity of light source
-*/
-
-typedef struct	s_light
+typedef struct	s_sphere
 {
-	t_vec3		pos;
-	float		intensity;
-}				t_light;
+	t_vec4		origin;
+	float		radius;
+}				t_sphere;
+
+typedef struct	s_cone
+{
+	t_vec3		origin;
+	t_vec3		dir;
+	float		angle;
+	float		k;
+	float		k2;
+}				t_cone;
 
 /*
 ** we store here all our objects
@@ -150,7 +172,7 @@ typedef	struct	s_world
 {
 	t_obj		*objects;
 	int			nobjects;
-	t_light		*lights;
+	t_light_source		*lights;
 	int			nlights;
 }				t_world;
 
@@ -184,18 +206,7 @@ typedef struct	s_param
 	t_camera	camera;
 }				t_param;
 
-typedef union	u_color
-{
-	char		a;
-	char		r;
-	char		g;
-	char		b;
-	int			color;
-}				t_color;
-
-int		close_w(void *param);
 int		key_press(int keycode, void *param);
-void	calc_all(t_param *ptr);
 void	render(t_param *p);
 
 #endif

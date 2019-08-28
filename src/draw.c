@@ -12,6 +12,8 @@
 
 #include "rtv1.h"
 #include "rtmath.h"
+#include "nmmintrin.h"
+#include "immintrin.h"
 
 void	put_pixel(t_image *img, int x, int y, int color)
 {
@@ -24,96 +26,75 @@ void	put_pixel(t_image *img, int x, int y, int color)
 	*(int *)p = color;
 }
 
-void		create_pic(t_param *p)
-{
-	int		endian;
-
-	p->img.ptr = mlx_new_image(p->mlx_ptr, WIDTH, HEIGHT);
-	p->img.data = mlx_get_data_addr(p->img.ptr, &(p->img.bpp),
-	&(p->img.size_line), &endian);
-}
-
-void	init_sphere(t_obj *s, t_vec3 pos, float r)
-{
-	s->type = sphere;
-	s->origin[0] = pos[0];
-	s->origin[1] = pos[1];
-	s->origin[2] = pos[2];
-	s->r = r;
-}
-
-void	find_eq(t_param *p, t_vec3 v3, t_vec2 xy)
-{
-	if (v3[0] * v3[0] - 4 * v3[2] * v3[1] >= 0.0f)
-		put_pixel(&p->img, xy[ox], xy[oy], 0xff);
-}
-
-void	draw_sphere(t_obj sp, t_param *p)
-{
-	t_vec2	xy;
-	t_ray	ray;
-
-	xy[oy] = -1;
-	while (++xy[oy] < HEIGHT)
-	{
-		xy[ox] = -1;
-		while (++xy[ox] < WIDTH)
-		{
-			vec3_copy((t_vec3){xy[ox], xy[oy], 0}, ray.point);
-			vec3_copy((t_vec3){0, 0, 1}, ray.vec);
-			vec3_sub(ray.point, sp.origin, ray.point);
-			find_eq(p, (t_vec3){(2 * vec3_dot(ray.vec, ray.point)),
-			(vec3_norm2(ray.point) - sp.r * sp.r), (vec3_norm2(ray.vec))}, xy);
-		}
-	}
-}
-
-void	calc_all(t_param *p)
-{
-	t_obj	sphere;
-	init_sphere(&sphere, (t_vec3){200, 100, 5}, 15);
-	draw_sphere(sphere, p);
-}
-
-int	sphere_intersection()
-{
-	return (1);
-}
-
 void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
 {
-	t_vec4	tmp;
-	float	a;
-	float	b;
-	float	c;
-	float	d;
+	t_vec4		tmp;
+	t_vec4		coefs;
+	t_sphere	sphere;
 
-	if (sphere_intersection())
+	sphere = *(t_sphere *)(obj->data);
+	vec3_sub(ray->point, sphere.origin, tmp);
+	coefs[a] = vec3_norm2(ray->vec);
+	coefs[b] = 2 * vec3_dot(ray->vec, tmp);
+	coefs[c] = vec3_norm2(tmp) - sphere.radius * sphere.radius;
+	coefs[d] = coefs[b] * coefs[b] - 4 * coefs[a] * coefs[c];
+	if (coefs[d] > 0.0f)
 	{
-
+		t_vec3 tmp2;
+		float t = (-coefs[b] + sqrtf(coefs[d])) * 0.5 / coefs[a];
+		vec3_scale(ray->vec, t, tmp2);
+		vec3_sum(ray->point, tmp2, tmp2);
+		printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], t, tmp2[0], tmp2[1], tmp2[2]);
+		put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf0);
 	}
-	vec3_sub(ray->point, obj->origin, tmp);
-	a = vec3_norm2(ray->vec);
-	b = 2 * vec3_dot(ray->vec, tmp);
-	c = vec3_norm2(tmp) - obj->r * obj->r;
-	d = b * b - 4 * a * c;
-	if (d > 0.0f)
-		put_pixel(&p->img, ray->point[0], ray->point[1], 0xf0);
 }
 
-void	draw_cylinder(t_param *p, t_obj *obj, t_ray *ray)
+
+/*
+** cone c and ray ray intersection
+*/
+void	conef(t_param *p, t_obj *obj, t_ray *ray)
 {
 	t_vec4	tmp;
-	float	a;
-	float	b;
-	float	c;
-	float	d;
+	t_vec4	coef;
+	t_vec4	norm_vec;
+	float	m;
+	t_cone	cn;
 
-	vec3_sub(ray->point, obj->origin, tmp);
-	a = 
+	cn = *(t_cone *)obj->data;
+	cn.k = tan(cn.angle);
+	cn.k2 = 1 + cn.k * cn.k;
+	vec3_sub(ray->point, cn.origin, tmp);
+	coef[a] = vec3_dot(ray->vec, ray->vec) - cn.k2 * pow2(vec3_dot(ray->vec, cn.dir));
+	coef[b] = vec3_dot(ray->vec, tmp) - cn.k2 * vec3_dot(ray->vec, cn.dir) * vec3_dot(tmp, cn.dir);
+	coef[b] *= 2;
+	coef[c] = vec3_dot(tmp, tmp) - cn.k2 * (pow2(vec3_dot(tmp, cn.dir)));
+	coef[d] = pow2(coef[b]) - 4 * coef[a] * coef[c];
+	if (coef[d] >= 0.0f)
+		put_pixel(&p->img, ray->point[ox], ray->point[1], 0xf000);
+	obj->hit_point = (-coef[b] + sqrtf(coef[d])) * 0.5 / coef[a];
+	//N = nrm( P-C - (1+k*k)*V*m )
 }
 
-t_obj get_first_intesection(t_param *p, t_ray ray);
+int			intersection(t_param *p, t_obj *obj, t_ray ray)
+{
+	if (obj->type == sphere)
+		sphere_function(p, obj, &ray);
+	else if (obj->type == cone)
+		conef(p, obj, &ray);
+}
+
+t_obj		get_first_intesection(t_param *p, t_ray ray)
+{
+	int		i;
+
+	i = - 1;
+	while (++i < p->world.nobjects)
+	{
+		if (intersection(p, p->world.objects + i, ray))
+			return (p->world.objects[i]);
+	}
+}
 
 t_color		trace_ray(t_param *p, t_ray ray)
 {
@@ -121,7 +102,7 @@ t_color		trace_ray(t_param *p, t_ray ray)
 	t_color	color;
 
 	obj = get_first_intesection(p, ray);
-	color = get_point_color(obj);
+	//color = get_point_color(obj);
 }
 
 /*
@@ -130,26 +111,18 @@ t_color		trace_ray(t_param *p, t_ray ray)
 void	render(t_param *p)
 {
 	t_ray	ray;
-	int		x;
-	int		y;
-	int		i;
-	t_vec3	tmp;
+	t_vec2	iters;
 
-	//init_sphere(&obj, (t_vec3){333, 333, 5}, 50);
 	vec4_copy((t_vec4){0, 0, 1, 1}, ray.vec);
-	i = -1;
-	while (++i < p->world.nobjects)
+	iters[oy] = -1;
+	while (++iters[oy] < WIDTH)
 	{
-		y = -1;
-		while (++y < WIDTH)
+		ray.point[1] = iters[oy];
+		iters[ox] = -1;
+		while (++iters[ox] < HEIGHT)
 		{
-			ray.point[1] = y;
-			x = -1;
-			while (++x < HEIGHT)
-			{
-				ray.point[0] = x;
-				sphere_function(p, p->world.objects + i, &ray);
-			}
+			ray.point[0] = iters[ox];
+			trace_ray(p, ray);
 		}
 	}
 }
