@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/26 21:06:28 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/28 16:22:34 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
 {
 	t_vec4		tmp;
 	t_vec4		coefs;
-	t_sphere	sphere;
+	t_sphere	sp;
 
-	sphere = *(t_sphere *)(obj->data);
-	vec3_sub(ray->point, sphere.origin, tmp);
+	sp = *(t_sphere *)(obj->data);
+	vec3_sub(ray->point, sp.origin, tmp);
 	coefs[a] = vec3_norm2(ray->vec);
 	coefs[b] = 2 * vec3_dot(ray->vec, tmp);
-	coefs[c] = vec3_norm2(tmp) - sphere.radius * sphere.radius;
+	coefs[c] = vec3_norm2(tmp) - sp.radius * sp.radius;
 	coefs[d] = coefs[b] * coefs[b] - 4 * coefs[a] * coefs[c];
 	if (coefs[d] >= 0.0f)
 	{
@@ -113,6 +113,7 @@ void	render(t_param *p)
 	t_vec2	iters;
 
 	vec4_copy((t_vec4){0, 0, 1, 1}, ray.vec);
+	vec3_zero(ray.point);
 	iters[oy] = -1;
 	while (++iters[oy] < WIDTH)
 	{

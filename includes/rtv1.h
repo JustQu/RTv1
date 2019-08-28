@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/26 20:37:58 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/08/28 16:01:20 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-//# include "mlx.h"
+# include "mlx.h"
 # include "pthread.h"
 # include "stdlib.h"
 # include "stdio.h"
@@ -122,7 +122,7 @@ typedef struct	s_light_source
 }				t_light_source;
 
 /*
-** 
+**
 */
 
 typedef struct	s_obj
