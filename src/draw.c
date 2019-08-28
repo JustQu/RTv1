@@ -38,14 +38,14 @@ void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
 	coefs[b] = 2 * vec3_dot(ray->vec, tmp);
 	coefs[c] = vec3_norm2(tmp) - sphere.radius * sphere.radius;
 	coefs[d] = coefs[b] * coefs[b] - 4 * coefs[a] * coefs[c];
-	if (coefs[d] > 0.0f)
+	if (coefs[d] >= 0.0f)
 	{
 		t_vec3 tmp2;
-		float t = (-coefs[b] + sqrtf(coefs[d])) * 0.5 / coefs[a];
+		float t = (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a];
 		vec3_scale(ray->vec, t, tmp2);
 		vec3_sum(ray->point, tmp2, tmp2);
 		printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], t, tmp2[0], tmp2[1], tmp2[2]);
-		put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf0);
+		//put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf0);
 	}
 }
 
@@ -58,7 +58,6 @@ void	conef(t_param *p, t_obj *obj, t_ray *ray)
 	t_vec4	tmp;
 	t_vec4	coef;
 	t_vec4	norm_vec;
-	float	m;
 	t_cone	cn;
 
 	cn = *(t_cone *)obj->data;
@@ -72,7 +71,7 @@ void	conef(t_param *p, t_obj *obj, t_ray *ray)
 	coef[d] = pow2(coef[b]) - 4 * coef[a] * coef[c];
 	if (coef[d] >= 0.0f)
 		put_pixel(&p->img, ray->point[ox], ray->point[1], 0xf000);
-	obj->hit_point = (-coef[b] + sqrtf(coef[d])) * 0.5 / coef[a];
+	obj->hit_point = (-coef[b] + sqrtf(coef[d])) * 0.5 / coef[a];//wrong
 	//N = nrm( P-C - (1+k*k)*V*m )
 }
 
@@ -88,7 +87,7 @@ t_obj		get_first_intesection(t_param *p, t_ray ray)
 {
 	int		i;
 
-	i = - 1;
+	i = -1;
 	while (++i < p->world.nobjects)
 	{
 		if (intersection(p, p->world.objects + i, ray))
