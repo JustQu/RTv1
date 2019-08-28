@@ -13,7 +13,7 @@
 #ifndef RTV1_H
 # define RTV1_H
 
-# include "mlx.h"
+//# include "mlx.h"
 # include "pthread.h"
 # include "stdlib.h"
 # include "stdio.h"

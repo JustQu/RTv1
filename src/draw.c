@@ -80,6 +80,7 @@ void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
 ** a   = D|D - (1+k*k)*(D|V)^2
 ** b/2 = D|X - (1+k*k)*(D|V)*(X|V)
 ** c   = X|X - (1+k*k)*(X|V)^2 
+** ь
 ** N = nrm( P-C - (1+k*k)*V*m )
 */
 void	conef(t_param *p, t_obj *obj, t_ray *ray)
@@ -103,7 +104,7 @@ void	conef(t_param *p, t_obj *obj, t_ray *ray)
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);								//D * t + O - C
 		vec3_sum(obj->surface_normal, cn.origin, obj->hit_point);								//D * t + O
 		vec3_scale(cn.dir, (vec3_dot(ray->vec, cn.dir) * (-coef[b] - sqrtf(coef[d])) * 0.5 / coef[a] + vec3_dot(tmp, cn.dir)) * cn.k2, tmp);// (1+k*k)*V*m, m = D|V*t + X|V
-		vec3_sub(tmp, obj->surface_normal, obj->surface_normal);
+		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
 		put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf000);
 	}
@@ -140,6 +141,12 @@ void		cylinder_intersection(t_param *p, t_obj *obj, t_ray *ray)
 	coefs[d] = pow2(coefs[b]) - 4.0f * coefs[a] * coefs[c];
 	if (coefs[d] >= 0.0f)
 	{
+		vec3_scale(ray->vec, (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], obj->surface_normal); //D * t
+		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);								//D * t + O - C
+		vec3_sum(obj->surface_normal, cl.origin, obj->hit_point);								//D * t + O
+		vec3_scale(cl.direction, (vec3_dot(ray->vec, cl.direction) * (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a] + vec3_dot(tmp, cl.direction)), tmp);// V*m, m = D|V*t + X|V
+		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
+		vec3_normalize(obj->surface_normal);
 		put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf00000);
 	}
 }

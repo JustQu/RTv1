@@ -52,18 +52,18 @@ int		main(int ac, char **arg)
 {
 	t_param	p;
 
-	p.mlx_ptr = mlx_init();
-	p.win_ptr = mlx_new_window(p.mlx_ptr, WIDTH, HEIGHT, "<3");
-	p.img.ptr = mlx_new_image(p.mlx_ptr, WIDTH, HEIGHT);
-	p.img.data = mlx_get_data_addr(p.img.ptr, &p.img.bpp, &p.img.size_line, &p.img.endian);
-	for(int i = 0; i < WIDTH * HEIGHT; i++)
-		((int *)p.img.data)[i] = BACKGROUND;
+	//p.mlx_ptr = mlx_init();
+	//p.win_ptr = mlx_new_window(p.mlx_ptr, WIDTH, HEIGHT, "<3");
+	//p.img.ptr = mlx_new_image(p.mlx_ptr, WIDTH, HEIGHT);
+	//p.img.data = mlx_get_data_addr(p.img.ptr, &p.img.bpp, &p.img.size_line, &p.img.endian);
+	//for(int i = 0; i < WIDTH * HEIGHT; i++)
+		//(int *)p.img.data)[i] = BACKGROUND;
 
 	get_objects(&p);
 	render(&p);
 
-	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);
-	mlx_hook(p.win_ptr, 2, 0, key_press, &p);
-	mlx_loop(p.mlx_ptr);
+	//mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);
+	//mlx_hook(p.win_ptr, 2, 0, key_press, &p);
+	//mlx_loop(p.mlx_ptr);
 	return (0);
 }
