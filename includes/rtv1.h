@@ -99,7 +99,8 @@ typedef enum	e_objects
 {
 	sphere,
 	plane,
-	cone
+	cone,
+	cylinder
 }				t_obj_type;
 
 enum
@@ -130,7 +131,7 @@ typedef struct	s_obj
 	t_obj_type	type;
 	void		*data;
 	t_vec4		surface_normal;
-	float		hit_point;
+	t_vec4		hit_point;
 }				t_obj;
 
 /*

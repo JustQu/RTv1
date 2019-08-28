@@ -30,10 +30,10 @@ int		get_objects(t_param *p)
 	p->world.objects[0].type = sphere;
 	p->world.objects[0].data = malloc(sizeof(t_sphere));
 	t_sphere *sp = p->world.objects[0].data;
-	sp->origin[0] = 10;
-	sp->origin[1] = 10;
-	sp->origin[2] = 10;
-	sp->radius = 15;
+	sp->origin[0] = 5;
+	sp->origin[1] =10;
+	sp->origin[2] = 15;
+	sp->radius = 1;
 
 	// p->world.objects[1].type = sphere;
 	// p->world.objects[1].data = malloc(sizeof(sphere));
