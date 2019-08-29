@@ -19,7 +19,7 @@ void	put_pixel(t_image *img, int x, int y, int color)
 {
 	char	*p;
 
-	if (x <= 0 || y <= 0 || x >= WIDTH || y >= HEIGHT)
+	if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT)
 		return ;
 	p = img->data;
 	p = (p + img->size_line * y) + ((x * img->bpp) >> 3);
@@ -62,7 +62,7 @@ void	sphere_function(t_obj *obj, t_ray *ray)
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);									//D * t + O - C = P - C
 		vec3_sum(obj->surface_normal, sp.origin, obj->hit_point);					// D * t + O hit point
 		vec3_normalize(obj->surface_normal); 										// nrm(P - C)
-		printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f N:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], tmp[0], tmp[1], tmp[2], obj->surface_normal[0],obj->surface_normal[1], obj->surface_normal[2]);
+		//printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f N:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], tmp[0], tmp[1], tmp[2], obj->surface_normal[0],obj->surface_normal[1], obj->surface_normal[2]);
 	}
 	else
 	{
