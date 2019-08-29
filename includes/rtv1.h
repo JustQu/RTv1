@@ -6,19 +6,20 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/28 16:01:20 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/29 16:52:17 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-//# include "mlx.h"
+# include "mlx.h"
 # include "pthread.h"
 # include "stdlib.h"
 # include "stdio.h"
 # include "fcntl.h"
 # include "unistd.h"
+# include "get_next_line.h"
 
 # define KEY_A 0
 # define KEY_B 11
@@ -76,6 +77,8 @@ typedef float	t_vec3[3];
 typedef float	t_vec4[4];
 typedef float	t_mat3[3][3];
 typedef float	t_mat4[4][4];
+typedef struct	s_obj	t_obj;
+typedef void	(*t_initf)(char **str, t_obj *obj);
 
 typedef union	u_color
 {
@@ -100,7 +103,8 @@ typedef enum	e_objects
 	sphere,
 	plane,
 	cone,
-	cylinder
+	cylinder,
+	error
 }				t_obj_type;
 
 enum
@@ -126,15 +130,19 @@ typedef struct	s_light_source
 **
 */
 
+
 typedef struct	s_obj
 {
 	t_obj_type	type;
 	t_vec4		surface_normal;
+	t_initf		initf;
 	t_vec4		hit_point;
 	t_color		color;
 	t_material	material;
 	void		*data;
+	t_material	material;
 }				t_obj;
+
 
 /*
 ** s_ray store information about rays
@@ -153,6 +161,12 @@ typedef struct	s_sphere
 	t_vec4		origin;
 	float		radius;
 }				t_sphere;
+
+typedef struct	s_plane
+{
+	t_vec4		origin;
+	t_vec4		nv;
+}				t_plane;
 
 typedef struct	s_cone
 {

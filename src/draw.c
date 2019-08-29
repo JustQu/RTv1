@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/28 16:22:34 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/29 17:21:39 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	put_pixel(t_image *img, int x, int y, int color)
 */
 
 /*
-** C is the center of the sphere 
+** C is the center of the sphere
 ** r is the radius of the sphere
 ** a   = D|D
 ** b/2 = D|X
@@ -62,22 +62,22 @@ void	sphere_function(t_obj *obj, t_ray *ray)
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);									//D * t + O - C = P - C
 		vec3_sum(obj->surface_normal, sp.origin, obj->hit_point);					// D * t + O hit point
 		vec3_normalize(obj->surface_normal); 										// nrm(P - C)
-		//printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f N:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], tmp[0], tmp[1], tmp[2], obj->surface_normal[0],obj->surface_normal[1], obj->surface_normal[2]);
+		// printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f N:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], tmp[0], tmp[1], tmp[2], obj->surface_normal[0],obj->surface_normal[1], obj->surface_normal[2]);
 	}
 	else
 	{
-		vec3_broadcast(INFINITE, obj->hit_point); // set infinite to 
+		vec3_broadcast(INFINITY, obj->hit_point); // set infinite to
 	}
 }
 
 /*
-** Definition: 
-** C is the vertex of the cone 
-** V is the axis vector 
-** k is the tangent of half angle of the cone 
+** Definition:
+** C is the vertex of the cone
+** V is the axis vector
+** k is the tangent of half angle of the cone
 ** a   = D|D - (1+k*k)*(D|V)^2
 ** b/2 = D|X - (1+k*k)*(D|V)*(X|V)
-** c   = X|X - (1+k*k)*(X|V)^2 
+** c   = X|X - (1+k*k)*(X|V)^2
 ** ь
 ** N = nrm( P-C - (1+k*k)*V*m )
 */
@@ -108,8 +108,8 @@ void	conef(t_obj *obj, t_ray *ray)
 }
 
 /*
-** C is the start cap point of the cylinder 
-** V is a unit length vector that determines cylinder's axis 
+** C is the start cap point of the cylinder
+** V is a unit length vector that determines cylinder's axis
 ** r is the cylinder's radius
 ** a   = D|D - (D|V)^2
 ** b/2 = D|X - (D|V)*(X|V)
@@ -140,17 +140,31 @@ void		cylinder_intersection(t_obj *obj, t_ray *ray)
 	}
 }
 
+void	planef(t_param *p, t_obj *obj, t_ray *ray)
+{
+	t_vec4	tmp;
+	t_vec2	ab;
+	t_plane pl;
+
+	pl = *(t_plane *)obj->data;
+	vec3_sub(pl.origin, ray->point, tmp);
+	ab[a] = vec3_dot(pl.nv, tmp);
+	ab[b] = vec3_dot(pl.nv, ray->vec);
+	if (ab[a] / ab[b] > 0)
+		put_pixel(&p->img, ray->point[ox], ray->point[1], 0x0faaf0);
+}
+
 int			intersection(t_obj *obj, t_ray *ray)
 {
 	if (obj->type == sphere)
 	{
-		sphere_function(obj, &ray);
+		sphere_function(obj, ray);
 	}
 	else if (obj->type == cone)
-		conef(obj, &ray);
+		conef(obj, ray);
 	else if (obj->type == cylinder)
-		cylinder_intersection(obj, &ray);
-	if (obj->hit_point > INFINITE)
+		cylinder_intersection(obj, ray);
+	if (obj->hit_point[0] < INFINITY)
 		return (1);
 	return (0);
 }
@@ -165,24 +179,26 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 		if (intersection(objects + i, ray))
 			return (objects + i);
 	}
+	return (NULL);
 }
 
-t_color		get_point_color(t_light_source *lights, unsigned nlights, t_obj *obj, t_ray *ray)
+t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 {
-	int		i;
-	float	diffuse_light_intensity;
-	t_vec4	light_dir;
-	t_color	color;
+	int i;
+	float diffuse_light_intensity;
+	t_vec4 light_dir;
+	t_color color;
 
 	i = -1;
 	diffuse_light_intensity = 0;
-	while (++i < nlights)
+	while (++i < world->nlights)
 	{
-		vec3_sub((lights + i)->origin, obj->hit_point, light_dir);
+		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
 		vec3_normalize(light_dir);
-		diffuse_light_intensity += (lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
+		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
 	color.color = obj->material.diffuse_color.color * diffuse_light_intensity;
+	// color.color = obj->material.diffuse_color.color;
 	return (color);
 }
 
@@ -194,8 +210,12 @@ t_color		trace_ray(t_param *p, t_ray *ray)
 	t_obj	*obj;
 	t_color	color;
 
-	obj = get_first_intesection(p->world.objects, p->world.objects , ray);
-	//color = get_point_color(obj);
+	obj = get_first_intesection(p->world.objects, p->world.nobjects , ray);
+	if (obj)
+	{
+		color = get_point_color(&(p->world), obj, ray);
+		put_pixel(&p->img, ray->point[0], ray->point[1], color.color);
+	}
 }
 
 /*
@@ -208,11 +228,11 @@ void	render(t_param *p)
 	vec4_copy((t_vec4){0, 0, 1, 1}, ray.vec);
 	vec3_zero(ray.point);
 	iters[oy] = -1;
-	while (++iters[oy] < WIDTH)
+	while (++iters[oy] < HEIGHT)
 	{
 		ray.point[oy] = iters[oy];
 		iters[ox] = -1;
-		while (++iters[ox] < HEIGHT)
+		while (++iters[ox] < WIDTH)
 		{
 			ray.point[0] = iters[ox];
 			trace_ray(p, &ray);
