@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/28 19:03:46 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/29 17:24:29 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int		get_objects(t_param *p)
 	p->world.objects[0].type = sphere;
 	p->world.objects[0].data = malloc(sizeof(t_sphere));
 	t_sphere *sp = p->world.objects[0].data;
-	sp->origin[0] = 10;
-	sp->origin[1] = 10;
-	sp->origin[2] = 10;
-	sp->radius = 15;
+	sp->origin[0] = 5;
+	sp->origin[1] =10;
+	sp->origin[2] = 15;
+	sp->radius = 1;
 
 	p->world.objects[1].type = sphere;
 	p->world.objects[1].data = malloc(sizeof(t_sphere));
@@ -43,15 +43,13 @@ int		get_objects(t_param *p)
 	sp1->origin[2] = 10;
 	sp1->radius = 20;
 
-	p->world.objects[2].type = plane;
-	p->world.objects[2].data = malloc(sizeof(t_plane));
-	t_plane *pl1 = p->world.objects[2].data;
-	pl1->origin[0] = 500;
-	pl1->origin[1] = 500;
-	pl1->origin[2] = 10;
-	pl1->nv[0] = 0;
-	pl1->nv[1] = 1;
-	pl1->nv[2] = -1;
+	p->world.objects[2].type = sphere;
+	p->world.objects[2].data = malloc(sizeof(t_sphere));
+	t_sphere *sp2 = p->world.objects[2].data;
+	sp2->origin[0] = 500;
+	sp2->origin[1] = 900;
+	sp2->origin[2] = 10;
+	sp2->radius = 50;
 
 	p->world.objects[3].type = cone;
 	p->world.objects[3].data = malloc(sizeof(t_cone));
@@ -64,8 +62,26 @@ int		get_objects(t_param *p)
 	con1->dir[2] = 0;
 	con1->angle = 0.5;
 
+	p->world.objects[4].type = cylinder;
+	p->world.objects[4].data = malloc(sizeof(t_cylinder));
+	t_cylinder *cyl1 = p->world.objects[4].data;
+	cyl1->origin[0] = 500;
+	cyl1->origin[1] = 200;
+	cyl1->origin[2] = 10;
+	cyl1->direction[0] = 0;
+	cyl1->direction[1] = -1;
+	cyl1->direction[2] = 0;
+	cyl1->radius = 12;
 
-	p->world.nobjects = 4;
+	p->world.nobjects = 5;
+
+	p->world.lights = malloc(10 * sizeof(t_light_source));
+	p->world.lights[0].origin[0] = 0;
+	p->world.lights[0].origin[1] = 0;
+	p->world.lights[0].origin[2] = 0;
+	p->world.lights[0].intensity = 30;
+
+	p->world.nlights = 1;
 
 	return (0.0);
 }

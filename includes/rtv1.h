@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/28 18:36:50 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/29 16:52:17 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ enum
 
 typedef struct	s_material
 {
-	float		color;
+	t_color		diffuse_color;
 	float		reflect_coef;
 	float		refract_coef;
 	float		mate;
@@ -134,10 +134,11 @@ typedef struct	s_light_source
 typedef struct	s_obj
 {
 	t_obj_type	type;
-	void		*data;
 	t_vec4		surface_normal;
-	float		hit_point;
 	t_initf		initf;
+	t_vec4		hit_point;
+	void		*data;
+	t_material	material;
 }				t_obj;
 
 
@@ -173,6 +174,13 @@ typedef struct	s_cone
 	float		k;
 	float		k2;
 }				t_cone;
+
+typedef struct	s_cylinder
+{
+	t_vec4		origin;
+	t_vec4		direction;
+	float		radius;
+}				t_cylinder;
 
 /*
 ** we store here all our objects

@@ -7,7 +7,9 @@
 		"rtmath.h": "c",
 		"stdint.h": "c",
 		"libft.h": "c",
-		"get_next_line.h" :"c"
+		"get_next_line.h" :"c",
+		"pthread.h": "c",
+		"time.h": "c"
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",
