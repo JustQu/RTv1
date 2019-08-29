@@ -44,7 +44,7 @@ void	put_pixel(t_image *img, int x, int y, int color)
 ** c   = X|X - r*r
 ** Surface normal is N=nrm(P-C).
 */
-void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
+void	sphere_function(t_obj *obj, t_ray *ray)
 {
 	t_vec4		tmp;
 	t_vec4		coefs;
@@ -57,14 +57,12 @@ void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
 	coefs[c] = vec3_norm2(tmp) - sp.radius * sp.radius;
 	coefs[d] = coefs[b] * coefs[b] - 4.0f * coefs[a] * coefs[c];
 	if (coefs[d] >= 0.0f)
-	{//HIT POINT: P = D*t + O, D - направление вектора  O - начальная точка
-		//surface normal is N = nrm(P - C), P - hit point C - центр сферы
+	{
 		vec3_scale(ray->vec, (-coefs[b] - sqrtf(coefs[d])) * 0.5f / coefs[a], obj->surface_normal);	//D * t
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);									//D * t + O - C = P - C
 		vec3_sum(obj->surface_normal, sp.origin, obj->hit_point);					// D * t + O hit point
 		vec3_normalize(obj->surface_normal); 										// nrm(P - C)
 		printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f N:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], tmp[0], tmp[1], tmp[2], obj->surface_normal[0],obj->surface_normal[1], obj->surface_normal[2]);
-		//put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf0);
 	}
 	else
 	{
@@ -83,7 +81,7 @@ void	sphere_function(t_param *p, t_obj *obj, t_ray *ray)
 ** ь
 ** N = nrm( P-C - (1+k*k)*V*m )
 */
-void	conef(t_param *p, t_obj *obj, t_ray *ray)
+void	conef(t_obj *obj, t_ray *ray)
 {
 	t_vec4	tmp;
 	t_vec4	coef;
@@ -106,16 +104,8 @@ void	conef(t_param *p, t_obj *obj, t_ray *ray)
 		vec3_scale(cn.dir, (vec3_dot(ray->vec, cn.dir) * (-coef[b] - sqrtf(coef[d])) * 0.5 / coef[a] + vec3_dot(tmp, cn.dir)) * cn.k2, tmp);// (1+k*k)*V*m, m = D|V*t + X|V
 		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
-		put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf000);
 	}
 }
-
-typedef struct	s_cylinder
-{
-	t_vec4		origin;
-	t_vec4		direction;
-	float		radius;
-}				t_cylinder;
 
 /*
 ** C is the start cap point of the cylinder 
@@ -126,7 +116,7 @@ typedef struct	s_cylinder
 ** c   = X|X - (X|V)^2 - r*r
 */
 
-void		cylinder_intersection(t_param *p, t_obj *obj, t_ray *ray)
+void		cylinder_intersection(t_obj *obj, t_ray *ray)
 {
 	t_vec4		tmp;
 	t_vec4		coefs;
@@ -147,38 +137,50 @@ void		cylinder_intersection(t_param *p, t_obj *obj, t_ray *ray)
 		vec3_scale(cl.direction, (vec3_dot(ray->vec, cl.direction) * (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a] + vec3_dot(tmp, cl.direction)), tmp);// V*m, m = D|V*t + X|V
 		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
-		put_pixel(&p->img, ray->point[ox], ray->point[oy], 0xf00000);
 	}
 }
 
-int			intersection(t_param *p, t_obj *obj, t_ray ray)
+int			intersection(t_obj *obj, t_ray *ray)
 {
 	if (obj->type == sphere)
-		sphere_function(p, obj, &ray);
+	{
+		sphere_function(obj, &ray);
+	}
 	else if (obj->type == cone)
-		conef(p, obj, &ray);
+		conef(obj, &ray);
 	else if (obj->type == cylinder)
-		cylinder_intersection(p, obj, &ray);
+		cylinder_intersection(obj, &ray);
+	if (obj->hit_point > INFINITE)
+		return (1);
+	return (0);
 }
 
-t_obj		get_first_intesection(t_param *p, t_ray ray)
+t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 {
 	int		i;
 
 	i = -1;
-	while (++i < p->world.nobjects)
+	while (++i < nobjects)
 	{
-		if (intersection(p, p->world.objects + i, ray))
-			return (p->world.objects[i]);
+		if (intersection(objects + i, ray))
+			return (objects + i);
 	}
 }
 
-t_color		trace_ray(t_param *p, t_ray ray)
+t_color		get_point_color(t_light_source *lights, t_obj *obj, t_ray *ray)
 {
-	t_obj	obj;
+
+}
+
+//пускаем луч, ищем пересечение с объектом,есть, если hit_point > INFINITE
+//получаем цвет в точке
+//пускаем дополнительные лучи
+t_color		trace_ray(t_param *p, t_ray *ray)
+{
+	t_obj	*obj;
 	t_color	color;
 
-	obj = get_first_intesection(p, ray);
+	obj = get_first_intesection(p->world.objects, p->world.objects , ray);
 	//color = get_point_color(obj);
 }
 
@@ -199,7 +201,7 @@ void	render(t_param *p)
 		while (++iters[ox] < HEIGHT)
 		{
 			ray.point[0] = iters[ox];
-			trace_ray(p, ray);
+			trace_ray(p, &ray);
 		}
 	}
 }

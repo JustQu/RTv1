@@ -129,9 +129,9 @@ typedef struct	s_light_source
 typedef struct	s_obj
 {
 	t_obj_type	type;
-	void		*data;
 	t_vec4		surface_normal;
 	t_vec4		hit_point;
+	void		*data;
 }				t_obj;
 
 /*
@@ -160,6 +160,13 @@ typedef struct	s_cone
 	float		k;
 	float		k2;
 }				t_cone;
+
+typedef struct	s_cylinder
+{
+	t_vec4		origin;
+	t_vec4		direction;
+	float		radius;
+}				t_cylinder;
 
 /*
 ** we store here all our objects

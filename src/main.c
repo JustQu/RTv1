@@ -26,7 +26,7 @@
 int		get_objects(t_param *p)
 {
 	p->world.objects = malloc(10 * sizeof(t_obj));
-
+	
 	p->world.objects[0].type = sphere;
 	p->world.objects[0].data = malloc(sizeof(t_sphere));
 	t_sphere *sp = p->world.objects[0].data;
