@@ -5,7 +5,9 @@
 		"algorithm": "c",
 		"rtv1.h": "c",
 		"rtmath.h": "c",
-		"stdint.h": "c"
+		"stdint.h": "c",
+		"libft.h": "c",
+		"get_next_line.h" :"c"
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",
