@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/29 17:21:39 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/29 18:28:16 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	sphere_function(t_obj *obj, t_ray *ray)
 	coefs[d] = coefs[b] * coefs[b] - 4.0f * coefs[a] * coefs[c];
 	if (coefs[d] >= 0.0f)
 	{
-		vec3_scale(ray->vec, (-coefs[b] - sqrtf(coefs[d])) * 0.5f / coefs[a], obj->surface_normal);	//D * t
+		vec3_scale(ray->vec, (coefs[b] - sqrtf(coefs[d])) * 0.5f / coefs[a], obj->surface_normal);	//D * t
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);									//D * t + O - C = P - C
 		vec3_sum(obj->surface_normal, sp.origin, obj->hit_point);					// D * t + O hit point
 		vec3_normalize(obj->surface_normal); 										// nrm(P - C)
@@ -182,6 +182,23 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 	return (NULL);
 }
 
+static int	get_light(int start, double pr)
+{
+	return (int)((1 - pr) * start);
+}
+
+int			new_color(int start, double pr)
+{
+	int	r;
+	int	g;
+	int b;
+
+	b = get_light(start & 0xff, pr);
+	g = get_light(start >> 8 & 0xff, pr);
+	r = get_light(start >> 16 & 0xff, pr);
+	return ((r << 16) | (g << 8) | b);
+}
+
 t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 {
 	int i;
@@ -197,7 +214,7 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 		vec3_normalize(light_dir);
 		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
-	color.color = obj->material.diffuse_color.color * diffuse_light_intensity;
+	color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	// color.color = obj->material.diffuse_color.color;
 	return (color);
 }
