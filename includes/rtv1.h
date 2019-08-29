@@ -110,7 +110,7 @@ enum
 
 typedef struct	s_material
 {
-	float		color;
+	t_color		diffuse_color;
 	float		reflect_coef;
 	float		refract_coef;
 	float		mate;
@@ -131,6 +131,8 @@ typedef struct	s_obj
 	t_obj_type	type;
 	t_vec4		surface_normal;
 	t_vec4		hit_point;
+	t_color		color;
+	t_material	material;
 	void		*data;
 }				t_obj;
 

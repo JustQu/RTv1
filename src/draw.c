@@ -167,9 +167,23 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 	}
 }
 
-t_color		get_point_color(t_light_source *lights, t_obj *obj, t_ray *ray)
+t_color		get_point_color(t_light_source *lights, unsigned nlights, t_obj *obj, t_ray *ray)
 {
+	int		i;
+	float	diffuse_light_intensity;
+	t_vec4	light_dir;
+	t_color	color;
 
+	i = -1;
+	diffuse_light_intensity = 0;
+	while (++i < nlights)
+	{
+		vec3_sub((lights + i)->origin, obj->hit_point, light_dir);
+		vec3_normalize(light_dir);
+		diffuse_light_intensity += (lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
+	}
+	color.color = obj->material.diffuse_color.color * diffuse_light_intensity;
+	return (color);
 }
 
 //пускаем луч, ищем пересечение с объектом,есть, если hit_point > INFINITE
@@ -196,7 +210,7 @@ void	render(t_param *p)
 	iters[oy] = -1;
 	while (++iters[oy] < WIDTH)
 	{
-		ray.point[1] = iters[oy];
+		ray.point[oy] = iters[oy];
 		iters[ox] = -1;
 		while (++iters[ox] < HEIGHT)
 		{
