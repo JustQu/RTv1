@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   control.c                                          :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/22 16:06:16 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/28 17:28:34 by dwalda-r         ###   ########.fr       */
+/*   Created: 2018/12/28 20:47:22 by dwalda-r          #+#    #+#             */
+/*   Updated: 2019/08/28 17:29:36 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#ifndef FT_GET_NEXT_LINE_H
+# define FT_GET_NEXT_LINE_H
 
-int			close_w(void *param)
-{
-	(void)param;
-	exit(0);
-	return (0);
-}
+# include <stdlib.h>
+# include <unistd.h>
+# include <limits.h>
+# include "libft.h"
 
-int			key_press(int keycode, void *param)
-{
-	(void)param;
-	if (keycode == 53)
-		exit(0);
-	return (1);
-}
+# define BUFF_SIZE 140
+
+int		get_next_line(const int fd, char **line);
+
+#endif

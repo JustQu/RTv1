@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/28 16:22:34 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/28 17:09:57 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	put_pixel(t_image *img, int x, int y, int color)
 {
 	char	*p;
 
-	if (x <= 0 || y <= 0 || x >= WIDTH || y >= HEIGHT)
+	if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT)
 		return ;
 	p = img->data;
 	p = (p + img->size_line * y) + ((x * img->bpp) >> 3);
@@ -76,12 +76,29 @@ void	conef(t_param *p, t_obj *obj, t_ray *ray)
 	//N = nrm( P-C - (1+k*k)*V*m )
 }
 
+void	planef(t_param *p, t_obj *obj, t_ray *ray)
+{
+	t_vec4	tmp;
+	t_vec2	ab;
+	t_plane pl;
+
+	pl = *(t_plane *)obj->data;
+	vec3_sub(pl.origin, ray->point, tmp);
+	ab[a] = vec3_dot(pl.nv, tmp);
+	ab[b] = vec3_dot(pl.nv, ray->vec);
+	if (ab[a] / ab[b] > 0)
+		put_pixel(&p->img, ray->point[ox], ray->point[1], 0x0faaf0);
+}
+
 int			intersection(t_param *p, t_obj *obj, t_ray ray)
 {
 	if (obj->type == sphere)
 		sphere_function(p, obj, &ray);
 	else if (obj->type == cone)
 		conef(p, obj, &ray);
+	else if (obj->type == plane)
+		planef(p, obj, &ray);
+
 }
 
 t_obj		get_first_intesection(t_param *p, t_ray ray)
@@ -116,11 +133,11 @@ void	render(t_param *p)
 	vec4_copy((t_vec4){0, 0, 1, 1}, ray.vec);
 	vec3_zero(ray.point);
 	iters[oy] = -1;
-	while (++iters[oy] < WIDTH)
+	while (++iters[oy] < HEIGHT)
 	{
 		ray.point[1] = iters[oy];
 		iters[ox] = -1;
-		while (++iters[ox] < HEIGHT)
+		while (++iters[ox] < WIDTH)
 		{
 			ray.point[0] = iters[ox];
 			trace_ray(p, ray);
