@@ -1,0 +1,52 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
+#    Updated: 2019/07/28 17:56:38 by dmelessa         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+CC = gcc
+
+SRC_DIR = ./
+INC_DIR = ./
+INC = rtmath.h
+INC := $(addprefix INC_DIR, INC)
+SRC = $(addsuffix .c,\
+	mat3_init mat3_inv mat3_mul mat3_transpose\
+	mat4_copy mat4_init mat4_mul mat4_transpose\
+	utils1 utils2\
+	vec3_distance vec3_init vec3_mul vec3_normalzie vec3_rotate vec3_sub vec3_sum vec3_wrap\
+	vec4_inti vec4_mul vec4_normalize vec4_sub vec4_sum)
+CFLAGS = -Wall -Wextra -Werror
+TARGET = RTML
+OBJ = $(SRC:.c=.o)
+
+.PHONY: all
+all : $(TARGET)
+
+$(TARGET): $(OBJ)
+	@ar rc $(TARGET) $^
+	@echo 'rtml created'
+
+$(OBJ): %.o: %.c $(INC)
+	
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -I $(INC_DIR)
+
+.PHONY: clean
+clean:
+	@echo 'deliting object files'
+	@rm -rf $(OBJ)
+
+.PHONY: fclean
+fclean: clean
+	@echo 'deliting rtml'
+	@rm -f $(TARGET)
+
+.PHONY: re
+re: fclean all
