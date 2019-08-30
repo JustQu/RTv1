@@ -22,25 +22,64 @@
 
 #define BACKGROUND 0x1a334d
 
+
+//read specific information for object type from str
+void	read_type_data(void *data, t_obj_type type, char *str)
+{
+	if (type == sphere)
+	{
+		if (data == NULL)
+			data = malloc (sizeof(t_sphere))
+	}
+}
+
+void	get_object_data(t_obj *obj, t_obj_type type)
+{
+	
+}
+
+void	func(t_param *p)
+{
+	p->world.nobjects = 1;
+	p->world.objects = malloc(p->world.nobjects * sizeof(t_obj));
+	p->world.objects[0].type = none;
+	vec3_broadcast(INFINITY, p->world.objects[0].hit_point);
+	vec3_broadcast(INFINITY, p->world.objects[0].surface_normal);
+	p->world.objects[0].material.diffuse_color.color = 0;
+	p->world.objects[0].data = NULL;
+}
+
+void	get_sphere(t_param *p, t_obj * obj, t_vec3 origin, float radius, int color, int albedo)
+{
+	t_sphere	*sp;
+
+	if (obj->data == NULL)
+		obj->data = malloc (sizeof(t_sphere));
+	sp = obj->data;
+	obj->type = sphere;
+	obj->origin = origin;
+	sp->radius = radius;
+	obj->material.diffuse_color.color = color;
+}
+
 int		get_objects(t_param *p)
 {
-	p->world.objects = malloc(10 * sizeof(t_obj));
-	t_material	green;
-	t_color		clr;
+	int	i;
 
-	clr.color = 0x222b57;
-	p->world.objects[0].type = sphere;
-	p->world.objects[0].data = malloc(sizeof(t_sphere));
-	t_sphere *sp = p->world.objects[0].data;
-	sp->origin[0] = 500;
-	sp->origin[1] = 500;
-	sp->origin[2] = 3;
-	sp->radius = 300;
-	vec3_broadcast(INFINITY, p->world.objects[0].hit_point);
-	green.diffuse_color = clr;
-	p->world.objects[0].material = green;
+	p->world.nobjects = 1;
+	p->world.objects = malloc(p->world.nobjects * sizeof(t_obj));
+	i = -1;
+	while (++i < p->world.nobjects)
+	{
+		p->world.objects[i].type = none;
+		p->world.objects[i].origin = (t_vec3){0.0f, 0.0f, 0.0f};
+		vec3_broadcast(INFINITY, p->world.objects[i].hit_point);
+		vec3_broadcast(INFINITY, p->world.objects[i].surface_normal);
+		p->world.objects[i].material.diffuse_color.color = 0;
+		p->world.objects[i].data = NULL;
+	}
 
-
+	get_sphere(p, p->world.objects + i, {500, 500, 3}, 300, 0x222b57,0);
 
 	// p->world.objects[1].type = sphere;
 	// p->world.objects[1].data = malloc(sizeof(t_sphere));

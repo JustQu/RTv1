@@ -7,12 +7,16 @@
 		"rtmath.h": "c",
 		"stdint.h": "c",
 		"libft.h": "c",
-		"get_next_line.h" :"c",
+		"get_next_line.h": "c",
 		"pthread.h": "c",
-		"time.h": "c"
+		"time.h": "c",
+		"vec3.h": "c",
+		"rt_types.h": "c",
+		"utils.h": "c"
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",
-		"./libft/includes"
+		"./libft/includes",
+		"./rtmath/"
 	]
 }

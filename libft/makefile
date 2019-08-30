@@ -34,7 +34,6 @@ $(TARGET): $(OBJ)
 	@ar rc $(TARGET) $^
 	@echo 'libft.a created' 
 $(OBJ): %.o: %.c $(INC_DIR)libft.h
-	@echo compiling $<
 	@$(CC) $(CFLAGS) -c $*.c -I $(INC_DIR)
 
 .PHONY: clean

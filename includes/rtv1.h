@@ -13,7 +13,7 @@
 #ifndef RTV1_H
 # define RTV1_H
 
-# include <mlx.h>
+//# include <mlx.h>
 # include <pthread.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -84,11 +84,8 @@ void			vec3_broadcast(float val, t_vec3 d);
 
 typedef union	u_color
 {
-	char		a;
-	char		r;
-	char		g;
-	char		b;
-	int			color;
+	unsigned char	bgra[4];
+	int				color;
 }				t_color;
 
 typedef struct	s_image
@@ -106,7 +103,7 @@ typedef enum	e_objects
 	plane,
 	cone,
 	cylinder,
-	error
+	none
 }				t_obj_type;
 
 enum
@@ -132,17 +129,14 @@ typedef struct	s_light_source
 **
 */
 
-
 typedef struct	s_obj
 {
 	t_obj_type	type;
+	t_vec4		origin;
 	t_vec4		surface_normal;
-	t_initf		initf;
 	t_vec4		hit_point;
-	t_color		color;
 	t_material	material;
-	void		*data;
-	t_material	material;
+	void		*data;//object type specific information
 }				t_obj;
 
 
@@ -160,19 +154,16 @@ typedef struct	s_ray
 
 typedef struct	s_sphere
 {
-	t_vec4		origin;
 	float		radius;
 }				t_sphere;
 
 typedef struct	s_plane
 {
-	t_vec4		origin;
 	t_vec4		nv;
 }				t_plane;
 
 typedef struct	s_cone
 {
-	t_vec3		origin;
 	t_vec3		dir;
 	float		angle;
 	float		k;
@@ -181,7 +172,6 @@ typedef struct	s_cone
 
 typedef struct	s_cylinder
 {
-	t_vec4		origin;
 	t_vec4		direction;
 	float		radius;
 }				t_cylinder;

@@ -44,29 +44,25 @@ void	put_pixel(t_image *img, int x, int y, int color)
 ** c   = X|X - r*r
 ** Surface normal is N=nrm(P-C).
 */
-void	sphere_function(t_obj *obj, t_ray *ray)
+float	sphere_intersection(t_obj *obj, t_ray *ray)
 {
 	t_vec4		tmp;
 	t_vec4		coefs;
 	t_sphere	sp;
 
 	sp = *(t_sphere *)(obj->data);
-	vec3_sub(ray->point, sp.origin, tmp); // O - C
+	vec3_sub(ray->point, obj->origin, tmp); // O - C //L
 	coefs[a] = vec3_norm2(ray->vec);
-	coefs[b] = 2.0f * vec3_dot(ray->vec, tmp);
-	coefs[c] = vec3_norm2(tmp) - sp.radius * sp.radius;
+	coefs[b] = 2.0f * vec3_dot(ray->vec, tmp);//tca/2
+	coefs[c] = vec3_norm2(tmp) - sp.radius * sp.radius; 
 	coefs[d] = coefs[b] * coefs[b] - 4.0f * coefs[a] * coefs[c];
 	if (coefs[d] >= 0.0f)
 	{
-		vec3_scale(ray->vec, (coefs[b] - sqrtf(coefs[d])) * 0.5f / coefs[a], obj->surface_normal);	//D * t
+		vec3_scale(ray->vec, (-coefs[b] - sqrtf(coefs[d])) * 0.5f / coefs[a], obj->surface_normal);	//D * t
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);									//D * t + O - C = P - C
-		vec3_sum(obj->surface_normal, sp.origin, obj->hit_point);					// D * t + O hit point
+		vec3_sum(obj->surface_normal, obj->origin, obj->hit_point);					// D * t + O hit point
 		vec3_normalize(obj->surface_normal); 										// nrm(P - C)
 		// printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f N:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], tmp[0], tmp[1], tmp[2], obj->surface_normal[0],obj->surface_normal[1], obj->surface_normal[2]);
-	}
-	else
-	{
-		vec3_broadcast(INFINITY, obj->hit_point); // set infinite to
 	}
 }
 
@@ -78,10 +74,9 @@ void	sphere_function(t_obj *obj, t_ray *ray)
 ** a   = D|D - (1+k*k)*(D|V)^2
 ** b/2 = D|X - (1+k*k)*(D|V)*(X|V)
 ** c   = X|X - (1+k*k)*(X|V)^2
-** ь
 ** N = nrm( P-C - (1+k*k)*V*m )
 */
-void	conef(t_obj *obj, t_ray *ray)
+float	cone_intersection(t_obj *obj, t_ray *ray)
 {
 	t_vec4	tmp;
 	t_vec4	coef;
@@ -90,7 +85,7 @@ void	conef(t_obj *obj, t_ray *ray)
 	cn = *(t_cone *)obj->data;
 	cn.k = tan(cn.angle);
 	cn.k2 = 1 + cn.k * cn.k;
-	vec3_sub(ray->point, cn.origin, tmp);
+	vec3_sub(ray->point, obj->origin, tmp);
 	coef[a] = vec3_dot(ray->vec, ray->vec) - cn.k2 * pow2(vec3_dot(ray->vec, cn.dir));
 	coef[b] = vec3_dot(ray->vec, tmp) - cn.k2 * vec3_dot(ray->vec, cn.dir) * vec3_dot(tmp, cn.dir);
 	coef[b] *= 2;
@@ -100,7 +95,7 @@ void	conef(t_obj *obj, t_ray *ray)
 	{
 		vec3_scale(ray->vec, (-coef[b] - sqrtf(coef[d])) * 0.5 / coef[a], obj->surface_normal); //D * t
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);								//D * t + O - C
-		vec3_sum(obj->surface_normal, cn.origin, obj->hit_point);								//D * t + O
+		vec3_sum(obj->surface_normal, obj->origin, obj->hit_point);								//D * t + O
 		vec3_scale(cn.dir, (vec3_dot(ray->vec, cn.dir) * (-coef[b] - sqrtf(coef[d])) * 0.5 / coef[a] + vec3_dot(tmp, cn.dir)) * cn.k2, tmp);// (1+k*k)*V*m, m = D|V*t + X|V
 		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
@@ -116,14 +111,14 @@ void	conef(t_obj *obj, t_ray *ray)
 ** c   = X|X - (X|V)^2 - r*r
 */
 
-void		cylinder_intersection(t_obj *obj, t_ray *ray)
+float		cylinder_intersection(t_obj *obj, t_ray *ray)
 {
 	t_vec4		tmp;
 	t_vec4		coefs;
 	t_cylinder	cl;
 
 	cl = *(t_cylinder *)obj->data;
-	vec3_sub(ray->point, cl.origin, tmp);
+	vec3_sub(ray->point, obj->origin, tmp);
 	coefs[a] = vec3_norm2(ray->vec) - pow2(vec3_dot(ray->vec, cl.direction));
 	coefs[b] = vec3_dot(ray->vec, tmp) - vec3_dot(ray->vec, cl.direction) * vec3_dot(tmp, cl.direction);
 	coefs[b] *= 2.0f;
@@ -133,37 +128,50 @@ void		cylinder_intersection(t_obj *obj, t_ray *ray)
 	{
 		vec3_scale(ray->vec, (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], obj->surface_normal); //D * t
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);								//D * t + O - C
-		vec3_sum(obj->surface_normal, cl.origin, obj->hit_point);								//D * t + O
+		vec3_sum(obj->surface_normal, obj->origin, obj->hit_point);								//D * t + O
 		vec3_scale(cl.direction, (vec3_dot(ray->vec, cl.direction) * (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a] + vec3_dot(tmp, cl.direction)), tmp);// V*m, m = D|V*t + X|V
 		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
 	}
 }
 
-void	planef(t_param *p, t_obj *obj, t_ray *ray)
+/*
+**Definition: 
+** C is a point that lies on the plane 
+** V is the plane normal (unit length)
+** t = -X|V / D|V
+*/
+float	plane_intersection(t_param *p, t_obj *obj, t_ray *ray)
 {
 	t_vec4	tmp;
-	t_vec2	ab;
+	t_vec2	coefs;
 	t_plane pl;
 
 	pl = *(t_plane *)obj->data;
-	vec3_sub(pl.origin, ray->point, tmp);
-	ab[a] = vec3_dot(pl.nv, tmp);
-	ab[b] = vec3_dot(pl.nv, ray->vec);
-	if (ab[a] / ab[b] > 0)
-		put_pixel(&p->img, ray->point[ox], ray->point[1], 0x0faaf0);
+	vec3_sub(obj->origin, ray->point, tmp);
+	coefs[a] = -vec3_dot(pl.nv, tmp);
+	coefs[b] = vec3_dot(pl.nv, ray->vec);
+	if (coefs[b] != 0 && coefs[a] / coefs[b] > 0)
+	{
+		vec3_scale(ray->vec, coefs[a] / coefs[b], obj->hit_point);
+		vec3_sum(obj->hit_point, ray->vec, obj->hit_point);
+		vec3_copy(pl.nv, obj->surface_normal);
+		if (coefs[b] < 0)
+			vec3_negate(obj->surface_normal);
+	}
 }
 
 int			intersection(t_obj *obj, t_ray *ray)
 {
+	float	t;
+
+]	t = -1;
 	if (obj->type == sphere)
-	{
-		sphere_function(obj, ray);
-	}
+		t = sphere_intersection(obj, ray);
 	else if (obj->type == cone)
-		conef(obj, ray);
+		t = cone_intersection(obj, ray);
 	else if (obj->type == cylinder)
-		cylinder_intersection(obj, ray);
+		t = cylinder_intersection(obj, ray);
 	if (obj->hit_point[0] < INFINITY)
 		return (1);
 	return (0);
@@ -184,7 +192,7 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 
 static int	get_light(int start, double pr)
 {
-	return (int)((1 - pr) * start);
+	return (int)((pr) * start);
 }
 
 int			new_color(int start, double pr)
@@ -201,10 +209,10 @@ int			new_color(int start, double pr)
 
 t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 {
-	int i;
-	float diffuse_light_intensity;
-	t_vec4 light_dir;
-	t_color color;
+	int		i;
+	float	diffuse_light_intensity;
+	t_vec4	light_dir;
+	t_color	color;
 
 	i = -1;
 	diffuse_light_intensity = 0;
@@ -214,8 +222,32 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 		vec3_normalize(light_dir);
 		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
-	color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
-	// color.color = obj->material.diffuse_color.color;
+	color = (t_color){{.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
+						.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
+						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity}};
+	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
+	return (color);
+}
+
+t_color		get_albedo_color(t_world *world, t_obj *obj, t_ray *ray)
+{
+	int		i;
+	float	diffuse_light_intensity;
+	t_vec4	light_dir;
+	t_color	color;
+
+	i = -1;
+	diffuse_light_intensity = 0;
+	while (++i < world->nlights)
+	{
+		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
+		vec3_normalize(light_dir);
+		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
+	}
+	color = (t_color){{.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
+						.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
+						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity}};
+	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	return (color);
 }
 
