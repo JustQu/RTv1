@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/29 18:28:16 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/08/29 18:39:56 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 
 static int	get_light(int start, double pr)
 {
-	return (int)((pr) * start);
+	return (int)(pr * start);
 }
 
 int			new_color(int start, double pr)
