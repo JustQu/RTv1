@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include "get_next_line.h"
 # include <math.h>
+# include "rtmath/rtmath.h"
 
 # define KEY_A 0
 # define KEY_B 11

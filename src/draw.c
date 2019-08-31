@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "rtv1.h"
-#include "rtmath.h"
 #include "nmmintrin.h"
 #include "immintrin.h"
 
@@ -165,7 +164,7 @@ int			intersection(t_obj *obj, t_ray *ray)
 {
 	float	t;
 
-]	t = -1;
+	t = -1;
 	if (obj->type == sphere)
 		t = sphere_intersection(obj, ray);
 	else if (obj->type == cone)
@@ -222,9 +221,9 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 		vec3_normalize(light_dir);
 		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
-	color = (t_color){{.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
+	color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
 						.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
-						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity}};
+						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity};
 	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	return (color);
 }
@@ -244,9 +243,9 @@ t_color		get_albedo_color(t_world *world, t_obj *obj, t_ray *ray)
 		vec3_normalize(light_dir);
 		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
-	color = (t_color){{.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
+	color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
 						.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
-						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity}};
+						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity};
 	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	return (color);
 }
