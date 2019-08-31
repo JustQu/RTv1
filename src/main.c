@@ -17,12 +17,7 @@
 ** local space->world space->camera space->clip space->window space.
 */
 
-/*
-** get all our objects in this function
-*/
-
 #define BACKGROUND 0x1a334d
-
 
 //read specific information for object type from str
 void	read_type_data(void *data, t_obj_type type, char *str)

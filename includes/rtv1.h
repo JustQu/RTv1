@@ -74,6 +74,10 @@
 # define WIDTH 1000
 # define HEIGHT 1000
 
+typedef int		t_bool;
+# define TRUE	1
+# define FALSE	0
+
 typedef float	t_vec2[2];
 typedef float	t_vec3[3];
 typedef float	t_vec4[4];
@@ -81,7 +85,6 @@ typedef float	t_mat3[3][3];
 typedef float	t_mat4[4][4];
 typedef struct	s_obj	t_obj;
 typedef void	(*t_initf)(char **str, t_obj *obj);
-void			vec3_broadcast(float val, t_vec3 d);
 
 typedef union	u_color
 {
@@ -137,6 +140,7 @@ typedef struct	s_obj
 	t_vec4		surface_normal;
 	t_vec4		hit_point;
 	t_material	material;
+	float		t;
 	void		*data;//object type specific information
 }				t_obj;
 
@@ -225,5 +229,6 @@ typedef struct	s_param
 
 int		key_press(int keycode, void *param);
 void	render(t_param *p);
+float	sphere_intersection(t_obj *obj, t_ray *ray);
 
 #endif
