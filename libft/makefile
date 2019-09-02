@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
+#    By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
-#    Updated: 2019/07/28 17:56:38 by dmelessa         ###   ########.fr        #
+#    Updated: 2019/09/02 18:41:15 by dwalda-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC = $(addprefix ft_,\
 	putchar.c putstr.c putendl.c putnbr.c putchar_fd.c putstr_fd.c putendl_fd.c \
    putnbr_fd.c lstnew.c lstdelone.c lstdel.c lstadd.c lstiter.c lstmap.c isspace.c\
    strndup.c wc.c strtol.c swap.c isbase.c) get_next_line.c
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 TARGET = libft.a
 OBJ = $(SRC:.c=.o)
 
@@ -32,7 +32,7 @@ all : $(TARGET)
 
 $(TARGET): $(OBJ)
 	@ar rc $(TARGET) $^
-	@echo 'libft.a created' 
+	@echo 'libft.a created'
 $(OBJ): %.o: %.c $(INC_DIR)libft.h
 	@$(CC) $(CFLAGS) -c $*.c -I $(INC_DIR)
 

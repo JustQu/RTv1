@@ -5,17 +5,26 @@ CFLAGS = \
 		 -I.\
 		 -I$(INCDIR)\
 		 -I$(LIBFTINC)\
-		 -g
+		 -I$(RTMATHINC)\
 
 LDLIBS = -lft\
 		-lmlx\
+		-lrtmath\
 		-framework OpenGL\
-		-framework AppKit
-LDFLAGS	= -L$(LIBFTDIR)
+		-framework AppKit\
+		-g
+
+LDFLAGS	= \
+		-L$(LIBFTDIR)\
+		-L$(RTMATHDIR)
 
 LIBFT = libft.a
 LIBFTDIR = ./libft
 LIBFTINC = $(LIBFTDIR)/includes
+
+RTMATH = rtmath.a
+RTMATHDIR = ./rtmath
+RTMATHINC = $(RTMATHDIR)/includes
 
 INCDIR = ./includes/
 SRCSDIR = ./src/
@@ -26,10 +35,13 @@ OBJS = $(SRCS:.c=.o)
 TARGET = RTv1
 
 .PHONY: all
-all: $(LIBFT) $(TARGET)
+all: $(LIBFT) $(RTMATH) $(TARGET)
 
 $(LIBFT):
 	make -C $(LIBFTDIR)
+
+$(RTMATH):
+	make -C $(RTMATHDIR)
 
 $(TARGET): $(OBJS) $(LIB)
 	@echo 'making executable'

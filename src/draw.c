@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/29 18:39:56 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/02 15:10:29 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ float		cylinder_intersection(t_obj *obj, t_ray *ray)
 }
 
 /*
-**Definition: 
-** C is a point that lies on the plane 
+**Definition:
+** C is a point that lies on the plane
 ** V is the plane normal (unit length)
 ** t = -X|V / D|V
 */
@@ -144,7 +144,7 @@ int			intersection(t_obj *obj, t_ray *ray)
 	return (is_hit);
 }
 
-t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)_
+t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 {
 	int		i;
 	int		hit_id;

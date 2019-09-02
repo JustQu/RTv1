@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/29 18:41:53 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/02 19:06:16 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	read_type_data(void *data, t_obj_type type, char *str)
 
 void	get_object_data(t_obj *obj, t_obj_type type)
 {
-	
+
 }
 
 void	func(t_param *p)
@@ -45,16 +45,13 @@ void	func(t_param *p)
 	p->world.objects[0].data = NULL;
 }
 
-void	get_sphere(t_param *p, t_obj * obj, t_vec3 origin, float radius, int color, int albedo)
+void	get_sphere(t_param *p, t_obj *obj, t_vec3 origin, float radius, int color, int albedo)
 {
-	t_sphere	*sp;
-
 	if (obj->data == NULL)
-		obj->data = malloc (sizeof(t_sphere));
-	sp = obj->data;
+		obj->data = (t_sphere *)malloc(sizeof(t_sphere));
+	((t_sphere *)(obj->data))->radius = radius;
 	obj->type = sphere;
 	vec3_copy(origin, obj->origin);
-	sp->radius = radius;
 	obj->material.diffuse_color.color = color;
 }
 
@@ -63,7 +60,7 @@ int		get_objects(t_param *p)
 	int	i;
 
 	p->world.nobjects = 1;
-	p->world.objects = malloc(p->world.nobjects * sizeof(t_obj));
+	p->world.objects = (t_obj *)malloc(p->world.nobjects * sizeof(t_obj));
 	i = -1;
 	while (++i < p->world.nobjects)
 	{
@@ -75,7 +72,7 @@ int		get_objects(t_param *p)
 		p->world.objects[i].data = NULL;
 	}
 
-	get_sphere(p, p->world.objects + i, (t_vec3){500, 500, 3}, 300, 0x222b57,0);
+	get_sphere(p, p->world.objects, (t_vec3){500, 500, 3}, 300, 0x222b57,0);
 
 	// p->world.objects[1].type = sphere;
 	// p->world.objects[1].data = malloc(sizeof(t_sphere));

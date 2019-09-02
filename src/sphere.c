@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 13:52:46 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 13:52:46 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/02 14:46:44 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ float	sphere_intersection(t_obj *obj, t_ray *ray)
 	vec3_sub(ray->point, obj->origin, tmp); // O - C //L
 	coefs[a] = vec3_norm2(ray->vec);
 	coefs[b] = 2.0f * vec3_dot(ray->vec, tmp);//tca/2
-	coefs[c] = vec3_norm2(tmp) - sp.radius * sp.radius; 
+	coefs[c] = vec3_norm2(tmp) - sp.radius * sp.radius;
 	coefs[d] = coefs[b] * coefs[b] - 4.0f * coefs[a] * coefs[c];
 	if (coefs[d] >= 0.0f)
 	{

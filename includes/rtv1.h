@@ -6,14 +6,14 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/08/29 17:54:36 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/02 17:26:03 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-//# include <mlx.h>
+# include <mlx.h>
 # include <pthread.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -21,7 +21,7 @@
 # include <unistd.h>
 # include "get_next_line.h"
 # include <math.h>
-# include "rtmath/rtmath.h"
+# include "rtmath.h"
 
 # define KEY_A 0
 # define KEY_B 11
