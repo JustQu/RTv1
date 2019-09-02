@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/02 15:10:29 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/02 21:40:36 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ float	cone_intersection(t_obj *obj, t_ray *ray)
 ** c   = X|X - (X|V)^2 - r*r
 */
 
-float		cylinder_intersection(t_obj *obj, t_ray *ray)
+t_bool		cylinder_intersection(t_obj *obj, t_ray *ray)
 {
 	t_vec4		tmp;
 	t_vec4		coefs;
@@ -95,6 +95,13 @@ float		cylinder_intersection(t_obj *obj, t_ray *ray)
 	coefs[d] = pow2(coefs[b]) - 4.0f * coefs[a] * coefs[c];
 	if (coefs[d] >= 0.0f)
 	{
+		coefs[a] *= 2.0f;
+		coefs[d] = sqrtf(coefs[d]);
+		obj->t = (-coefs[b] - coefs[d]) / coefs[a];
+		if (obj -> t < 0.0f)
+			obj -> t = (-coefs[b] + coefs[d]) / coefs[a];
+				return TRUE;
+		return (TRUE);
 		vec3_scale(ray->vec, (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], obj->surface_normal); //D * t
 		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);								//D * t + O - C
 		vec3_sum(obj->surface_normal, obj->origin, obj->hit_point);								//D * t + O
@@ -102,6 +109,7 @@ float		cylinder_intersection(t_obj *obj, t_ray *ray)
 		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
 	}
+	return (FALSE);
 }
 
 /*
@@ -144,6 +152,40 @@ int			intersection(t_obj *obj, t_ray *ray)
 	return (is_hit);
 }
 
+void		get_hit_point(t_obj *obj, t_ray *ray)
+{
+	vec3_scale(ray->vec, obj->t, obj->hit_point);
+	vec3_sum(obj->hit_point, ray->point, obj->hit_point);
+}
+
+/*
+** get normal to obj surface
+** use this after get_hit_point call
+*/
+void		get_surface_normal(t_obj *obj, t_ray *ray)
+{
+	float	m;
+	
+	if (obj->type == sphere)
+	{
+		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal);
+		vec3_normalize(obj->surface_normal);
+	}
+	else if (obj->type == cone)
+	{
+		
+	}
+	else if (obj->type == cylinder)
+	{
+		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal);
+		m = vec3_dot(obj->surface_normal, ((t_cylinder *)obj)->direction);
+		vec3_scale(((t_cylinder *)obj)->direction, m, obj->surface_normal);
+		vec3_sub(obj->hit_point, obj->surface_normal, obj->surface_normal);
+		vec3_sub(obj->surface_normal,obj->origin, obj->surface_normal);
+		vec3_normalize(obj->surface_normal);
+	}
+}
+
 t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 {
 	int		i;
@@ -154,14 +196,22 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 	hit_id = -1;
 	hit_distance = __FLT_MAX__;
 	while (++i < nobjects)
-	{
+	{	
 		if (intersection(objects + i, ray) && (objects + i)->t < hit_distance)
 		{
+			if (hit_id != -1)
+				(objects + hit_id)->t = INFINITY;
 			hit_distance = (objects + i)->t;
 			hit_id = i;
 		}
 	}
-	return ((hit_id != -1 && hit_distance < 1000) ? hit_id : NULL);
+	if (hit_id != -1)
+	{
+		get_hit_point(objects + hit_id, ray);
+		get_surface_normal(objects + hit_id, ray);
+	}
+	(objects+hit_id)->t = INFINITY;
+	return ((hit_id != -1 && hit_distance < 1000.0f) ? objects + hit_id : NULL);
 }
 
 static int	get_light(int start, double pr)
@@ -193,12 +243,14 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 	while (++i < world->nlights)
 	{
 		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
+		//vec3_negate(light_dir);
 		vec3_normalize(light_dir);
 		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
 	color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
 						.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
-						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity};
+						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity,
+						.bgra[3] = obj->material.diffuse_color.bgra[3] * diffuse_light_intensity};
 	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	return (color);
 }
@@ -218,12 +270,13 @@ t_color		get_albedo_color(t_world *world, t_obj *obj, t_ray *ray)
 		vec3_normalize(light_dir);
 		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
-	color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
-						.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
-						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity};
-	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
+	//color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
+	//					.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
+	//					.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity};
+	color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	return (color);
 }
+
 
 //пускаем луч, ищем пересечение с объектом,есть, если hit_point > INFINITE
 //получаем цвет в точке

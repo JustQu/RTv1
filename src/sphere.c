@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 13:52:46 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/02 14:46:44 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/02 20:56:20 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ float	sphere_intersection(t_obj *obj, t_ray *ray)
 	{
 		coefs[a] *= 2.0f;
 		coefs[d] = sqrtf(coefs[d]);
-		t = (-coefs[b] - coefs[d]) / coefs[a]; //t = (-b +- sqrt(D))/(2a)
+		t = (-coefs[b] -coefs[d]) / coefs[a]; //t = (-b +- sqrt(D))/(2a)
 		if (t < 0.0f)
 			if ((t = (-coefs[b] + coefs[d]) / coefs[a]) < 0.0f)
 				return (FALSE);

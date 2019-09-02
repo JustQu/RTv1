@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+         #
+#    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
-#    Updated: 2019/09/02 18:41:15 by dwalda-r         ###   ########.fr        #
+#    Updated: 2019/09/02 19:30:22 by dmelessa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ all : $(TARGET)
 $(TARGET): $(OBJ)
 	@ar rc $(TARGET) $^
 	@echo 'libft.a created'
+
 $(OBJ): %.o: %.c $(INC_DIR)libft.h
 	@$(CC) $(CFLAGS) -c $*.c -I $(INC_DIR)
 

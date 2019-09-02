@@ -43,7 +43,7 @@ $(LIBFT):
 $(RTMATH):
 	make -C $(RTMATHDIR)
 
-$(TARGET): $(OBJS) $(LIB)
+$(TARGET): $(OBJS)
 	@echo 'making executable'
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 	@echo DONE!

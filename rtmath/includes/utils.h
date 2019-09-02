@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 22:21:16 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/30 22:21:16 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/02 20:15:42 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ float	clamp(float val, float min_val, float max_val);
 **clamp a number to zero and one
 */
 float	clamp_zo(float val);
+
 
 /*
 ** convert degree to radians

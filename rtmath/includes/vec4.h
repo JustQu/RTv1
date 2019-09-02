@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   vec4.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 22:29:51 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/30 22:29:51 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/02 20:10:13 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef VEC4_H
 # define VEC4_H
 
@@ -40,6 +41,7 @@ void	vec4_zero(t_vec4 v);
 void	vec4_one(t_vec4 v);
 
 /*
+
 **vec4 dot product
 */
 float	vec4_dot(t_vec4 a, t_vec4 b);
@@ -129,6 +131,7 @@ void	vec4_lerp(t_vec4 from, t_vec4 to, float t, t_vec4 dest);
 /*
 **mul vector with scalar and add result to sum
 */
+
 void	vec4_muladds(t_vec4 a, float s, t_vec4 dest);
 
 #endif
