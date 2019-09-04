@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/02 21:40:36 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/04 14:45:21 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,12 +177,21 @@ void		get_surface_normal(t_obj *obj, t_ray *ray)
 	}
 	else if (obj->type == cylinder)
 	{
+		t_vec3	tmp;
 		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal);
 		m = vec3_dot(obj->surface_normal, ((t_cylinder *)obj)->direction);
-		vec3_scale(((t_cylinder *)obj)->direction, m, obj->surface_normal);
+		if (m < 0.0f)
+		{
+			
+			//vec3_negate_to(((t_cylinder *)obj)->direction, tmp);
+			//vec3_scale(tmp, m, obj->surface_normal);
+		}
+		//else
+			vec3_scale(((t_cylinder *)obj)->direction, m, obj->surface_normal);
 		vec3_sub(obj->hit_point, obj->surface_normal, obj->surface_normal);
 		vec3_sub(obj->surface_normal,obj->origin, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
+		vec3_negate(obj->surface_normal);
 	}
 }
 
@@ -239,7 +248,7 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 	t_color	color;
 
 	i = -1;
-	diffuse_light_intensity = 0;
+	diffuse_light_intensity = 0.0f;
 	while (++i < world->nlights)
 	{
 		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
@@ -314,4 +323,13 @@ void	render(t_param *p)
 			trace_ray(p, &ray);
 		}
 	}
+	put_pixel(&p->img, p->world.lights[0].origin[ox], p->world.lights[0].origin[oy] + 1, 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox] + 1, p->world.lights[0].origin[oy], 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox] + 1, p->world.lights[0].origin[oy] + 1, 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox], p->world.lights[0].origin[oy] - 1, 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox] - 1, p->world.lights[0].origin[oy], 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox] - 1, p->world.lights[0].origin[oy]- 1, 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox] + 1, p->world.lights[0].origin[oy] - 1, 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox] - 1, p->world.lights[0].origin[oy] + 1, 0x00FFFFFF);
+	put_pixel(&p->img, p->world.lights[0].origin[ox], p->world.lights[0].origin[oy], 0x00FFFFFF);
 }

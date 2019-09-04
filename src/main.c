@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/02 21:46:54 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/04 14:47:27 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,19 @@ int		get_objects(t_param *p)
 		p->world.objects[i].t = INFINITY;
 	}
 
-	get_sphere(p, p->world.objects, (t_vec3){300, 800, 3}, 150, 0x222b57,0);
+	get_sphere(p, p->world.objects, (t_vec3){500, 800, 3}, 150, 0x222b57,0);
 
 	t_cylinder cl;
-	vec3_copy((t_vec4){1, 1, 0, 1}, cl.direction);
+	vec3_copy((t_vec4){1, 0, 0, 1}, cl.direction);
 	vec3_normalize(cl.direction);
 	cl.radius = 70;
-	vec3_copy((t_vec4){500, 1000, 4}, p->world.objects[1].origin);
+	vec3_copy((t_vec4){0, 100, 1000}, p->world.objects[1].origin);
 	p->world.objects[1].data = malloc(sizeof(t_cone));
 	p->world.objects[1].type = cylinder;
 	p->world.objects[1].material.diffuse_color.color = 0x002b00;
 	*(t_cylinder *)(p->world.objects[1].data) = cl;
+
+	p->world.nobjects = 2;
 
 	// p->world.objects[1].type = sphere;
 	// p->world.objects[1].data = malloc(sizeof(t_sphere));
@@ -127,8 +129,8 @@ int		get_objects(t_param *p)
 	p->world.lights = malloc(10 * sizeof(t_light_source));
 	p->world.lights[0].origin[0] = 500;
 	p->world.lights[0].origin[1] = 500;
-	p->world.lights[0].origin[2] = 100;
-	p->world.lights[0].intensity = 1;
+	p->world.lights[0].origin[2] = 3;
+	p->world.lights[0].intensity = 2;
 
 	p->world.nlights = 1;
 

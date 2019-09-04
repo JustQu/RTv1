@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_normalize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 22:06:32 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/30 22:06:32 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/04 14:29:07 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	vec3_normalize(t_vec3 v)
 		v[0] = 0.0f;
 		v[1] = 0.0f;
 		v[2] = 0.0f;
-		return;
+		return ;
 	}
 	vec3_scale(v, 1.0f / norm, v);
 }
