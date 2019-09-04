@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/04 14:45:21 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/04 19:33:36 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,20 +178,14 @@ void		get_surface_normal(t_obj *obj, t_ray *ray)
 	else if (obj->type == cylinder)
 	{
 		t_vec3	tmp;
-		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal);
-		m = vec3_dot(obj->surface_normal, ((t_cylinder *)obj)->direction);
-		if (m < 0.0f)
-		{
-			
-			//vec3_negate_to(((t_cylinder *)obj)->direction, tmp);
-			//vec3_scale(tmp, m, obj->surface_normal);
-		}
+		vec3_sum(obj->hit_point, obj->origin, obj->surface_normal);
+		m = vec3_dot(obj->surface_normal, ((t_cylinder *)(obj->data))->direction);
 		//else
-			vec3_scale(((t_cylinder *)obj)->direction, m, obj->surface_normal);
+		vec3_scale(((t_cylinder *)(obj->data))->direction, m, obj->surface_normal);
 		vec3_sub(obj->hit_point, obj->surface_normal, obj->surface_normal);
-		vec3_sub(obj->surface_normal,obj->origin, obj->surface_normal);
+		vec3_sub(obj->surface_normal, obj->origin, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
-		vec3_negate(obj->surface_normal);
+		//vec3_negate(obj->surface_normal);
 	}
 }
 
@@ -218,8 +212,8 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 	{
 		get_hit_point(objects + hit_id, ray);
 		get_surface_normal(objects + hit_id, ray);
+		(objects + hit_id)->t = INFINITY;
 	}
-	(objects+hit_id)->t = INFINITY;
 	return ((hit_id != -1 && hit_distance < 1000.0f) ? objects + hit_id : NULL);
 }
 
@@ -256,10 +250,10 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 		vec3_normalize(light_dir);
 		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 	}
-	color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
-						.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
-						.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity,
-						.bgra[3] = obj->material.diffuse_color.bgra[3] * diffuse_light_intensity};
+	color.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity;
+	color.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity;
+	color.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity;
+	color.bgra[3] = obj->material.diffuse_color.bgra[3] * diffuse_light_intensity;
 	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	return (color);
 }
@@ -295,12 +289,13 @@ t_color		trace_ray(t_param *p, t_ray *ray)
 	t_obj	*obj;
 	t_color	color;
 
+	color.color = 0x1a334d;
 	obj = get_first_intesection(p->world.objects, p->world.nobjects , ray);
 	if (obj)
 	{
-		color = get_point_color(&(p->world), obj, ray);
-		put_pixel(&p->img, ray->point[0], ray->point[1], color.color);
+		return (color = get_point_color(&(p->world), obj, ray));
 	}
+	return (color);
 }
 
 /*
@@ -310,26 +305,25 @@ void	render(t_param *p)
 {
 	t_ray	ray;
 	t_vec2	iters;
-	vec4_copy((t_vec4){0, 0, 1, 1}, ray.vec);
+	t_color	color;
+	
+	FILE *f = fopen("wer", "w");
 	vec3_zero(ray.point);
 	iters[oy] = -1;
 	while (++iters[oy] < HEIGHT)
 	{
-		ray.point[oy] = iters[oy];
 		iters[ox] = -1;
 		while (++iters[ox] < WIDTH)
 		{
-			ray.point[0] = iters[ox];
-			trace_ray(p, &ray);
+			vec4_copy((t_vec4){1, 1, 1, 1}, ray.vec);
+			ray.vec[oy] = (1 - 2 * ((iters[oy] + 0.5) * p->camera.inv_height)) * p->camera.angle;
+			ray.vec[ox] = (2 * ((iters[ox] + 0.5) * p->camera.inv_width) - 1) * p->camera.angle * p->camera.aspectratio;
+			normalize(ray.vec);
+			color = trace_ray(p, &ray);		
+			put_pixel(&p->img, iters[ox], iters[oy], color.color);
+			if (color.color == 0)
+				(1 == 1);
+			color.color = 0x1a334d;
 		}
 	}
-	put_pixel(&p->img, p->world.lights[0].origin[ox], p->world.lights[0].origin[oy] + 1, 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox] + 1, p->world.lights[0].origin[oy], 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox] + 1, p->world.lights[0].origin[oy] + 1, 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox], p->world.lights[0].origin[oy] - 1, 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox] - 1, p->world.lights[0].origin[oy], 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox] - 1, p->world.lights[0].origin[oy]- 1, 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox] + 1, p->world.lights[0].origin[oy] - 1, 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox] - 1, p->world.lights[0].origin[oy] + 1, 0x00FFFFFF);
-	put_pixel(&p->img, p->world.lights[0].origin[ox], p->world.lights[0].origin[oy], 0x00FFFFFF);
 }

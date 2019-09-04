@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/04 14:25:09 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/04 18:02:28 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,14 +136,16 @@ typedef struct	s_light_source
 typedef struct	s_obj
 {
 	t_obj_type	type;
-	t_vec4		origin;
-	t_vec4		surface_normal;
+	t_vec4		camera_space;
+	t_vec4		homogeneous_space;
+	t_vec4		ndc_space;
+	t_vec4		origin; /*world coordiantes */
 	t_vec4		hit_point;
+	t_vec4		surface_normal;
 	t_material	material;
 	float		t;
 	void		*data;//object type specific information
 }				t_obj;
-
 
 /*
 ** s_ray store information about rays
@@ -160,6 +162,7 @@ typedef struct	s_ray
 typedef struct	s_sphere
 {
 	float		radius;
+	float		radius2;
 }				t_sphere;
 
 typedef struct	s_plane
@@ -208,6 +211,13 @@ typedef struct	s_camera
 {
 	t_vec4		pos;
 	t_vec4		orientation;
+	int			fov;
+	float		near_z;
+	float		far_z;
+	float		inv_width;
+	float		inv_height;
+	float		aspectratio;
+	float		angle;
 }				t_camera;
 
 /*
