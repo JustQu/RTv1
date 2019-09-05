@@ -12,7 +12,9 @@
 		"time.h": "c",
 		"vec3.h": "c",
 		"rt_types.h": "c",
-		"utils.h": "c"
+		"utils.h": "c",
+		"cstdio": "c",
+		"memory": "c"
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",
