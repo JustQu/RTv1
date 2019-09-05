@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 ".",
                 "/Users/dwalda-r/RT/libft/",
-                "/Users/dwalda-r/RT/includes/"
+                "/Users/dwalda-r/RT/includes/",
+                "/Users/dwalda-r/RT/rtmath/includes/"
             ],
             "defines": [],
             "macFrameworkPath": [

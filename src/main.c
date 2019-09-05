@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/05 16:05:48 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/05 16:08:22 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int		main(int ac, char **arg)
 	for(int i = 0; i < WIDTH * HEIGHT; i++)
 		((int *)p.img.data)[i] = BACKGROUND;
 
-	
+
 	set_default_camera(&p.camera);
 	get_objects(&p);
 	render(&p);

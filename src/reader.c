@@ -6,122 +6,129 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/02 14:03:39 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/04 19:34:41 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "rtv1.h"
+#include "rtv1.h"
 
-// t_obj_type		find_type(char *str)
-// {
-// 	if (strcmp(str, "plane"))
-// 		return (plane);
-// 	else if (strcmp(str, "sphere"))
-// 		return (sphere);
-// 	else if (strcmp(str, "cylinder"))
-// 		return (cylinder);
-// 	else if (strcmp(str, "cone"))
-// 		return	(cone);
-// 	return (none);
-// }
+size_t		list_len(t_list *l, t_param *p)
+{
+	size_t	len;
+	size_t	lnum;
 
-// void	parse_val(char **str, t_vec3 dst)
-// {
-// 	int	i;
+	lnum = 0;
+	len = 0;
+	while (l)
+	{
+		if (ft_strstr(l->content, "lightsource"))
+			lnum++;
+		len++;
+		l = l->next;
+	}
+	p->world.nlights = lnum;
+	p->world.nobjects = len - lnum;
+	p->world.lights = (t_light_source *)malloc(sizeof(t_light_source) * lnum);
+	p->world.objects = (t_obj *)malloc(sizeof(t_obj) * (len - lnum));
+	return (len);
+}
 
-// 	i = 0;
-// 	while (str[i] != NULL && i < 3)
-// 	{
-// 		dst[i] = ft_atoi(str[i]);
-// 		i++;
-// 	}
-// }
+t_obj_type	find_type(t_list *l)
+{
+	if (ft_strnstr(l->content, "lightsource", ft_strlen("lightsource")))
+		return (light);
+	else if (ft_strnstr(l->content, "sphere", ft_strlen("sphere")))
+		return (sphere);
+	else if (ft_strnstr(l->content, "cone", ft_strlen("cone")))
+		return (cone);
+	else if (ft_strnstr(l->content, "plane", ft_strlen("plane")))
+		return (plane);
+	else if (ft_strnstr(l->content, "cylinder", ft_strlen("cylinder")))
+		return (cylinder);
+	else
+		return (none);
+}
 
-// void	init_cone(char **str, t_obj *obj)
-// {
+float			ft_getfnumber(char *str)
+{
+	float	num;
+	int		sign;
 
-// }
+	num = 0;
+	while (ft_isspace(*str))
+		str++;
+	sign = *str == '-' ? -1 : 1;
+	if (*str == '+' || *str == '-')
+		str++;
+	while (*str != '\0' && (ft_isdigit(*str) || *str == '.'))
+	{
 
-// void	init_sp(char **str, t_obj *obj)
-// {
-// 	t_sphere	*sp;
-// 	float		r;
-// 	char		**origin;
+	}
+}
 
-// 	if (str[1] != NULL)
-// 		origin = ft_strsplit(str[1], ',');
-// 	parse_val(origin, sp->origin);
-// 	if (str[2] != NULL)
-// 		r = ft_atoi(str[2]);
-// 	obj->data = sp;
-// 	//освободить память, добавить защиту
+void			find_origin(char *str, t_vec3 origin)
+{
+	char	*c;
+	int		i;
 
-// }
+	i = 0;
+	vec3_copy((t_vec3){500, 200, 3}, origin);
+	c = ft_strstr(str, "origin");
+	while (*c != '\0' && *c != '(')
+		c++;
+	if (*c != '\0')
+		c++;
+	while (*c != '\0' && *c != ')')
+	{
 
-// void	init_plane(char **str, t_obj *obj)
-// {
-// 	t_plane	*pl;
-// 	char	**origin;
-// 	char	**nv;
+	}
+}
 
-// 	if (str[1] != NULL)
-// 		origin = ft_strsplit(str[1], ',');
-// 	parse_val(origin, pl->origin);
-// 	if (str[2] != NULL)
-// 		nv = ft_strsplit(str[2], ',');
-// 	parse_val(nv, pl->nv);
-// 	obj->data = pl;
-// 	//освободить память, добавить защиту
-// }
+int			init_sphere(t_list *t, t_param *p, t_vec3 ij)
+{
+	t_sphere	*sp;
+	float		r;
+	t_vec3		origin;
 
-// void	init_cyl(char **str, t_obj *obj)
-// {
+	p->world.objects[(int)ij[ox]].data = (t_sphere *)malloc(sizeof(t_sphere));
+	sp = p->world.objects[(int)ij[ox]].data;
 
-// }
+}
 
-// void	init_er(char **str, t_obj *obj)
-// {
+int			parse_obj(t_list *l, t_param *p, t_vec3 ij, t_obj_type t)
+{
+	if (t == sphere)
+		init_sphere(l, p, ij);
+}
 
-// }
+int		parse_list(t_param *p, t_list *l)
+{
 
-// void	choose_func(t_obj *obj)
-// {
-// 	if (obj->type == plane)
-// 		obj->initf = init_plane;
-// 	else if (obj->type == cone)
-// 		obj->initf = init_cone;
-// 	else if (obj->type == sphere)
-// 		obj->initf = init_sp;
-// 	else if (obj->type == cylinder)
-// 		obj->initf = init_cyl;
-// 	else if (obj->type == none)
-// 		obj->initf = init_er;
-// }
+	t_vec3		ij;
+	t_obj_type	t;
 
-// t_obj	parse(char *str)
-// {
-// 	char	**c;
-// 	t_obj	obj;
+	vec3_zero(ij);
+	while (l)
+	{
+		if ((t = find_type(l)) == none)
+			return (0);
+		parse_obj(l, p, ij, t);
+	}
+}
 
-// 	c = ft_strsplit(str, ';');
-// 	if ((obj.type = find_type(c[0])) == none)
-// 		return (obj);
-// 	choose_func(&obj);
+int		read_all(int fd, t_param *p)
+{
+	char	*str;
+	t_list	*list;
 
-// 	return (obj);
-// }
+	list = ft_lstnew(NULL, 0);
+	while (get_next_line(fd, &str))
+	{
+		ft_lstadd(&list, ft_lstnew(str, ft_strlen(str)));
+		ft_strdel(&str);
+	}
+	if (fd < 0 || !list_len(list, p))
+		return (0);
 
-// void	read_all(int fd, t_param *p)
-// {
-// 	char	*str;
-// 	int		i;
-
-// 	i = 0;
-// 	if (get_next_line(fd, &str) > 0)
-// 		p->world.nobjects = ft_atoi(str);
-// 	p->world.objects = (t_obj *)malloc(sizeof(t_obj) * p->world.nobjects);
-// 	while (get_next_line(fd, &str))
-// 	{
-
-// 	}
-// }
+	return (1);
+}

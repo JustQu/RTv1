@@ -16,7 +16,7 @@
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",
-		"./libft/includes",
-		"./rtmath/"
+		"./libft/includes/",
+		"./rtmath/includes/"
 	]
 }

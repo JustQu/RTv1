@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/05 15:51:55 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/05 16:08:24 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,17 @@ typedef enum	e_objects
 	plane,
 	cone,
 	cylinder,
+	light,
 	none
 }				t_obj_type;
 
-enum
+typedef enum	e_eqparams
 {
-	a, b, c, d
-};
+	a,
+	b,
+	c,
+	d
+}				t_eqparams;
 
 typedef struct	s_material
 {
