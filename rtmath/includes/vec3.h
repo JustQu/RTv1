@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 21:58:53 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/02 20:15:36 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/04 17:46:52 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ float	t_vec3_distance2(t_vec3 a, t_vec3 b);
 /*
 **distance beween two vector
 */
-float vec3_distance(t_vec3 a, t_vec3 b);
+float	vec3_distance(t_vec3 a, t_vec3 b);
 
 /*
 **fill a vector with specified value

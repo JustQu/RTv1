@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec4_mul.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 00:00:00 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 00:00:01 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/04 17:52:24 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	vec4_muladds(t_vec4 a, float s, t_vec4 dest)
 	dest[2] += a[2] * s;
 	dest[3] += a[3] * s;
 }
-
 
 /*
 **multiply/scale vec4 vector with scalar: result = v * s

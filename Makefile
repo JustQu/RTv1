@@ -6,13 +6,13 @@ CFLAGS = \
 		 -I$(INCDIR)\
 		 -I$(LIBFTINC)\
 		 -I$(RTMATHINC)\
+		 -g
 
 LDLIBS = -lft\
 		-lmlx\
 		-lrtmath\
 		-framework OpenGL\
-		-framework AppKit\
-		-g
+		-framework AppKit
 
 LDFLAGS	= \
 		-L$(LIBFTDIR)\
