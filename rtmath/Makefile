@@ -6,7 +6,7 @@
 #    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
-#    Updated: 2019/09/02 20:16:10 by dmelessa         ###   ########.fr        #
+#    Updated: 2019/09/07 19:20:10 by dmelessa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ $(TARGET): $(OBJ)
 VPATH = ./includes/
 
 $(OBJ): %.o: %.c $(INCS)
-	$(CC) $(CFLAGS) -c $*.c -I $(INC_DIR)
+	@$(CC) $(CFLAGS) -c $*.c -I $(INC_DIR)
 
 .PHONY: clean
 clean:

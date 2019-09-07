@@ -38,30 +38,32 @@ TARGET = RTv1
 all: $(LIBFT) $(RTMATH) $(TARGET)
 
 $(LIBFT):
-	make -C $(LIBFTDIR)
+	@make -C $(LIBFTDIR)
 
 $(RTMATH):
-	make -C $(RTMATHDIR)
+	@make -C $(RTMATHDIR)
 
 $(TARGET): $(OBJS)
 	@echo 'making executable'
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+	@$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 	@echo DONE!
 
 $(OBJS): %.o: $(SRCSDIR)%.c $(INCS)
-	$(CC) -c $< $(CFLAGS)
+	@$(CC) -c $< $(CFLAGS)
 
 .PHONY: clean
 clean:
 	@echo deliting object files
 	@$(RM) $(OBJS)
 	@make -C $(LIBFTDIR) clean
+	@make -C $(RTMATHDIR) clean
 
 .PHONY: fclean
 fclean: clean
 	@echo deliting executable file
 	@$(RM) $(TARGET)
 	@make -C $(LIBFTDIR) fclean
+	@make -C $(RTMATHDIR) clean
 
 .PHONY: re
 re:	fclean all
