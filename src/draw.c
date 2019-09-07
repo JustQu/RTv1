@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/05 19:55:05 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/07 19:06:29 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,8 @@ t_bool	cone_intersection(t_obj *obj, t_ray *ray)
 		if (obj -> t <= 0.0f)
 			obj -> t = (-coef[b] - sqrtf(coef[d])) * 0.5 / coef[a];
 		return (obj -> t >= 0.0f);
-		vec3_scale(ray->vec, (-coef[b] - sqrtf(coef[d])) * 0.5 / coef[a], obj->surface_normal); //D * t
-		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);								//D * t + O - C
-		vec3_sum(obj->surface_normal, obj->origin, obj->hit_point);								//D * t + O
-		vec3_scale(cn->dir, (vec3_dot(ray->vec, cn->dir) * (-coef[b] - sqrtf(coef[d])) * 0.5 / coef[a] + vec3_dot(tmp, cn->dir)) * cn->k2, tmp);// (1+k*k)*V*m, m = D|V*t + X|V
-		vec3_sub(obj->surface_normal, tmp, obj->surface_normal);
-		vec3_normalize(obj->surface_normal);
 	}
+	return (FALSE);
 }
 
 /*
@@ -139,11 +134,6 @@ t_bool	plane_intersection(t_obj *obj, t_ray *ray)
 			return (TRUE);
 		}
 		return (FALSE);
-		vec3_scale(ray->vec, coefs[a] / coefs[b], obj->hit_point);
-		vec3_sum(obj->hit_point, ray->vec, obj->hit_point);
-		vec3_copy(pl.nv, obj->surface_normal);
-		if (coefs[b] < 0)
-			vec3_negate(obj->surface_normal);
 	}
 	return (FALSE);
 }
@@ -155,11 +145,6 @@ int			intersection(t_obj *obj, t_ray *ray)
 	is_hit = FALSE;
 	if (obj->type == sphere)
 		is_hit = sphere_intersection(obj, ray);
-		else
-		{
-			return 0;
-		}
-	if (1);
 	else if (obj->type == plane)
 		is_hit = plane_intersection(obj, ray);
 	else if (obj->type == cone)
@@ -210,8 +195,6 @@ void		get_surface_normal(t_obj *obj, t_ray *ray)
 		vec3_sub(obj->hit_point, obj->surface_normal, obj->surface_normal);
 		vec3_sub(obj->surface_normal, obj->origin, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
-		//if (m < 0)
-		//vec3_negate(obj->surface_normal);
 	}
 }
 
@@ -253,63 +236,51 @@ void		reflect(t_vec3 i, t_vec3 n, t_vec3 dest)
 	vec3_sub(i, tmp, dest);
 }
 
+t_ray		cast_shadow_ray(t_vec3 start, t_light_source *light)
+{
+	t_ray	shadow_ray;
+	t_vec3	bias;
+
+	//vec3_broadcast(1e-1, bias);
+	vec3_copy(start, shadow_ray.point);
+	//vec3_sum(shadow_ray.point, bias, shadow_ray.point);
+	vec3_sub(light->origin, start, shadow_ray.vec);
+	normalize(shadow_ray.vec);
+	return (shadow_ray);
+}
+
 t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 {
 	int		i;
-	float	diffuse_light_intensity;
+	float	diffuse_light;
 	float	specular_light;
+	t_obj	*shadow_obj;
 	t_vec3	r;
 	t_vec4	light_dir;
 	t_color	color;
+	t_ray	shadow_ray;
 
 	i = -1;
-	diffuse_light_intensity = 0.0f;
+	diffuse_light= 0.0f;
 	specular_light = 0.0f;
 	while (++i < world->nlights)
 	{
+		shadow_ray = cast_shadow_ray(obj->hit_point, world->lights + i);
+		if ((shadow_obj = get_first_intesection(world->objects, world->nobjects, &shadow_ray)) != NULL)
+			if (shadow_obj != obj && vec3_distance(obj->hit_point, (world->lights + i)->origin) > vec3_distance(obj->hit_point, shadow_obj->hit_point))
+				continue;
 		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
-		//vec3_negate(light_dir);
 		vec3_normalize(light_dir);
-		diffuse_light_intensity += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
-
-		//vec3_negate_to(light_dir, r);
+		diffuse_light += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 		reflect(light_dir, obj->surface_normal, r);
-		vec3_negate(r);
-		specular_light += (world->lights + i)->intensity * powf(max(0.0f, -dot(r, ray->vec)), 10);
+		specular_light += (world->lights + i)->intensity * powf(max(0.0f, dot(r, ray->vec)), obj->material.n);
 	}
-	color.bgra[0] = (obj->material.diffuse_color.bgra[0] * diffuse_light_intensity * obj->material.albedo[0] + 0xff * specular_light * obj->material.albedo[1]);
-	color.bgra[1] = (obj->material.diffuse_color.bgra[1] * diffuse_light_intensity * obj->material.albedo[0] + 0xff * specular_light * obj->material.albedo[1]);
-	color.bgra[2] = (obj->material.diffuse_color.bgra[2] * diffuse_light_intensity * obj->material.albedo[0] + 0xff * specular_light * obj->material.albedo[1]);
-	color.bgra[3] = (obj->material.diffuse_color.bgra[3] * diffuse_light_intensity * obj->material.albedo[0] + 0xff * specular_light * obj->material.albedo[1]);
-	//color.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity * obj->material.albedo[0] + 0xff * specular_light * obj->material.albedo[1];
-//	color.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity * obj->material.albedo[0] + 0xff * specular_light * obj->material.albedo[1];
-	//color.bgra[3] = obj->material.diffuse_color.bgra[3] * diffuse_light_intensity * obj->material.albedo[0] + 0xff * specular_light * obj->material.albedo[1];
-	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
+	color.bgra[0] = obj->material.diffuse_color.bgra[0] * (diffuse_light * obj->material.Kd + specular_light * obj->material.Ks);
+	color.bgra[1] = obj->material.diffuse_color.bgra[1] * (diffuse_light * obj->material.Kd + specular_light * obj->material.Ks);
+	color.bgra[2] = obj->material.diffuse_color.bgra[2] * (diffuse_light * obj->material.Kd + specular_light * obj->material.Ks);
+	color.bgra[3] = obj->material.diffuse_color.bgra[3] * (diffuse_light * obj->material.Kd + specular_light * obj->material.Ks);
 	return (color);
 }
-
-t_color		get_albedo_color(t_world *world, t_obj *obj, t_ray *ray)
-{
-	int		i;
-	float	diffuse_light_intensity;
-	t_vec4	light_dir;
-	t_color	color;
-
-	i = -1;
-	diffuse_light_intensity = 0;
-	while (++i < world->nlights)
-	{
-		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
-		vec3_normalize(light_dir);
-		diffuse_light_intensity += 0.1 * (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
-	}
-	//color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
-	//					.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
-	//					.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity};
-	//color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
-	return (color);
-}
-
 
 //пускаем луч, ищем пересечение с объектом,есть, если hit_point > INFINITE
 //получаем цвет в точке
@@ -337,7 +308,6 @@ void	render(t_param *p)
 	t_vec2	iters;
 	t_color	color;
 	
-	FILE *f = fopen("wer", "w");
 	vec3_zero(ray.point);
 	iters[oy] = -1;
 	while (++iters[oy] < HEIGHT)
@@ -351,9 +321,6 @@ void	render(t_param *p)
 			normalize(ray.vec);
 			color = trace_ray(p, &ray);		
 			put_pixel(&p->img, iters[ox], iters[oy], color.color);
-			if (color.color == 0)
-				(1 == 1);
-			color.color = 0x1a334d;
 		}
 	}
 }

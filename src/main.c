@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/05 19:55:15 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/07 19:14:44 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,7 @@
 
 #define BACKGROUND 0x1a334d
 
-//read specific information for object type from str
-void	read_type_data(void *data, t_obj_type type, char *str)
-{
-	if (type == sphere)
-	{
-		if (data == NULL)
-			data = malloc (sizeof(t_sphere));
-	}
-}
-
-void	func(t_param *p)
-{
-	p->world.nobjects = 1;
-	p->world.objects = malloc(p->world.nobjects * sizeof(t_obj));
-	p->world.objects[0].type = none;
-	vec3_broadcast(INFINITY, p->world.objects[0].hit_point);
-	vec3_broadcast(INFINITY, p->world.objects[0].surface_normal);
-	p->world.objects[0].material.diffuse_color.color = 0;
-	p->world.objects[0].data = NULL;
-}
-
-void	get_sphere(t_param *p, t_obj *obj, t_vec3 origin, float radius, int color, t_vec2 albedo)
+void	get_sphere(t_param *p, t_obj *obj, t_vec3 origin, float radius, int color)
 {
 	if (obj->data == NULL)
 		obj->data = (t_sphere *)malloc(sizeof(t_sphere));
@@ -48,8 +27,6 @@ void	get_sphere(t_param *p, t_obj *obj, t_vec3 origin, float radius, int color, 
 	obj->type = sphere;
 	vec3_copy(origin, obj->origin);
 	obj->material.diffuse_color.color = color;
-	obj->material.albedo[0] = albedo[0];
-	obj->material.albedo[1] = albedo[1];
 	obj->t = INFINITY;
 }
 
@@ -57,7 +34,7 @@ int		get_objects(t_param *p)
 {
 	int	i;
 
-	p->world.nobjects = 6;
+	p->world.nobjects = 7;
 	p->world.objects = (t_obj *)malloc(p->world.nobjects * sizeof(t_obj));
 	i = -1;
 	while (++i < p->world.nobjects)
@@ -67,14 +44,14 @@ int		get_objects(t_param *p)
 		vec3_broadcast(INFINITY, p->world.objects[i].hit_point);
 		vec3_broadcast(INFINITY, p->world.objects[i].surface_normal);
 		p->world.objects[i].material.diffuse_color.color = 0;
+		p->world.objects[i].material.Kd = 0.8;
+		p->world.objects[i].material.Ks = 0.2;
+		p->world.objects[i].material.n = 50;
 		p->world.objects[i].data = NULL;
 		p->world.objects[i].t = INFINITY;
 	}
-	
-	t_vec2 t;
-	t[0] = 0.3f;
-	t[1] = 0.6f;
-	get_sphere(p, p->world.objects, (t_vec3){0, 0, 6}, 1, 0x00FFFF, t);
+
+	get_sphere(p, p->world.objects, (t_vec3){0, 0, 6}, 1, 0x00FFFF);
 
 	t_plane pl;
 	vec3_copy((t_vec3){0, -1, 0}, pl.nv);
@@ -86,16 +63,18 @@ int		get_objects(t_param *p)
 	*(t_plane *)(p->world.objects[1].data) = pl;
 
 	t_cylinder cl;
-	vec3_copy((t_vec4){10, 1, 15, 1}, cl.direction);
+	vec3_copy((t_vec4){10, 0, 15, 1}, cl.direction);
 	vec3_normalize(cl.direction);
 	cl.radius = 1;
 	vec3_copy((t_vec4){0, 0, 10}, p->world.objects[2].origin);
 	p->world.objects[2].data = malloc(sizeof(t_cone));
 	p->world.objects[2].type = cylinder;
 	p->world.objects[2].material.diffuse_color.color = 0x00BFFF;
+	p->world.objects[2].material.Kd = 0.55;
+	p->world.objects[2].material.Ks = 0.45;
+	p->world.objects[2].material.n = 7;
 	*(t_cylinder *)(p->world.objects[2].data) = cl;
 
-	
 	t_cone cn;
 	vec3_copy((t_vec3){0,1,0}, cn.dir);
 	vec3_normalize(cn.dir);
@@ -106,9 +85,20 @@ int		get_objects(t_param *p)
 	p->world.objects[3].material.diffuse_color.color = 0x00ff0000;
 	*(t_cone *)p->world.objects[3].data = cn;
 
-	get_sphere(p, p->world.objects + 4, (t_vec3){-5, 3, 10}, 3, 0xF08080, t);
+	get_sphere(p, p->world.objects + 4, (t_vec3){-5, 3, 10}, 3, 0xF08080);
+	get_sphere(p, p->world.objects + 5, (t_vec3){3, 2, 13}, 1, 0xFFDAB9);
 
-	get_sphere(p, p->world.objects + 5, (t_vec3){3, 2, 13}, 1, 0xFFDAB9,t);
+	vec3_copy((t_vec3){0, 1, 0}, cl.direction);
+	vec3_normalize(cl.direction);
+	cl.radius = 0.1;
+	vec3_copy((t_vec3){-1, 0, 4}, p->world.objects[6].origin);
+	p->world.objects[6].data = malloc(sizeof(t_cone));
+	p->world.objects[6].type = cylinder;
+	p->world.objects[6].material.diffuse_color.color = 0x0000FF;
+	p->world.objects[6].material.Kd = 0.55;
+	p->world.objects[6].material.Ks = 0.45;
+	p->world.objects[6].material.n = 7;
+	*(t_cylinder *)(p->world.objects[6].data) = cl;
 
 	// p->world.objects[1].type = sphere;
 	// p->world.objects[1].data = malloc(sizeof(t_sphere));
@@ -138,12 +128,22 @@ int		get_objects(t_param *p)
 	// cyl1->radius = 12;
 
 	p->world.lights = malloc(10 * sizeof(t_light_source));
-	p->world.lights[0].origin[0] = -3.0f;
-	p->world.lights[0].origin[1] = 5.0f;
-	p->world.lights[0].origin[2] = 0.0f;
+	p->world.lights[0].origin[0] = 2.0f;
+	p->world.lights[0].origin[1] = 0.0f;
+	p->world.lights[0].origin[2] = 1.0f;
 	p->world.lights[0].intensity = 0.9f;
 
-	p->world.nlights = 1;
+	p->world.lights[1].origin[0] = -1.0f;
+	p->world.lights[1].origin[1] = 0.0f;
+	p->world.lights[1].origin[2] = 0.0f;
+	p->world.lights[1].intensity = 0.1f;
+
+	p->world.lights[2].origin[0] = 0.0f;
+	p->world.lights[2].origin[1] = 5.0f;
+	p->world.lights[2].origin[2] = 8.0f;
+	p->world.lights[2].intensity = 0.6f;
+	
+	p->world.nlights = 2;
 
 	return (0.0);
 }
@@ -173,7 +173,7 @@ void	set_default_camera(t_camera *camera)
 	camera->orientation[ox] = 0.0f;
 	camera->orientation[oy] = 0.0f;
 	camera->orientation[oz] = 0.0f;
-	camera->fov = 45;
+	camera->fov = 90;
 	camera->inv_width = 1.0f / WIDTH;
 	camera->inv_height = 1.0f / HEIGHT;
 	camera->aspectratio = WIDTH / (float)HEIGHT;
