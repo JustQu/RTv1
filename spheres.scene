@@ -1,3 +1,10 @@
-sphere: color(ff) radius(2) origin(0.51, 0, 10)
-sphere: origin(-2, -1, 10) color(ff00) radius(1)
-sphere: origin(1.05, 1,9) color(ff0000) radius(1)
+cylinder: direction(1, 0, -1)
+cylinder: direction(-1, 0, -1)
+cylinder: direction(0, 1, 0)
+sphere: radius(0.4) origin(0,0,3.5)
+cone:
+
+
+
+plane:
+lightsource:

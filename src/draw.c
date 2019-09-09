@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 09:30:50 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 18:47:36 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ t_bool	cone_intersection(t_obj *obj, t_ray *ray)
 	t_cone	*cn;
 
 	cn = (t_cone *)obj->data;
-	cn->k = tan(cn->angle);
-	cn->k2 = 1 + cn->k * cn->k;
 	vec3_sub(ray->point, obj->origin, tmp);
 	coef[a] = vec3_dot(ray->vec, ray->vec) - cn->k2 * pow2(vec3_dot(ray->vec, cn->dir));
 	coef[b] = vec3_dot(ray->vec, tmp) - cn->k2 * vec3_dot(ray->vec, cn->dir) * vec3_dot(tmp, cn->dir);
@@ -198,7 +196,7 @@ void		get_surface_normal(t_obj *obj, t_ray *ray)
 	}
 }
 
-t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
+t_obj		*get_first_intesection(t_obj *objs, unsigned nobjs, t_ray *ray)
 {
 	int		i;
 	int		hit_id;
@@ -207,23 +205,23 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 	i = -1;
 	hit_id = -1;
 	hit_distance = __FLT_MAX__;
-	while (++i < nobjects)
+	while (++i < nobjs)
 	{
-		if (intersection(objects + i, ray) && (objects + i)->t < hit_distance)
+		if (intersection(objs + i, ray) && (objs + i)->t < hit_distance)
 		{
 			if (hit_id != -1)
-				(objects + hit_id)->t = INFINITY;
-			hit_distance = (objects + i)->t;
+				(objs + hit_id)->t = INFINITY;
+			hit_distance = (objs + i)->t;
 			hit_id = i;
 		}
 	}
 	if (hit_id != -1)
 	{
-		get_hit_point(objects + hit_id, ray);
-		get_surface_normal(objects + hit_id, ray);
-		(objects + hit_id)->t = INFINITY;
+		get_hit_point(objs + hit_id, ray);
+		get_surface_normal(objs + hit_id, ray);
+		(objs + hit_id)->t = INFINITY;
 	}
-	return ((hit_id != -1 && hit_distance < 1000.0f) ? objects + hit_id : NULL);
+	return ((hit_id != -1 && hit_distance < 1000.0f) ? objs + hit_id : NULL);
 }
 
 void		reflect(t_vec3 i, t_vec3 n, t_vec3 dest)
@@ -266,7 +264,7 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 	while (++i < world->nlights)
 	{
 		shadow_ray = cast_shadow_ray(obj->hit_point, world->lights + i);
-		if ((shadow_obj = get_first_intesection(world->objects, world->nobjects, &shadow_ray)) != NULL)
+		if ((shadow_obj = get_first_intesection(world->objs, world->nobjs, &shadow_ray)) != NULL)
 			if (shadow_obj != obj && vec3_distance(obj->hit_point, (world->lights + i)->origin) > vec3_distance(obj->hit_point, shadow_obj->hit_point))
 				continue;
 		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
@@ -290,8 +288,8 @@ t_color		trace_ray(t_param *p, t_ray *ray)
 	t_obj	*obj;
 	t_color	color;
 
-	color.color = 0x1a334d;
-	obj = get_first_intesection(p->world.objects, p->world.nobjects , ray);
+	color.color = BACKGROUND;
+	obj = get_first_intesection(p->world.objs, p->world.nobjs , ray);
 	if (obj)
 	{
 		return (color = get_point_color(&(p->world), obj, ray));

@@ -61,12 +61,16 @@ clean:
 	@echo deliting object files
 	@$(RM) $(OBJS)
 	@make -C $(LIBFTDIR) clean
+	@make -C $(RTMATHDIR) clean
+	@make -C $(MLXDIR) clean
 
 .PHONY: fclean
 fclean: clean
 	@echo deliting executable file
 	@$(RM) $(TARGET)
 	@make -C $(LIBFTDIR) fclean
+	@make -C $(RTMATHDIR) fclean
+	@make -C $(MLXDIR) clean
 
 .PHONY: re
 re:	fclean all

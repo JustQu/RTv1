@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 09:30:53 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 18:29:08 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include "get_next_line.h"
+# include "libft.h"
 # include <math.h>
 # include "rtmath.h"
 
@@ -71,6 +71,7 @@
 # define KEY_ESC 53
 # define KEY_TAB 48
 
+# define BACKGROUND 0x303841
 # define WIDTH 1920
 # define HEIGHT 1080
 
@@ -101,13 +102,14 @@ typedef struct	s_image
 	int			endian;
 }				t_image;
 
-typedef enum	e_objects
+typedef enum	e_objs
 {
 	sphere,
 	plane,
 	cone,
 	cylinder,
 	light,
+	camera,
 	none
 }				t_obj_type;
 
@@ -186,21 +188,20 @@ typedef struct	s_cylinder
 {
 	t_vec4		direction;
 	float		radius;
-	float		m;
 }				t_cylinder;
 
 /*
-** we store here all our objects
-** objects - all object in world
-** nobjects - total number of objects
+** we store here all our objs
+** objs - all object in world
+** nobjs - total number of objs
 ** lights - all light sources in world
 ** nlights - total number if light sources
 */
 
 typedef	struct	s_world
 {
-	t_obj		*objects;
-	int			nobjects;
+	t_obj		*objs;
+	int			nobjs;
 	t_light_source		*lights;
 	int			nlights;
 }				t_world;
@@ -229,7 +230,7 @@ typedef struct	s_camera
 ** mlx_ptr - the connection identifier
 ** win_ptr - window identifier
 ** img - store information about displaying image
-** world - store information about all objects and light sources
+** world - store information about all objs and light sources
 ** camera - store information about controlled camera
 */
 
@@ -240,13 +241,15 @@ typedef struct	s_param
 	t_image		img;
 	t_world		world;
 	t_camera	camera;
+	t_obj		*cntrld_obj;
 }				t_param;
 
 int		key_press(int keycode, void *param);
 void	render(t_param *p);
 t_bool	sphere_intersection(t_obj *obj, t_ray *ray);
 int		read_all(int fd, t_param *p);
-int			mouse_press(int button, int x, int y, void *param);
+int		mouse_press(int button, int x, int y, void *param);
+t_obj	*get_first_intesection(t_obj *objs, unsigned nobjs, t_ray *ray);
 
 void		out_spheres(t_param *p);
 

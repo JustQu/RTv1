@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 09:32:03 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 18:19:07 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 ** конвеер
 ** local space->world space->camera space->clip space->window space.
 */
-
-#define BACKGROUND 0x1a334d
 
 void	get_sphere(t_param *p, t_obj *obj, t_vec3 origin, float radius, int color)
 {
@@ -30,95 +28,95 @@ void	get_sphere(t_param *p, t_obj *obj, t_vec3 origin, float radius, int color)
 	obj->t = INFINITY;
 }
 
-int		get_objects(t_param *p)
+int		get_objs(t_param *p)
 {
 	int	i;
 
-	p->world.nobjects = 7;
-	p->world.objects = (t_obj *)malloc(p->world.nobjects * sizeof(t_obj));
+	p->world.nobjs = 7;
+	p->world.objs = (t_obj *)malloc(p->world.nobjs * sizeof(t_obj));
 	i = -1;
-	while (++i < p->world.nobjects)
+	while (++i < p->world.nobjs)
 	{
-		p->world.objects[i].type = none;
-		vec3_zero(p->world.objects[i].origin);
-		vec3_broadcast(INFINITY, p->world.objects[i].hit_point);
-		vec3_broadcast(INFINITY, p->world.objects[i].surface_normal);
-		p->world.objects[i].material.diffuse_color.color = 0;
-		p->world.objects[i].material.Kd = 0.8;
-		p->world.objects[i].material.Ks = 0.2;
-		p->world.objects[i].material.n = 50;
-		p->world.objects[i].data = NULL;
-		p->world.objects[i].t = INFINITY;
+		p->world.objs[i].type = none;
+		vec3_zero(p->world.objs[i].origin);
+		vec3_broadcast(INFINITY, p->world.objs[i].hit_point);
+		vec3_broadcast(INFINITY, p->world.objs[i].surface_normal);
+		p->world.objs[i].material.diffuse_color.color = 0;
+		p->world.objs[i].material.Kd = 0.8;
+		p->world.objs[i].material.Ks = 0.2;
+		p->world.objs[i].material.n = 50;
+		p->world.objs[i].data = NULL;
+		p->world.objs[i].t = INFINITY;
 	}
 
-	get_sphere(p, p->world.objects, (t_vec3){0, 0, 6}, 1, 0x00FFFF);
+	get_sphere(p, p->world.objs, (t_vec3){0, 0, 6}, 1, 0x00FFFF);
 
 	t_plane pl;
 	vec3_copy((t_vec3){0, -1, 0}, pl.nv);
 	vec3_normalize(pl.nv);
-	vec3_copy((t_vec3){0, -1, 0}, p->world.objects[1].origin);
-	p->world.objects[1].data = malloc(sizeof(t_plane));
-	p->world.objects[1].type = plane;
-	p->world.objects[1].material.diffuse_color.color = 0x7B68EE;
-	*(t_plane *)(p->world.objects[1].data) = pl;
+	vec3_copy((t_vec3){0, -1, 0}, p->world.objs[1].origin);
+	p->world.objs[1].data = malloc(sizeof(t_plane));
+	p->world.objs[1].type = plane;
+	p->world.objs[1].material.diffuse_color.color = 0x7B68EE;
+	*(t_plane *)(p->world.objs[1].data) = pl;
 
 	t_cylinder cl;
 	vec3_copy((t_vec4){10, 0, 15, 1}, cl.direction);
 	vec3_normalize(cl.direction);
 	cl.radius = 1;
-	vec3_copy((t_vec4){0, 0, 10}, p->world.objects[2].origin);
-	p->world.objects[2].data = malloc(sizeof(t_cone));
-	p->world.objects[2].type = cylinder;
-	p->world.objects[2].material.diffuse_color.color = 0x00BFFF;
-	p->world.objects[2].material.Kd = 0.55;
-	p->world.objects[2].material.Ks = 0.45;
-	p->world.objects[2].material.n = 7;
-	*(t_cylinder *)(p->world.objects[2].data) = cl;
+	vec3_copy((t_vec4){0, 0, 10}, p->world.objs[2].origin);
+	p->world.objs[2].data = malloc(sizeof(t_cone));
+	p->world.objs[2].type = cylinder;
+	p->world.objs[2].material.diffuse_color.color = 0x00BFFF;
+	p->world.objs[2].material.Kd = 0.55;
+	p->world.objs[2].material.Ks = 0.45;
+	p->world.objs[2].material.n = 7;
+	*(t_cylinder *)(p->world.objs[2].data) = cl;
 
 	t_cone cn;
 	vec3_copy((t_vec3){0,1,0}, cn.dir);
 	vec3_normalize(cn.dir);
 	cn.angle = 0.5;
-	vec3_copy((t_vec3){3, 0 , 5}, p->world.objects[3].origin);
-	p->world.objects[3].data = malloc(sizeof(t_cone));
-	p->world.objects[3].type = cone;
-	p->world.objects[3].material.diffuse_color.color = 0x00ff0000;
-	*(t_cone *)p->world.objects[3].data = cn;
+	vec3_copy((t_vec3){3, 0 , 5}, p->world.objs[3].origin);
+	p->world.objs[3].data = malloc(sizeof(t_cone));
+	p->world.objs[3].type = cone;
+	p->world.objs[3].material.diffuse_color.color = 0x00ff0000;
+	*(t_cone *)p->world.objs[3].data = cn;
 
-	get_sphere(p, p->world.objects + 4, (t_vec3){-5, 3, 10}, 3, 0xF08080);
-	get_sphere(p, p->world.objects + 5, (t_vec3){3, 2, 13}, 1, 0xFFDAB9);
+	get_sphere(p, p->world.objs + 4, (t_vec3){-5, 3, 10}, 3, 0xF08080);
+	get_sphere(p, p->world.objs + 5, (t_vec3){3, 2, 13}, 1, 0xFFDAB9);
 
 	vec3_copy((t_vec3){0, 1, 0}, cl.direction);
 	vec3_normalize(cl.direction);
 	cl.radius = 0.1;
-	vec3_copy((t_vec3){-1, 0, 4}, p->world.objects[6].origin);
-	p->world.objects[6].data = malloc(sizeof(t_cone));
-	p->world.objects[6].type = cylinder;
-	p->world.objects[6].material.diffuse_color.color = 0x0000FF;
-	p->world.objects[6].material.Kd = 0.55;
-	p->world.objects[6].material.Ks = 0.45;
-	p->world.objects[6].material.n = 7;
-	*(t_cylinder *)(p->world.objects[6].data) = cl;
+	vec3_copy((t_vec3){-1, 0, 4}, p->world.objs[6].origin);
+	p->world.objs[6].data = malloc(sizeof(t_cone));
+	p->world.objs[6].type = cylinder;
+	p->world.objs[6].material.diffuse_color.color = 0x0000FF;
+	p->world.objs[6].material.Kd = 0.55;
+	p->world.objs[6].material.Ks = 0.45;
+	p->world.objs[6].material.n = 7;
+	*(t_cylinder *)(p->world.objs[6].data) = cl;
 
-	// p->world.objects[1].type = sphere;
-	// p->world.objects[1].data = malloc(sizeof(t_sphere));
-	// t_sphere *sp1 = p->world.objects[1].data;
+	// p->world.objs[1].type = sphere;
+	// p->world.objs[1].data = malloc(sizeof(t_sphere));
+	// t_sphere *sp1 = p->world.objs[1].data;
 	// sp1->origin[0] = 100;
 	// sp1->origin[1] = 100;
 	// sp1->origin[2] = 10;
 	// sp1->radius = 20;
 
-	// p->world.objects[2].type = sphere;
-	// p->world.objects[2].data = malloc(sizeof(t_sphere));
-	// t_sphere *sp2 = p->world.objects[2].data;
+	// p->world.objs[2].type = sphere;
+	// p->world.objs[2].data = malloc(sizeof(t_sphere));
+	// t_sphere *sp2 = p->world.objs[2].data;
 	// sp2->origin[0] = 500;
 	// sp2->origin[1] = 900;
 	// sp2->origin[2] = 10;
 	// sp2->radius = 50;
 
-	// p->world.objects[4].type = cylinder;
-	// p->world.objects[4].data = malloc(sizeof(t_cylinder));
-	// t_cylinder *cyl1 = p->world.objects[4].data;
+	// p->world.objs[4].type = cylinder;
+	// p->world.objs[4].data = malloc(sizeof(t_cylinder));
+	// t_cylinder *cyl1 = p->world.objs[4].data;
 	// cyl1->origin[0] = 500;
 	// cyl1->origin[1] = 200;
 	// cyl1->origin[2] = 10;
@@ -153,31 +151,11 @@ void	world_to_camera(t_param *p)
 	/*
 		camera space: (world space - camera coordiantes) * (camera orientation)^-1
 	*/
-	for (int i = 0; i < p->world.nobjects; i++)
+	for (int i = 0; i < p->world.nobjs; i++)
 	{
-		vec3_copy((p->world.objects + i)->origin, (p->world.objects + i)->camera_space);
-		vec3_sub((p->world.objects + i)->camera_space, p->camera.pos, (p->world.objects + i)->camera_space);
+		vec3_copy((p->world.objs + i)->origin, (p->world.objs + i)->camera_space);
+		vec3_sub((p->world.objs + i)->camera_space, p->camera.pos, (p->world.objs + i)->camera_space);
 	}
-}
-
-void	set_default_camera(t_camera *camera)
-{
-	camera->pos[ox] = 0.0f;
-	camera->pos[oy] = 0.0f;
-	camera->pos[oz] = 0.0f;
-	camera->near_z = 1;
-
-	/*
-		without rotation for now
-	*/
-	camera->orientation[ox] = 0.0f;
-	camera->orientation[oy] = 0.0f;
-	camera->orientation[oz] = 0.0f;
-	camera->fov = 90;
-	camera->inv_width = 1.0f / WIDTH;
-	camera->inv_height = 1.0f / HEIGHT;
-	camera->aspectratio = WIDTH / (float)HEIGHT;
-	camera->angle = tanf(RTM_PI * 0.5f * camera->fov / 180.0f);
 }
 
 int		main(int ac, char **arg)
@@ -188,18 +166,15 @@ int		main(int ac, char **arg)
 	p.win_ptr = mlx_new_window(p.mlx_ptr, WIDTH, HEIGHT, "<3");
 	p.img.ptr = mlx_new_image(p.mlx_ptr, WIDTH, HEIGHT);
 	p.img.data = mlx_get_data_addr(p.img.ptr, &p.img.bpp, &p.img.size_line, &p.img.endian);
-	for(int i = 0; i < WIDTH * HEIGHT; i++)
-		((int *)p.img.data)[i] = BACKGROUND;
-
 	int fd;
 	fd = open(arg[1], O_RDONLY);
-	// if (fd < 0){
-	// 	printf("%s", "ne otkrivaetsya");
-	// 	return (0);
-	// }
-	set_default_camera(&p.camera);
-	//read_all(fd, &p);
-	get_objects(&p);
+	if (fd < 0)
+	{
+		printf("%s", "ne otkrivaetsya");
+		return (0);
+	}
+	read_all(fd, &p);
+	// get_objs(&p);
 
 	render(&p);
 
