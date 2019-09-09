@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 18:47:36 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 19:02:10 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_bool	cone_intersection(t_obj *obj, t_ray *ray)
 	t_cone	*cn;
 
 	cn = (t_cone *)obj->data;
-	vec3_sub(ray->point, obj->origin, tmp);
+	vec3_sub(ray->point, obj->camera_space, tmp);
 	coef[a] = vec3_dot(ray->vec, ray->vec) - cn->k2 * pow2(vec3_dot(ray->vec, cn->dir));
 	coef[b] = vec3_dot(ray->vec, tmp) - cn->k2 * vec3_dot(ray->vec, cn->dir) * vec3_dot(tmp, cn->dir);
 	coef[b] *= 2;
@@ -84,7 +84,7 @@ t_bool		cylinder_intersection(t_obj *obj, t_ray *ray)
 	t_cylinder	cl;
 
 	cl = *(t_cylinder *)obj->data;
-	vec3_sub(ray->point, obj->origin, tmp);
+	vec3_sub(ray->point, obj->camera_space, tmp);
 	coefs[a] = vec3_norm2(ray->vec) - pow2(vec3_dot(ray->vec, cl.direction));
 	coefs[b] = vec3_dot(ray->vec, tmp) - vec3_dot(ray->vec, cl.direction) * vec3_dot(tmp, cl.direction);
 	coefs[b] *= 2.0f;
@@ -115,13 +115,13 @@ t_bool	plane_intersection(t_obj *obj, t_ray *ray)
 	float	denom;
 
 	pl = *(t_plane *)obj->data;
-	vec3_sub(obj->origin, ray->point, tmp);
+	vec3_sub(obj->camera_space, ray->point, tmp);
 	denom = vec3_dot(pl.nv, ray->vec);
 	coefs[a] = -vec3_dot(pl.nv, tmp);
 	coefs[b] = vec3_dot(pl.nv, ray->vec);
 	if (denom > 1e-6f)
 	{
-		vec3_sub(obj->origin, ray->point, tmp);
+		vec3_sub(obj->camera_space, ray->point, tmp);
 		obj -> t = vec3_dot(tmp, pl.nv) / denom;
 		return (obj -> t >= 0);
 		if ((obj->t = coefs[a] / coefs[b]) >= 0.0f)
@@ -168,7 +168,7 @@ void		get_surface_normal(t_obj *obj, t_ray *ray)
 
 	if (obj->type == sphere)
 	{
-		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal);
+		vec3_sub(obj->hit_point, obj->camera_space, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
 	}
 	else if (obj->type == plane)
@@ -178,20 +178,20 @@ void		get_surface_normal(t_obj *obj, t_ray *ray)
 	}
 	else if (obj->type == cone)
 	{
-		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal); // X = O - C
+		vec3_sub(obj->hit_point, obj->camera_space, obj->surface_normal); // X = O - C
 		m = vec3_dot(obj->surface_normal, ((t_cone *)(obj->data))->dir); // m = D|V * t + X|V
 		vec3_scale(((t_cone *)(obj->data))->dir, m * ((t_cone *)(obj->data))->k2, obj->surface_normal); // (1 + k * k) * V * m
 		vec3_sub(obj->hit_point, obj->surface_normal, obj->surface_normal);
-		vec3_sub(obj->surface_normal, obj->origin, obj->surface_normal);
+		vec3_sub(obj->surface_normal, obj->camera_space, obj->surface_normal);
 		normalize(obj->surface_normal);
 	}
 	else if (obj->type == cylinder)
 	{
-		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal);
+		vec3_sub(obj->hit_point, obj->camera_space, obj->surface_normal);
 		m = vec3_dot(obj->surface_normal, ((t_cylinder *)(obj->data))->direction);
 		vec3_scale(((t_cylinder *)(obj->data))->direction, m, obj->surface_normal);
 		vec3_sub(obj->hit_point, obj->surface_normal, obj->surface_normal);
-		vec3_sub(obj->surface_normal, obj->origin, obj->surface_normal);
+		vec3_sub(obj->surface_normal, obj->camera_space, obj->surface_normal);
 		vec3_normalize(obj->surface_normal);
 	}
 }
@@ -242,7 +242,7 @@ t_ray		cast_shadow_ray(t_vec3 start, t_light_source *light)
 	//vec3_broadcast(1e-1, bias);
 	vec3_copy(start, shadow_ray.point);
 	//vec3_sum(shadow_ray.point, bias, shadow_ray.point);
-	vec3_sub(light->origin, start, shadow_ray.vec);
+	vec3_sub(light->camera_space, start, shadow_ray.vec);
 	normalize(shadow_ray.vec);
 	return (shadow_ray);
 }
@@ -265,9 +265,9 @@ t_color		get_point_color(t_world *world, t_obj *obj, t_ray *ray)
 	{
 		shadow_ray = cast_shadow_ray(obj->hit_point, world->lights + i);
 		if ((shadow_obj = get_first_intesection(world->objs, world->nobjs, &shadow_ray)) != NULL)
-			if (shadow_obj != obj && vec3_distance(obj->hit_point, (world->lights + i)->origin) > vec3_distance(obj->hit_point, shadow_obj->hit_point))
+			if (shadow_obj != obj && vec3_distance(obj->hit_point, (world->lights + i)->camera_space) > vec3_distance(obj->hit_point, shadow_obj->hit_point))
 				continue;
-		vec3_sub((world->lights + i)->origin, obj->hit_point, light_dir);
+		vec3_sub((world->lights + i)->camera_space, obj->hit_point, light_dir);
 		vec3_normalize(light_dir);
 		diffuse_light += (world->lights + i)->intensity * max(0, vec3_dot(light_dir, obj->surface_normal));
 		reflect(light_dir, obj->surface_normal, r);

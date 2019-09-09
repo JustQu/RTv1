@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 18:19:07 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 19:17:44 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,12 @@ int		get_objs(t_param *p)
 	return (0.0);
 }
 
+void	move_obj_to_camera(t_obj *obj, t_camera *camera)
+{
+	vec3_copy(obj->origin, obj->camera_space);
+	vec3_sub(obj->camera_space, camera->pos, obj->camera_space);
+}
+
 void	world_to_camera(t_param *p)
 {
 	/*
@@ -155,6 +161,11 @@ void	world_to_camera(t_param *p)
 	{
 		vec3_copy((p->world.objs + i)->origin, (p->world.objs + i)->camera_space);
 		vec3_sub((p->world.objs + i)->camera_space, p->camera.pos, (p->world.objs + i)->camera_space);
+	}
+	for (int i = 0; i < p->world.nlights; i++)
+	{
+		vec3_copy((p->world.lights + i)->origin, (p->world.lights + i)->camera_space);
+		vec3_sub((p->world.lights + i)->camera_space, p->camera.pos, (p->world.lights + i)->camera_space);
 	}
 }
 
@@ -175,7 +186,7 @@ int		main(int ac, char **arg)
 	}
 	read_all(fd, &p);
 	// get_objs(&p);
-
+	world_to_camera(&p);
 	render(&p);
 
 	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 13:52:46 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/09 09:31:01 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 19:13:25 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_bool	sphere_intersection(t_obj *obj, t_ray *ray)
 	float		t;
 
 	sp = *(t_sphere *)(obj->data);
-	vec3_sub(ray->point, obj->origin, tmp); // O - C //L
+	vec3_sub(ray->point, obj->camera_space, tmp); // O - C //L
 	coefs[a] = vec3_norm2(ray->vec);
 	coefs[b] = 2.0f * vec3_dot(ray->vec, tmp);//tca/2
 	coefs[c] = vec3_norm2(tmp) - sp.radius * sp.radius;

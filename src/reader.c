@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 17:58:53 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 19:56:49 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,10 @@ t_material	read_material(char *str, t_color dcolor)
 		else if (mat.Ks != 0)
 			mat.Kd = 1 - mat.Ks;
 		else
-			{
-				mat.Kd = 0.8;
-				mat.Ks = 0.2;
-			}
+		{
+			mat.Kd = 0.8;
+			mat.Ks = 0.2;
+		}
 	}
 	mat.n = read_fparam(str, "n", 50);
 	return (mat);
@@ -202,7 +202,7 @@ void		init_plane(t_list *t, t_obj *p)
 {
 	t_color		dcolor;
 
-	dcolor.color = 0x45454d;
+	dcolor.color = 0xc4def6;
 	p->type = plane;
 	p->data = (t_plane *)malloc(sizeof(t_plane));
 	read_vec3_param(t->content, ((t_plane *)p->data)->nv,
@@ -247,11 +247,11 @@ void		init_cylinder(t_list *t, t_obj *p)
 void		init_camera(t_list *t, t_camera *camera)
 {
 	read_vec3_param(t->content, camera->pos, "position",
-	(t_vec3){0,1,0});
+	(t_vec3){0,0,1});
 	camera->near_z = read_fparam(t->content, "near_z", 1);
 	read_vec3_param(t->content, camera->orientation,
-	"orientation", (t_vec3){0, 0, 0});
-	camera->fov = read_fparam(t->content, "fov", 90);
+	"orientation", (t_vec3){0, 0, 1});
+	camera->fov = read_fparam(t->content, "fov", 45);
 	camera->inv_width = 1.0f / WIDTH;
 	camera->inv_height = 1.0f / HEIGHT;
 	camera->aspectratio = WIDTH / (float)HEIGHT;
@@ -283,7 +283,7 @@ void	set_default_camera(t_camera *camera)
 	camera->near_z = 1;
 	camera->orientation[ox] = 0.0f;
 	camera->orientation[oy] = 0.0f;
-	camera->orientation[oz] = 0.0f;
+	camera->orientation[oz] = 1.0f;
 	camera->fov = 45;
 	camera->inv_width = 1.0f / WIDTH;
 	camera->inv_height = 1.0f / HEIGHT;

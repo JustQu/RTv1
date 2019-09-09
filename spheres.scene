@@ -1,10 +1,18 @@
-cylinder: direction(1, 0, -1)
-cylinder: direction(-1, 0, -1)
-cylinder: direction(0, 1, 0)
-sphere: radius(0.4) origin(0,0,3.5)
-cone:
 
+camera:
 
-
+lightsource: origin(-1,1,5) intensity(0.5)
+lightsource: origin(1,1,5) intensity(0.5)
+cylinder:color(eac086)
 plane:
-lightsource:
+sphere: radius(1) origin(0, -1, 5) color(ffe0bd)
+sphere: radius(1) origin(0, -1, 5) color(ffe0bd)
+
+sphere: radius(0.5) origin(0, -1, 5) color(0xff0000)
+
+
+
+todo
+нормализовать интенсивность света если много источников света
+нормализовать kd и ks
+поворот камеры и управление

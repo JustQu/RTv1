@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:06:16 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 18:46:14 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 19:38:44 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ int			key_press(int keycode, void *param)
 		p->cntrld_obj->origin[ox] -= 0.5;
 	if (keycode == KEY_D && p->cntrld_obj)
 		p->cntrld_obj->origin[ox] += 0.5;
+	if (keycode == KEY_UP && p->cntrld_obj)
+		p->cntrld_obj->origin[oy] += 0.5;
+	if (keycode == KEY_DOWN && p->cntrld_obj)
+		p->cntrld_obj->origin[oy] -= 0.5;
+	if (p->cntrld_obj)
+		move_obj_to_camera(p->cntrld_obj, &p->camera);
+
 	render(p);
 	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img.ptr, 0, 0);
 	return (1);

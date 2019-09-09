@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 18:29:08 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 19:18:06 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct	s_light_source
 {
 	t_vec4		origin;
 	float		intensity;
+	t_vec4		camera_space;
 }				t_light_source;
 
 /*
@@ -216,6 +217,7 @@ typedef struct	s_camera
 {
 	t_vec4		pos;
 	t_vec4		orientation;
+	t_mat4		inv_rot;
 	int			fov;
 	float		near_z;
 	float		far_z;
@@ -250,6 +252,7 @@ t_bool	sphere_intersection(t_obj *obj, t_ray *ray);
 int		read_all(int fd, t_param *p);
 int		mouse_press(int button, int x, int y, void *param);
 t_obj	*get_first_intesection(t_obj *objs, unsigned nobjs, t_ray *ray);
+void	move_obj_to_camera(t_obj *obj, t_camera *camera);
 
 void		out_spheres(t_param *p);
 
