@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 13:52:46 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/02 20:56:20 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/05 18:19:27 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** c   = X|X - r*r
 ** Surface normal is N=nrm(P-C).
 */
-float	sphere_intersection(t_obj *obj, t_ray *ray)
+t_bool	sphere_intersection(t_obj *obj, t_ray *ray)
 {
 	t_vec4		tmp;
 	t_vec4		coefs;

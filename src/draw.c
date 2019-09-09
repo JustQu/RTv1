@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/04 19:33:36 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/06 15:13:49 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void		get_hit_point(t_obj *obj, t_ray *ray)
 void		get_surface_normal(t_obj *obj, t_ray *ray)
 {
 	float	m;
-	
+
 	if (obj->type == sphere)
 	{
 		vec3_sub(obj->hit_point, obj->origin, obj->surface_normal);
@@ -173,7 +173,7 @@ void		get_surface_normal(t_obj *obj, t_ray *ray)
 	}
 	else if (obj->type == cone)
 	{
-		
+
 	}
 	else if (obj->type == cylinder)
 	{
@@ -199,7 +199,7 @@ t_obj		*get_first_intesection(t_obj *objects, unsigned nobjects, t_ray *ray)
 	hit_id = -1;
 	hit_distance = __FLT_MAX__;
 	while (++i < nobjects)
-	{	
+	{
 		if (intersection(objects + i, ray) && (objects + i)->t < hit_distance)
 		{
 			if (hit_id != -1)
@@ -275,7 +275,9 @@ t_color		get_albedo_color(t_world *world, t_obj *obj, t_ray *ray)
 	}
 	//color = (t_color){.bgra[0] = obj->material.diffuse_color.bgra[0] * diffuse_light_intensity,
 	//					.bgra[1] = obj->material.diffuse_color.bgra[1] * diffuse_light_intensity,
-	//					.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity};
+	//					.bgra[2] = obj->material.diffuse_color.bgra[2] * diffuse_light_intensity}
+
+
 	color.color = new_color(obj->material.diffuse_color.color, diffuse_light_intensity);
 	return (color);
 }
@@ -306,8 +308,7 @@ void	render(t_param *p)
 	t_ray	ray;
 	t_vec2	iters;
 	t_color	color;
-	
-	FILE *f = fopen("wer", "w");
+
 	vec3_zero(ray.point);
 	iters[oy] = -1;
 	while (++iters[oy] < HEIGHT)
@@ -319,10 +320,8 @@ void	render(t_param *p)
 			ray.vec[oy] = (1 - 2 * ((iters[oy] + 0.5) * p->camera.inv_height)) * p->camera.angle;
 			ray.vec[ox] = (2 * ((iters[ox] + 0.5) * p->camera.inv_width) - 1) * p->camera.angle * p->camera.aspectratio;
 			normalize(ray.vec);
-			color = trace_ray(p, &ray);		
+			color = trace_ray(p, &ray);
 			put_pixel(&p->img, iters[ox], iters[oy], color.color);
-			if (color.color == 0)
-				(1 == 1);
 			color.color = 0x1a334d;
 		}
 	}

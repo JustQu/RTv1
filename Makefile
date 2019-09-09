@@ -6,6 +6,7 @@ CFLAGS = \
 		 -I$(INCDIR)\
 		 -I$(LIBFTINC)\
 		 -I$(RTMATHINC)\
+		 -I$(MLXDIR)\
 		 -g
 
 LDLIBS = -lft\
@@ -16,11 +17,14 @@ LDLIBS = -lft\
 
 LDFLAGS	= \
 		-L$(LIBFTDIR)\
-		-L$(RTMATHDIR)
+		-L$(RTMATHDIR)\
+		-L$(MLXDIR)
 
 LIBFT = libft.a
 LIBFTDIR = ./libft
 LIBFTINC = $(LIBFTDIR)/includes
+
+MLXDIR = ./minilibx_macos
 
 RTMATH = rtmath.a
 RTMATHDIR = ./rtmath
@@ -30,7 +34,7 @@ INCDIR = ./includes/
 SRCSDIR = ./src/
 INCS = rtv1.h
 INCS := $(addprefix $(INCDIR), $(INCS))
-SRCS = main.c draw.c control.c sphere.c
+SRCS = main.c draw.c control.c sphere.c reader.c
 OBJS = $(SRCS:.c=.o)
 TARGET = RTv1
 
@@ -39,6 +43,7 @@ all: $(LIBFT) $(RTMATH) $(TARGET)
 
 $(LIBFT):
 	make -C $(LIBFTDIR)
+	make -C $(MLXDIR)
 
 $(RTMATH):
 	make -C $(RTMATHDIR)

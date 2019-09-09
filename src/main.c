@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/05 12:10:27 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/06 18:06:57 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,69 +19,40 @@
 
 #define BACKGROUND 0x1a334d
 
-//read specific information for object type from str
-void	read_type_data(void *data, t_obj_type type, char *str)
-{
-	if (type == sphere)
-	{
-		if (data == NULL)
-			data = malloc (sizeof(t_sphere));
-	}
-}
 
-void	func(t_param *p)
-{
-	p->world.nobjects = 1;
-	p->world.objects = malloc(p->world.nobjects * sizeof(t_obj));
-	p->world.objects[0].type = none;
-	vec3_broadcast(INFINITY, p->world.objects[0].hit_point);
-	vec3_broadcast(INFINITY, p->world.objects[0].surface_normal);
-	p->world.objects[0].material.diffuse_color.color = 0;
-	p->world.objects[0].data = NULL;
-}
-
-void	get_sphere(t_param *p, t_obj *obj, t_vec3 origin, float radius, int color, int albedo)
-{
-	if (obj->data == NULL)
-		obj->data = (t_sphere *)malloc(sizeof(t_sphere));
-	((t_sphere *)(obj->data))->radius = radius;
-	obj->type = sphere;
-	vec3_copy(origin, obj->origin);
-	obj->material.diffuse_color.color = color;
-	obj->t = INFINITY;
-}
 
 int		get_objects(t_param *p)
 {
-	int	i;
+	// int	i;
 
-	p->world.nobjects = 2;
-	p->world.objects = (t_obj *)malloc(p->world.nobjects * sizeof(t_obj));
-	i = -1;
-	while (++i < p->world.nobjects)
-	{
-		p->world.objects[i].type = none;
-		vec3_zero(p->world.objects[i].origin);
-		vec3_broadcast(INFINITY, p->world.objects[i].hit_point);
-		vec3_broadcast(INFINITY, p->world.objects[i].surface_normal);
-		p->world.objects[i].material.diffuse_color.color = 0;
-		p->world.objects[i].data = NULL;
-		p->world.objects[i].t = INFINITY;
-	}
+	// // p->world.nobjects = 2;
+	// // p->world.objects = (t_obj *)malloc(p->world.nobjects * sizeof(t_obj));
+	// i = -1;
+	// while (++i < p->world.nobjects)
+	// {
+	// 	// p->world.objects[i].type = none;
+	// 	// vec3_zero(p->world.objects[i].origin);
+	// 	vec3_broadcast(INFINITY, p->world.objects[i].hit_point);
+	// 	vec3_broadcast(INFINITY, p->world.objects[i].surface_normal);
+	// 	// p->world.objects[i].material.diffuse_color.color = 0;
+	// 	// p->world.objects[i].data = NULL;
+	// 	p->world.objects[i].t = INFINITY;
+	// }
 
-	get_sphere(p, p->world.objects, (t_vec3){0, 0, 6}, 1, 0x222b00,0);
+	// get_sphere(p, p->world.objects, (t_vec3){1, 1, 3}, 1, 0x222bff,0);
+	// get_sphere(p, p->world.objects + 1, (t_vec3){0, 0, 6}, 4, 0x222b00,0);
 
-	t_cylinder cl;
-	vec3_copy((t_vec4){0, 1, 0, 1}, cl.direction);
-	vec3_normalize(cl.direction);
-	cl.radius = 1;
-	vec3_copy((t_vec4){-6, 0, 10}, p->world.objects[1].origin);
-	p->world.objects[1].data = malloc(sizeof(t_cone));
-	p->world.objects[1].type = cylinder;
-	p->world.objects[1].material.diffuse_color.color = 0x002b00;
-	*(t_cylinder *)(p->world.objects[1].data) = cl;
+	// t_cylinder cl;
+	// vec3_copy((t_vec4){0, 1, 0, 1}, cl.direction);
+	// vec3_normalize(cl.direction);
+	// cl.radius = 1;
+	// vec3_copy((t_vec4){-6, 0, 10}, p->world.objects[1].origin);
+	// p->world.objects[1].data = malloc(sizeof(t_cone));
+	// p->world.objects[1].type = cylinder;
+	// p->world.objects[1].material.diffuse_color.color = 0x002b00;
+	// *(t_cylinder *)(p->world.objects[1].data) = cl;
 
-	p->world.nobjects = 2;
+	// p->world.nobjects = 2;
 
 	// p->world.objects[1].type = sphere;
 	// p->world.objects[1].data = malloc(sizeof(t_sphere));
@@ -121,7 +92,7 @@ int		get_objects(t_param *p)
 	// cyl1->direction[2] = 0;
 	// cyl1->radius = 12;
 
-	p->world.lights = malloc(10 * sizeof(t_light_source));
+	p->world.lights = malloc(sizeof(t_light_source));
 	p->world.lights[0].origin[0] = 0;
 	p->world.lights[0].origin[1] = 0;
 	p->world.lights[0].origin[2] = 0;
@@ -175,13 +146,21 @@ int		main(int ac, char **arg)
 	for(int i = 0; i < WIDTH * HEIGHT; i++)
 		((int *)p.img.data)[i] = BACKGROUND;
 
-
+	int fd;
+	fd = open(arg[1], O_RDONLY);
+	if (fd < 0){
+		printf("%s", "ne otkrivaetsya");
+		return (0);
+	}
 	set_default_camera(&p.camera);
+	read_all(fd, &p);
 	get_objects(&p);
+
 	render(&p);
 
 	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);
 	mlx_hook(p.win_ptr, 2, 0, key_press, &p);
+	mlx_hook(p.win_ptr, 4, 0, mouse_press, &p);
 	mlx_loop(p.mlx_ptr);
 	return (0);
 }

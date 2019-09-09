@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dwalda-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/06 05:05:43 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/02/17 16:13:41 by dmelessa         ###   ########.fr       */
+/*   Created: 2018/12/13 18:25:41 by dwalda-r          #+#    #+#             */
+/*   Updated: 2018/12/28 18:54:30 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,28 @@
 
 t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list *retp;
-	t_list *p;
-	t_list *node;
+	t_list	*k;
+	t_list	*res;
+	t_list	*start;
 
 	if (!lst || !f)
 		return (NULL);
-	p = (*f)(lst);
-	retp = p;
-	while ((lst = lst->next))
+	while ((k = f(lst)) == NULL)
+		lst = lst->next;
+	if ((k = ft_lstnew(k->content, k->content_size)) == NULL)
+		return (NULL);
+	if ((lst = lst->next) == NULL)
+		return (k);
+	start = k;
+	while (lst)
 	{
-		if (!(node = (*f)(lst)))
+		if ((res = f(lst)) != NULL)
 		{
-			free(node);
-			while (p)
-			{
-				node = p->next;
-				free(p);
-				p = node;
-			}
-			return (NULL);
+			if ((k->next = ft_lstnew(res->content, res->content_size)) == NULL)
+				return (NULL);
+			k = k->next;
 		}
-		p->next = node;
-		p = p->next;
+		lst = lst->next;
 	}
-	return (retp);
+	return (start);
 }

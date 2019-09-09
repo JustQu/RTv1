@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/05 12:09:53 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/06 18:06:42 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@
 # define KEY_ESC 53
 # define KEY_TAB 48
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 1920
+# define HEIGHT 1080
 
 typedef int		t_bool;
 # define TRUE	1
@@ -244,6 +244,10 @@ typedef struct	s_param
 
 int		key_press(int keycode, void *param);
 void	render(t_param *p);
-float	sphere_intersection(t_obj *obj, t_ray *ray);
+t_bool	sphere_intersection(t_obj *obj, t_ray *ray);
+int		read_all(int fd, t_param *p);
+int			mouse_press(int button, int x, int y, void *param);
+
+void		out_spheres(t_param *p);
 
 #endif
