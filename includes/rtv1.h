@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/06 18:06:42 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 09:30:53 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,9 @@ typedef struct	s_material
 	t_color		diffuse_color;
 	float		reflect_coef;
 	float		refract_coef;
-	float		mate;
+    float		Kd; // phong model diffuse weight
+    float		Ks;// phong model specular weight
+    float		n;   // phong specular exponent
 }				t_material;
 
 typedef struct	s_light_source
@@ -141,8 +143,6 @@ typedef struct	s_obj
 {
 	t_obj_type	type;
 	t_vec4		camera_space;
-	t_vec4		homogeneous_space;
-	t_vec4		ndc_space;
 	t_vec4		origin; /*world coordiantes */
 	t_vec4		hit_point;
 	t_vec4		surface_normal;

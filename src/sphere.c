@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 13:52:46 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/05 18:19:27 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/09 09:31:01 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,10 @@ t_bool	sphere_intersection(t_obj *obj, t_ray *ray)
 		coefs[d] = sqrtf(coefs[d]);
 		t = (-coefs[b] -coefs[d]) / coefs[a]; //t = (-b +- sqrt(D))/(2a)
 		if (t < 0.0f)
-			if ((t = (-coefs[b] + coefs[d]) / coefs[a]) < 0.0f)
+			if ((t = (-coefs[b] - coefs[d]) / coefs[a]) < 0.0f)
 				return (FALSE);
 		obj->t = t;
 		return (TRUE);
-
-		vec3_scale(ray->vec, (-coefs[b] - sqrtf(coefs[d])) * 0.5f / coefs[a], obj->surface_normal);	//D * t
-		vec3_sum(obj->surface_normal, tmp, obj->surface_normal);									//D * t + O - C = P - C
-		vec3_sum(obj->surface_normal, obj->origin, obj->hit_point);					// D * t + O hit point
-		vec3_normalize(obj->surface_normal); 										// nrm(P - C)
-		// printf("a: %f b:%f c:%f d:%f t:%f p:%f %f %f N:%f %f %f\n", coefs[a], coefs[b], coefs[c], coefs[d], (-coefs[b] - sqrtf(coefs[d])) * 0.5 / coefs[a], tmp[0], tmp[1], tmp[2], obj->surface_normal[0],obj->surface_normal[1], obj->surface_normal[2]);
 	}
+	return (FALSE);
 }
