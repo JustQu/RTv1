@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/06 18:06:33 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/06 19:27:27 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ float			ft_getfnumber(char *str)
 		num = num * del + *str - '0';
 		str++;
 	}
-	if (*str == '.')
+	str = *str == '.' ? str + 1 : str;
 		while (*str != '\0' && ft_isdigit(*str))
 		{
-			num += ((float)(*str - '0')) / (float)del;
+			num = num + ((float)(*str - '0')) / (float)del;
 			del *= 10;
+			str++;
 		}
 	return (num * sign);
 }
@@ -110,7 +111,7 @@ float			read_fparam(char *str, char *param, float dfval)
 	c = (ft_strstr(str, param));
 	if (c)
 	{
-		num = ft_getfnumber(c);
+		num = ft_getfnumber(c + ft_strlen(param) + 1);
 		if (num != 0)
 			return (num);
 	}
@@ -125,7 +126,7 @@ void		init_sphere(t_list *t, t_obj *p)
 
 	p->type = sphere;
 	p->data = (t_sphere *)malloc(sizeof(t_sphere));
-	((t_sphere *)(p->data))->radius = read_fparam(t->content, "radius(", 1);
+	((t_sphere *)(p->data))->radius = read_fparam(t->content, "radius", 1);
 	read_vec3_param(t->content, p->origin, "origin",(t_vec3){0,0,3});
 	((t_sphere *)(p->data))->radius2 = ((t_sphere *)(p->data))->radius
 	* ((t_sphere *)(p->data))->radius;
@@ -137,7 +138,7 @@ void		init_sphere(t_list *t, t_obj *p)
 
 void		init_light()
 {
-
+	float	intensity;
 }
 
 void		out_spheres(t_param *p)
@@ -191,16 +192,16 @@ void	delete_lst(void *s, size_t size)
 	(void)size;
 }
 
-void	get_sphere(t_obj *obj, t_vec3 origin, float radius, int color)
-{
-	if (obj->data == NULL)
-		obj->data = (t_sphere *)malloc(sizeof(t_sphere));
-	((t_sphere *)(obj->data))->radius = radius;
-	obj->type = sphere;
-	vec3_copy(origin, obj->origin);
-	obj->material.diffuse_color.color = color;
-	obj->t = INFINITY;
-}
+// void	get_sphere(t_obj *obj, t_vec3 origin, float radius, int color)
+// {
+// 	if (obj->data == NULL)
+// 		obj->data = (t_sphere *)malloc(sizeof(t_sphere));
+// 	((t_sphere *)(obj->data))->radius = radius;
+// 	obj->type = sphere;
+// 	vec3_copy(origin, obj->origin);
+// 	obj->material.diffuse_color.color = color;
+// 	obj->t = INFINITY;
+// }
 
 int		read_all(int fd, t_param *p)
 {
