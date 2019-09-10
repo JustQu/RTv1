@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 19:18:06 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/10 14:43:07 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ typedef struct	s_param
 	t_world		world;
 	t_camera	camera;
 	t_obj		*cntrld_obj;
+	int			fd;
 }				t_param;
 
 int		key_press(int keycode, void *param);
@@ -253,7 +254,6 @@ int		read_all(int fd, t_param *p);
 int		mouse_press(int button, int x, int y, void *param);
 t_obj	*get_first_intesection(t_obj *objs, unsigned nobjs, t_ray *ray);
 void	move_obj_to_camera(t_obj *obj, t_camera *camera);
-
-void		out_spheres(t_param *p);
+void	file_save(t_param *p);
 
 #endif

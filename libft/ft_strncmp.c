@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strncmp.c                                          :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 02:56:09 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/02/06 02:58:16 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/10 16:48:04 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int		ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	unsigned char c1;
-	unsigned char c2;
+	size_t			i;
+	unsigned char	s11;
+	unsigned char	s22;
 
-	c1 = '\0';
-	c2 = '\0';
-	while (n > 0)
-	{
-		c1 = (unsigned char)*s1++;
-		c2 = (unsigned char)*s2++;
-		if (c1 == '\0' || c1 != c2)
-			return (c1 - c2);
-		n--;
-	}
-	return (c1 - c2);
+	i = 0;
+	while (s1[i] == s2[i] && i < n && s1[i] && s2[i])
+		i++;
+	if (i >= n)
+		i--;
+	s11 = s1[i];
+	s22 = s2[i];
+	return (s11 - s22);
 }

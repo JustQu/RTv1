@@ -34,7 +34,7 @@ INCDIR = ./includes/
 SRCSDIR = ./src/
 INCS = rtv1.h
 INCS := $(addprefix $(INCDIR), $(INCS))
-SRCS = main.c draw.c control.c sphere.c reader.c
+SRCS = main.c draw.c control.c sphere.c reader.c saver.c
 OBJS = $(SRCS:.c=.o)
 TARGET = RTv1
 

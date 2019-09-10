@@ -1,0 +1,5 @@
+plane: origin(0.000, -2.500, 0.000) nv(0.000, -1.000, 0.000) color(c4def6) num(50.000) ks(0.200) kd(0.800) 
+sphere: origin(-1.500, 0.500, 8.500) radius(0.500) color(ffffff) num(50.000) ks(0.200) kd(0.800) 
+sphere: origin(-1.500, -2.000, 8.500) radius(1.000) color(ffe0bd) num(50.000) ks(0.200) kd(0.800) 
+cylinder: origin(-1.500, 0.000, 8.500) direction(0.000, 1.000, 0.000) radius(0.300) color(eac086) num(50.000) ks(0.200) kd(0.800) 
+sphere: origin(0.000, 0.000, 0.000) 

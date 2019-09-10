@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/09 19:56:49 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/10 18:03:21 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_obj_type	find_type(t_list *l)
 {
+	if (!l->content)
+		return (none);
 	if (!ft_strncmp("lightsource", l->content, ft_strlen("lightsource")))
 		return (light);
 	else if (!ft_strncmp("sphere", l->content, ft_strlen("sphere")))
@@ -38,8 +40,6 @@ size_t		list_len(t_list *l, t_param *p)
 
 	lnum = 0;
 	len = 0;
-	if (!l)
-		return (0);
 	while (l)
 	{
 		if (!ft_strncmp("lightsource", l->content, ft_strlen("lightsource")))
@@ -53,8 +53,10 @@ size_t		list_len(t_list *l, t_param *p)
 	}
 	p->world.nlights = lnum;
 	p->world.nobjs = len - lnum;
-	p->world.lights = (t_light_source *)malloc(sizeof(t_light_source) * lnum);
-	p->world.objs = (t_obj *)malloc(sizeof(t_obj) * p->world.nobjs);
+	if (lnum)
+		p->world.lights = (t_light_source *)malloc(sizeof(t_light_source) * lnum);
+	if (p->world.nobjs)
+		p->world.objs = (t_obj *)malloc(sizeof(t_obj) * p->world.nobjs);
 	return (len);
 }
 
@@ -117,15 +119,6 @@ float			read_fparam(char *str, char *param, float dfval)
 	char	*c;
 
 	c = (ft_strstr(str, param));
-	if (c && ((c - str) == 0 || ((c - str) > 0 && !ft_isspace(*(c - 1)))))
-		while (c && *c)
-		{
-			if ((c = (ft_strstr(c, param))) == NULL)
-				break;
-			if ((c - str) > 0 && ft_isspace(*(c - 1)))
-				break;
-			c++;
-		}
 	if (c)
 	{
 		num = ft_getfnumber(c + ft_strlen(param) + 1);
@@ -133,6 +126,19 @@ float			read_fparam(char *str, char *param, float dfval)
 			return (num);
 	}
 	return (dfval);
+}
+
+void	noramlize_2values(float *first, float *second)
+{
+	float	sum;
+
+	sum = 0;
+	sum = *first + *second;
+	if (sum != 0)
+	{
+		*first /= sum;
+		*second /= sum;
+	}
 }
 
 t_material	read_material(char *str, t_color dcolor)
@@ -145,6 +151,7 @@ t_material	read_material(char *str, t_color dcolor)
 	mat.diffuse_color.color = st!= NULL ? ft_strtol(st, &(st), 16) : dcolor.color;
 	mat.Kd = read_fparam(str, "kd", 0);
 	mat.Ks = read_fparam(str, "ks", 0);
+	noramlize_2values(&mat.Kd, &mat.Ks);
 	if (mat.Kd == 0 || mat.Ks == 0)
 	{
 		if (mat.Kd != 0)
@@ -157,7 +164,7 @@ t_material	read_material(char *str, t_color dcolor)
 			mat.Ks = 0.2;
 		}
 	}
-	mat.n = read_fparam(str, "n", 50);
+	mat.n = read_fparam(str, "num", 50);
 	return (mat);
 }
 
@@ -258,11 +265,13 @@ void		init_camera(t_list *t, t_camera *camera)
 	camera->angle = tanf(RTM_PI * 0.5f * camera->fov / 180.0f);
 }
 
-int			parse_obj(t_list *l, t_param *p, t_obj_type t)
+void		parse_obj(t_list *l, t_param *p, t_obj_type t)
 {
 	static int		i;
 	static int		j;
 
+	if (!l)
+		return ;
 	if (t == sphere)
 		init_sphere(l, p->world.objs + i++);
 	else if (t == light)
@@ -317,7 +326,7 @@ int		parse_list(t_param *p, t_list *l)
 
 void	delete_lst(void *s, size_t size)
 {
-	free(s);
+	ft_memdel(&s);
 	(void)size;
 }
 
@@ -330,6 +339,27 @@ char	*str_to_low(char *str)
 		if(ft_isupper(str[i]))
 			str[i] += 'a' - 'A';
 	return(str);
+}
+
+void	normalize_light(t_param *p)
+{
+	float			summ;
+	int				i;
+	t_light_source	*light;
+
+	summ = 0;
+	i = -1;
+	while (++i < p->world.nlights)
+	{
+		light = p->world.lights + i;
+		summ += light->intensity;
+	}
+	i = -1;
+	while (++i < p->world.nlights)
+	{
+		light = p->world.lights + i;
+		light->intensity /= summ;
+	}
 }
 
 int		read_all(int fd, t_param *p)
@@ -347,10 +377,11 @@ int		read_all(int fd, t_param *p)
 			ft_lstadd(&list, ft_lstnew(str, ft_strlen(str) + 1));
 		ft_strdel(&str);
 	}
-	if (fd < 0 || !list_len(list, p))
+	if (fd < 0 || !list || !list_len(list, p))
 		return (0);
 	if (!parse_list(p, list))
 		ft_putstr("proeb");
 	ft_lstdel(&list, delete_lst);
+	normalize_light(p);
 	return (1);
 }
