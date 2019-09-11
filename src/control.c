@@ -6,11 +6,31 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:06:16 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/10 14:40:35 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 14:18:00 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+void	all_info(t_param *p)
+{
+	int i;
+	i = -1;
+	printf("num = %d\n", p->world.nobjs);
+	while (++i < p->world.nobjs)
+	{
+		if(p->world.objs[i].type == plane)
+			out_plane(p->world.objs[i], 1);
+		else if(p->world.objs[i].type == cone)
+			out_cone(p->world.objs[i], 1);
+		else if(p->world.objs[i].type == cylinder)
+			out_cylinder(p->world.objs[i], 1);
+		else if(p->world.objs[i].type == sphere)
+			out_sphere(p->world.objs[i], 1);
+		else printf("Unknown object type");
+		printf("%s\n", " ");
+	}
+}
 
 int			mouse_press(int button, int x, int y, void *param)
 {
@@ -61,7 +81,12 @@ int			key_press(int keycode, void *param)
 		move_obj_to_camera(p->cntrld_obj, &p->camera);
 	if (keycode == KEY_ENTER)
 		file_save(param);
-	render(p);
-	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img.ptr, 0, 0);
+	if (keycode == KEY_TAB)
+		all_info(p);
+	if (keycode != KEY_ENTER && keycode != KEY_TAB)
+	{
+		render(p);
+		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img.ptr, 0, 0);
+	}
 	return (1);
 }

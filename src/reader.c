@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/11 12:57:49 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 14:26:14 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_obj_type	find_type(t_list *l)
 {
+	char *str = l->content;
 	if (!l->content)
 		return (none);
 	if (!ft_strncmp("lightsource", l->content, ft_strlen("lightsource")))
@@ -177,7 +178,7 @@ void		init_sphere(t_list *t, t_obj *p)
 	dcolor.color = 0x96d38c;
 	p->type = sphere;
 	p->data = (t_sphere *)malloc(sizeof(t_sphere));
-	((t_sphere *)(p->data))->radius = read_fparam(t->content, "radius", 1);
+	((t_sphere *)(p->data))->radius = read_fparam(t->content, "radius", 0.2);
 	read_vec3_param(t->content, p->origin, "origin",(t_vec3){0,0,3});
 	((t_sphere *)(p->data))->radius2 = ((t_sphere *)(p->data))->radius
 	* ((t_sphere *)(p->data))->radius;

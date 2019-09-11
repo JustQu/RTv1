@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:06:00 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/11 12:05:00 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 15:01:30 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	out_material(t_material material, int fd)
 	out_fparam(material.n, "num", fd);
 	out_fparam(material.Ks, "ks", fd);
 	out_fparam(material.Kd, "kd", fd);
-
+	ft_putchar_fd(';', fd);
 }
 
 void	out_plane(t_obj obj, int fd)
@@ -136,7 +136,7 @@ void	out_plane(t_obj obj, int fd)
 	ft_putstr_fd("plane: ", fd);
 	out_v3_param(obj.origin, "origin", fd);
 	out_v3_param(plane->nv, "nv", fd);
-	out_material(obj.material, fd);
+	//out_material(obj.material, fd);
 }
 
 void	out_sphere(t_obj obj, int fd)
@@ -147,7 +147,7 @@ void	out_sphere(t_obj obj, int fd)
 	ft_putstr_fd("sphere: ", fd);
 	out_v3_param(obj.origin, "origin", fd);
 	out_fparam(sphere->radius, "radius", fd);
-	out_material(obj.material, fd);
+	//out_material(obj.material, fd);
 }
 
 void	out_cone(t_obj obj, int fd)
@@ -159,7 +159,7 @@ void	out_cone(t_obj obj, int fd)
 	out_v3_param(obj.origin, "origin", fd);
 	out_v3_param(cone->dir, "direction", fd);
 	out_fparam(cone->angle, "angle", fd);
-	out_material(obj.material, fd);
+	//out_material(obj.material, fd);
 }
 
 void	out_cylinder(t_obj obj, int fd)
@@ -171,7 +171,7 @@ void	out_cylinder(t_obj obj, int fd)
 	out_v3_param(obj.origin, "origin", fd);
 	out_v3_param(cyl->direction, "direction", fd);
 	out_fparam(cyl->radius, "radius", fd);
-	out_material(obj.material, fd);
+	//out_material(obj.material, fd);
 }
 
 void	out_camera(t_camera cam, int fd)
@@ -187,7 +187,7 @@ void	output_light(t_light_source l, int fd)
 	ft_putstr_fd("lightsource: ", fd);
 	out_v3_param(l.origin, "origin", fd);
 	out_fparam(l.intensity, "intensity", fd);
-	ft_putendl_fd("", fd);
+	ft_putchar_fd('\n', fd);
 }
 
 void	output_obj(t_obj obj, int fd)
@@ -200,7 +200,7 @@ void	output_obj(t_obj obj, int fd)
 		out_cone(obj, fd);
 	else if (obj.type == cylinder)
 		out_cylinder(obj, fd);
-	ft_putendl_fd("", fd);
+	ft_putchar_fd('\n', fd);
 }
 
 void	output_data(t_param *p)
@@ -215,6 +215,7 @@ void	output_data(t_param *p)
 	while (++i < p->world.nlights)
 		output_light(p->world.lights[i], p->fd);
 	out_camera(p->camera, p->fd);
+	ft_putendl_fd("", p->fd);
 }
 
 void	file_save(t_param *p)

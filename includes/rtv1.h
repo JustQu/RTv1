@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/11 12:03:00 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 14:12:47 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,4 +257,9 @@ void	move_obj_to_camera(t_obj *obj, t_camera *camera);
 void	file_save(t_param *p);
 
 void	out_spheres(t_param *p);
+void	out_plane(t_obj obj, int fd);
+void	out_sphere(t_obj obj, int fd);
+void	out_cone(t_obj obj, int fd);
+void	out_cylinder(t_obj obj, int fd);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/11 12:55:47 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 15:12:35 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		main(int ac, char **arg)
 	read_all(fd, &p);
 	world_to_camera(&p);
 	//file_save(&p);
-	out_spheres(&p);
+	//out_spheres(&p);
 	render(&p);
 	mlx_put_image_to_window(p.mlx_ptr, p.win_ptr, p.img.ptr, 0, 0);
 	mlx_hook(p.win_ptr, 2, 0, key_press, &p);
