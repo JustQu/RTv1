@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/10 14:43:07 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 12:03:00 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,13 @@ typedef struct	s_image
 
 typedef enum	e_objs
 {
+	none,
 	sphere,
 	plane,
 	cone,
 	cylinder,
 	light,
-	camera,
-	none
+	camera
 }				t_obj_type;
 
 typedef enum	e_eqparams
@@ -201,10 +201,10 @@ typedef struct	s_cylinder
 
 typedef	struct	s_world
 {
-	t_obj		*objs;
-	int			nobjs;
+	t_obj				*objs;
+	int					nobjs;
 	t_light_source		*lights;
-	int			nlights;
+	int					nlights;
 }				t_world;
 
 /*
@@ -256,4 +256,5 @@ t_obj	*get_first_intesection(t_obj *objs, unsigned nobjs, t_ray *ray);
 void	move_obj_to_camera(t_obj *obj, t_camera *camera);
 void	file_save(t_param *p);
 
+void	out_spheres(t_param *p);
 #endif

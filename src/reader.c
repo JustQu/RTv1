@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/10 18:03:21 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 12:57:49 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ size_t		list_len(t_list *l, t_param *p)
 	len = 0;
 	while (l)
 	{
-		if (!ft_strncmp("lightsource", l->content, ft_strlen("lightsource")))
+		if ((tp = find_type(l)) == light)
 		{
 			lnum++;
 			len++;
 		}
-		else if ((tp = find_type(l)) != none && tp != camera)
+		else if (tp != none && tp != camera)
 			len++;
 		l = l->next;
 	}

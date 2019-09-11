@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:06:00 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/10 16:57:42 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/11 12:05:00 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ char	*ft_itoaf(float val, int fdigits)
 	float		fpart;
 	char		*fnum;
 	char		*tmp;
+	int			sign;
 
+	sign = val < 0 && fabs(val) < 1 ? -1 : 1;
 	nnum = ft_itoa((int)val);
 	val = val < 0 ? -val : val;
 	fpart = val - (int)val;
@@ -30,6 +32,12 @@ char	*ft_itoaf(float val, int fdigits)
 	fnum = ft_strjoin(nnum, tmp);
 	ft_strdel(&tmp);
 	ft_strdel(&nnum);
+	if (sign == -1)
+	{
+		tmp = ft_strjoin("-", fnum);
+		ft_strdel(&fnum);
+		return(tmp);
+	}
 	return (fnum);
 }
 
@@ -147,7 +155,7 @@ void	out_cone(t_obj obj, int fd)
 	t_cone	*cone;
 
 	cone = obj.data;
-	ft_putstr_fd("cone", fd);
+	ft_putstr_fd("cone: ", fd);
 	out_v3_param(obj.origin, "origin", fd);
 	out_v3_param(cone->dir, "direction", fd);
 	out_fparam(cone->angle, "angle", fd);
