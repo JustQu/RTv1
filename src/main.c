@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/11 15:12:35 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/12 17:37:59 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,62 @@ void	world_to_camera(t_param *p)
 		vec3_copy((p->world.lights + i)->origin, (p->world.lights + i)->camera_space);
 		vec3_sub((p->world.lights + i)->camera_space, p->camera.pos, (p->world.lights + i)->camera_space);
 	}
+	vec3_zero(p->camera.pos);
 }
 
-int	numplone(int n)
+void	rot_obj(t_vec3 c_s, t_vec3 rot_mat)
 {
-	return(n + 1);
+	t_vec3	rot;
+
+	if (rot_mat[oy] != 0)
+	{
+		rot[ox] = cos(rot_mat[oy]) * c_s[ox] + sin(rot_mat[oy]) * c_s[oz];
+		rot[oz] = -sin(rot_mat[oy]) * c_s[ox] + cos(rot_mat[oy]) * c_s[oz];
+		c_s[ox] = rot[ox];
+		c_s[oz] = rot[oz];
+	}
+	if (rot_mat[ox] != 0)
+	{
+		rot[oy] = cos(rot_mat[ox]) * c_s[oy] + sin(rot_mat[ox]) * c_s[oz];
+		rot[oz] = -sin(rot_mat[ox]) * c_s[oy] + cos(rot_mat[ox]) * c_s[oz];
+		c_s[oy] = rot[oy];
+		c_s[oz] = rot[oz];
+	}
+	if (rot_mat[oz] != 0)
+	{
+		rot[ox] = cos(rot_mat[oz]) * c_s[ox] - sin(rot_mat[oz]) * c_s[oy];
+		rot[oy] = sin(rot_mat[oz]) * c_s[ox] + cos(rot_mat[oz]) * c_s[oy];
+		c_s[ox] = rot[ox];
+		c_s[oy] = rot[oy];
+	}
+}
+
+void	rotate_camera(t_param *p)
+{
+	t_vec3	cam_rot;
+	int		i;
+
+	i = -1;
+	vec3_copy(p->camera.orientation, cam_rot);
+	cam_rot[ox] *= -1;
+	cam_rot[oy] *= -1;
+	cam_rot[oz] *= -1;
+	while (++i < p->world.nobjs)
+	{
+		rot_obj(p->world.objs[i].camera_space, cam_rot);
+		if (p->world.objs[i].type == cone)
+			rot_obj(((t_cone *)p->world.objs[i].data)->dir, cam_rot);
+		else if (p->world.objs[i].type == plane)
+			rot_obj(((t_plane *)p->world.objs[i].data)->nv, cam_rot);
+		else if (p->world.objs[i].type == cylinder)
+			rot_obj(((t_cylinder *)p->world.objs[i].data)->direction,
+			cam_rot);
+	}
+	i = -1;
+	while (++i < p->world.nlights)
+	{
+		rot_obj(((p->world.lights[i]).camera_space), cam_rot);
+	}
 }
 
 int		main(int ac, char **arg)
@@ -75,6 +126,7 @@ int		main(int ac, char **arg)
 	p.img.data = mlx_get_data_addr(p.img.ptr, &p.img.bpp, &p.img.size_line, &p.img.endian);
 	read_all(fd, &p);
 	world_to_camera(&p);
+	rotate_camera(&p);
 	//file_save(&p);
 	//out_spheres(&p);
 	render(&p);
