@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*   convert_to_16.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/06 04:14:34 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/13 17:47:06 by dwalda-r         ###   ########.fr       */
+/*   Created: 2019/09/13 16:08:20 by dwalda-r          #+#    #+#             */
+/*   Updated: 2019/09/13 16:12:59 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "rtv1.h"
 
-char	*ft_strtrim(char const *s)
+void	convert_to16(int val, char *num, char *ax)
 {
-	char		*p;
-	const char	*sp;
-	const char	*ep;
+	char	*tmp;
+	char	swap;
 
-	if (!s)
-		return (NULL);
-	while (ft_isspace(*s))
-		s++;
-	sp = s;
-	ep = sp;
-	while (*sp)
+	if (!val)
+		return ;
+	tmp = num;
+	while (val > 0)
 	{
-		while (*sp && !ft_isspace(*sp))
-			sp++;
-		ep = sp;
-		while (*sp && ft_isspace(*sp))
-			sp++;
+		*num = ax[val % 16];
+		num++;
+		val = val / 16;
 	}
-	sp = s;
-	if (!(p = ft_strnew(ep - s)))
-		return (NULL);
-	ft_strncpy(p, s, ep - s);
-	return (p);
+	num--;
+	while (num - tmp > 0)
+	{
+		swap = *tmp;
+		*tmp = *num;
+		*num = swap;
+		num--;
+		tmp++;
+	}
 }

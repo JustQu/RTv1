@@ -9,10 +9,3 @@ sphere: radius(1) origin(0, -1, 5) color(ffe0bd)
 sphere: radius(1) origin(0, -1, 5) color(ffe0bd)
 
 sphere: radius(0.5) origin(0, -1, 5) color(0xff0000)
-
-
-
-todo
-нормализовать интенсивность света если много источников света
-нормализовать kd и ks
-поворот камеры и управление

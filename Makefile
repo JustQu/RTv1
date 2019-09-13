@@ -7,7 +7,9 @@ CFLAGS = \
 		 -I$(LIBFTINC)\
 		 -I$(RTMATHINC)\
 		 -I$(MLXDIR)\
-		 -g
+		 -Wall\
+		 -Wextra\
+		 -Werror
 
 LDLIBS = -lft\
 		-lmlx\
@@ -34,7 +36,9 @@ INCDIR = ./includes/
 SRCSDIR = ./src/
 INCS = rtv1.h
 INCS := $(addprefix $(INCDIR), $(INCS))
-SRCS = main.c draw.c control.c sphere.c reader.c saver.c
+SRCS = main.c draw.c control.c sphere.c reader.c saver.c camera_movement.c\
+		convert_to_16.c ft_itoaf.c list_funcs.c object_initiation.c other_initiation.c\
+		other_out.c out_objects.c out_params.c param_reading.c utils.c
 OBJS = $(SRCS:.c=.o)
 TARGET = RTv1
 
@@ -70,7 +74,7 @@ fclean: clean
 	@$(RM) $(TARGET)
 	@make -C $(LIBFTDIR) fclean
 	@make -C $(RTMATHDIR) fclean
-	@make -C $(MLXDIR) clean
+	@make -C $(MLXDIR) fclean
 
 .PHONY: re
 re:	fclean all

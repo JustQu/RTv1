@@ -22,4 +22,4 @@ cylinder: origin(-2.500, 0.500, 3.000) direction(0.000, 0.000, 1.000) radius(0.3
 cylinder: origin(2.500, 0.500, 3.000) direction(0.000, 0.000, 1.000) radius(0.300)
 lightsource: origin(0.000, 2.000, 0.000) intensity(0.500)
 lightsource: origin(1.000, 0.000, 5.000) intensity(0.500)
-camera: position(-2.000, 0.000, 0.000) orientation(0.000, 0.3, 0.0) fov(45.000)
+camera: origin(-2.000, 0.000, 0.000) orientation(0.000, 0.3, 0.0) fov(45.000)

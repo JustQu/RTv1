@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/11 14:12:47 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/13 18:13:24 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,6 @@ typedef int		t_bool;
 # define TRUE	1
 # define FALSE	0
 
-typedef float	t_vec2[2];
-typedef float	t_vec3[3];
-typedef float	t_vec4[4];
-typedef float	t_mat3[3][3];
-typedef float	t_mat4[4][4];
-typedef struct	s_obj	t_obj;
-typedef void	(*t_initf)(char **str, t_obj *obj);
-
 typedef union	u_color
 {
 	unsigned char	bgra[4];
@@ -123,42 +115,30 @@ typedef enum	e_eqparams
 
 typedef struct	s_material
 {
-	t_color		diffuse_color;
-	float		reflect_coef;
-	float		refract_coef;
-    float		Kd; // phong model diffuse weight
-    float		Ks;// phong model specular weight
-    float		n;   // phong specular exponent
+	t_color		diff_color;
+	float		Kd;
+	float		Ks;
+	float		n;
 }				t_material;
 
 typedef struct	s_light_source
 {
 	t_vec4		origin;
 	float		intensity;
-	t_vec4		camera_space;
+	t_vec4		c_s;
 }				t_light_source;
-
-/*
-**
-*/
 
 typedef struct	s_obj
 {
 	t_obj_type	type;
-	t_vec4		camera_space;
-	t_vec4		origin; /*world coordiantes */
+	t_vec4		c_s;
+	t_vec4		origin;
 	t_vec4		hit_point;
-	t_vec4		surface_normal;
-	t_material	material;
+	t_vec4		surf_normal;
+	t_material	mat;
 	float		t;
-	void		*data;//object type specific information
+	void		*data;
 }				t_obj;
-
-/*
-** s_ray store information about rays
-** point - coordinate of plane view where ray starts
-** vec - direction of ray at point position
-*/
 
 typedef struct	s_ray
 {
@@ -187,54 +167,31 @@ typedef struct	s_cone
 
 typedef struct	s_cylinder
 {
-	t_vec4		direction;
+	t_vec4		dir;
 	float		radius;
 }				t_cylinder;
 
-/*
-** we store here all our objs
-** objs - all object in world
-** nobjs - total number of objs
-** lights - all light sources in world
-** nlights - total number if light sources
-*/
-
 typedef	struct	s_world
 {
-	t_obj				*objs;
-	int					nobjs;
-	t_light_source		*lights;
-	int					nlights;
+	t_obj			*objs;
+	int				nobjs;
+	t_light_source	*lights;
+	int				nlights;
 }				t_world;
-
-/*
-** s_camera store information about camera that we control
-** pos - current postion of camera
-** orientation - direction of camera
-*/
 
 typedef struct	s_camera
 {
-	t_vec4		pos;
-	t_vec4		orientation;
+	t_vec4		origin;
+	t_vec4		orient;
 	t_mat4		inv_rot;
 	int			fov;
 	float		near_z;
 	float		far_z;
-	float		inv_width;
-	float		inv_height;
-	float		aspectratio;
+	float		inv_w;
+	float		inv_h;
+	float		ratio;
 	float		angle;
 }				t_camera;
-
-/*
-** s_param store all information that we need in our program
-** mlx_ptr - the connection identifier
-** win_ptr - window identifier
-** img - store information about displaying image
-** world - store information about all objs and light sources
-** camera - store information about controlled camera
-*/
 
 typedef struct	s_param
 {
@@ -247,19 +204,54 @@ typedef struct	s_param
 	int			fd;
 }				t_param;
 
-int		key_press(int keycode, void *param);
-void	render(t_param *p);
-t_bool	sphere_intersection(t_obj *obj, t_ray *ray);
-int		read_all(int fd, t_param *p);
-int		mouse_press(int button, int x, int y, void *param);
-t_obj	*get_first_intesection(t_obj *objs, unsigned nobjs, t_ray *ray);
-void	move_obj_to_camera(t_obj *obj, t_camera *camera);
-void	file_save(t_param *p);
-
-void	out_spheres(t_param *p);
-void	out_plane(t_obj obj, int fd);
-void	out_sphere(t_obj obj, int fd);
-void	out_cone(t_obj obj, int fd);
-void	out_cylinder(t_obj obj, int fd);
+int			key_press(int keycode, void *param);
+void		render(t_param *p);
+t_bool		sphere_intersection(t_obj *obj, t_ray *ray);
+int			read_all(int fd, t_param *p);
+int			mouse_press(int button, int x, int y, void *param);
+t_obj		*get_first_intesection(t_obj *objs, unsigned nobjs, t_ray *ray);
+void		file_save(t_param *p);
+void		world_to_camera(t_param *p);
+void		rotate_camera(t_param *p);
+void		move_obj_to_camera(t_obj *obj, t_camera *camera);
+void		init_sphere(t_list *t, t_obj *p);
+void		init_plane(t_list *t, t_obj *p);
+void		init_cone(t_list *t, t_obj *p);
+void		init_cylinder(t_list *t, t_obj *p);
+void		read_vec3_param(char *str, t_vec3 v3param,
+			char *param, t_vec3 v3def);
+float		read_fparam(char *str, char *param, float dfval);
+void		init_light(t_list *t, t_light_source *light);
+void		init_camera(t_list *t, t_camera *camera);
+void		set_default_camera(t_camera *camera);
+int			parse_list(t_param *p, t_list *l);
+void		delete_lst(void *s, size_t size);
+size_t		list_len(t_list *l, t_param *p);
+t_obj_type	find_type(t_list *l);
+char		*str_to_low(char *str);
+void		normalize_light(t_param *p);
+t_material	read_material(char *str, t_color dcolor);
+char		*ft_itoaf(float val, int fdigits);
+void		print_fnumber(float val, int fd, int fdigits);
+void		out_fparam(float val, char *param, int fd);
+void		out_v3_param(t_vec3 val, char *param, int fd);
+void		convert_to16(int val, char *num, char *ax);
+void		out_plane(t_obj obj, int fd);
+void		out_sphere(t_obj obj, int fd);
+void		out_cone(t_obj obj, int fd);
+void		out_cylinder(t_obj obj, int fd);
+void		output_obj(t_obj obj, int fd);
+void		out_camera(t_camera cam, int fd);
+void		output_light(t_light_source l, int fd);
+void		output_data(t_param *p);
+void		parse_obj(t_list *l, t_param *p, t_obj_type t);
+t_bool		cylinder_intersection(t_obj *obj, t_ray *ray);
+t_bool		plane_intersection(t_obj *obj, t_ray *ray);
+t_bool		cone_intersection(t_obj *obj, t_ray *ray);
+void		get_sphere_normal(t_obj *obj, t_ray *ray);
+void		get_plane_normal(t_obj *obj, t_ray *ray);
+void		get_cone_normal(t_obj *obj, t_ray *ray);
+void		get_cylinder_normal(t_obj *obj, t_ray *ray);
+void		get_surface_normal(t_obj *obj, t_ray *ray);
 
 #endif
