@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 15:56:50 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:24:55 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:15:32 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ size_t		list_len(t_list *l, t_param *p)
 int			parse_list(t_param *p, t_list *l)
 {
 	t_obj_type	t;
-	t_sphere	*sp;
 	int			camflag;
 
 	camflag = 0;

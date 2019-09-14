@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 15:35:10 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:13:34 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:16:10 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void		init_sphere(t_list *t, t_obj *p)
 {
-	float		r;
-	t_vec3		origin;
 	t_color		dcolor;
 
 	dcolor.color = 0x96d38c;
@@ -25,7 +23,7 @@ void		init_sphere(t_list *t, t_obj *p)
 	read_vec3_param(t->content, p->origin, "origin", (t_vec3){0, 0, 3});
 	((t_sphere *)(p->data))->radius2 = ((t_sphere *)(p->data))->radius
 	* ((t_sphere *)(p->data))->radius;
-	p->mat = read_material(t->content, dcolor);
+	p->mat = read_material(dcolor);
 }
 
 void		init_plane(t_list *t, t_obj *p)
@@ -39,7 +37,7 @@ void		init_plane(t_list *t, t_obj *p)
 	"nv", (t_vec3){0, -1, 0});
 	vec3_normalize(((t_plane *)p->data)->nv);
 	read_vec3_param(t->content, p->origin, "origin", (t_vec3){0, -1, 0});
-	p->mat = read_material(t->content, dcolor);
+	p->mat = read_material(dcolor);
 }
 
 void		init_cone(t_list *t, t_obj *p)
@@ -57,7 +55,7 @@ void		init_cone(t_list *t, t_obj *p)
 	((t_cone *)p->data)->k = tan(((t_cone *)p->data)->angle);
 	((t_cone *)p->data)->k2 = 1 + ((t_cone *)p->data)->k *
 	((t_cone *)p->data)->k;
-	p->mat = read_material(t->content, dcolor);
+	p->mat = read_material(dcolor);
 }
 
 void		init_cylinder(t_list *t, t_obj *p)
@@ -72,5 +70,5 @@ void		init_cylinder(t_list *t, t_obj *p)
 	"direction", (t_vec3){0, 1, 0});
 	vec3_normalize(((t_cylinder *)p->data)->dir);
 	((t_cylinder *)p->data)->radius = read_fparam(t->content, "radius", 0.3);
-	p->mat = read_material(t->content, dcolor);
+	p->mat = read_material(dcolor);
 }

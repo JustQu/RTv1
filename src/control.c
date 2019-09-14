@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:06:16 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:13:00 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:13:23 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int			mouse_press(int button, int x, int y, void *param)
 {
 	t_ray	ray;
 	t_param	*p;
-	t_obj	*obj;
 
 	p = param;
 	if (button == 1)

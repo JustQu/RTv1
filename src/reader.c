@@ -6,19 +6,19 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:12:43 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:13:59 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_material	read_material(char *str, t_color dcolor)
+t_material	read_material(t_color dcolor)
 {
 	t_material	mat;
 
 	mat.diff_color.color = dcolor.color;
-	mat.Kd = 0.8;
-	mat.Ks = 0.2;
+	mat.kd = 0.8;
+	mat.ks = 0.2;
 	mat.n = 50;
 	return (mat);
 }

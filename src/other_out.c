@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 16:10:50 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:12:50 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:16:32 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	output_light(t_light_source l, int fd)
 void	output_data(t_param *p)
 {
 	int		i;
-	t_obj	*obj;
 
 	i = -1;
 	while (++i < p->world.nobjs)
