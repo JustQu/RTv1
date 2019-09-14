@@ -6,7 +6,7 @@
 /*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:12:56 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:46:22 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		catch_errors(t_param *p, char **arg, int ac)
 	fd = open(arg[1], O_RDONLY);
 	if (ac != 2)
 	{
-		ft_putendl_fd("usage: ./RTv1 [file_name]", 1);
+		ft_putendl_fd("usage: ./RTv1 file_name", 1);
 		return (0);
 	}
 	if (fd < 0)

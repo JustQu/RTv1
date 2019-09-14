@@ -1,21 +1,28 @@
 CC = gcc
 RM = rm -rf
+UNAME_S := $(shell uname -s)
 
 CFLAGS = \
 		 -I.\
 		 -I$(INCDIR)\
 		 -I$(LIBFTINC)\
 		 -I$(RTMATHINC)\
-		 -I$(MLXDIR)\
+		 -I$(MLXINC)\
 		 -Wall\
-		 -Wextra\
-		 -Werror
+		 -Werror\
+		 -Wextra
 
-LDLIBS = -lft\
+LDLIBS = -lm\
+		-lft\
 		-lmlx\
-		-lrtmath\
-		-framework OpenGL\
-		-framework AppKit
+		-lrtmath
+
+ifeq ($(UNAME_S),Linux)
+	LDLIBS += -L/usr/X11/lib -lXext -lX11
+endif
+ifeq ($(UNAME_S), Darwin)
+	LDLIBS += -framework OpenGL -framework AppKit
+endif
 
 LDFLAGS	= \
 		-L$(LIBFTDIR)\
@@ -26,7 +33,8 @@ LIBFT = libft.a
 LIBFTDIR = ./libft
 LIBFTINC = $(LIBFTDIR)/includes
 
-MLXDIR = ./minilibx_macos
+MLXDIR = ./minilibx
+MLXINC = ./minilibx/include
 
 RTMATH = rtmath.a
 RTMATHDIR = ./rtmath
@@ -75,7 +83,7 @@ fclean: clean
 	@$(RM) $(TARGET)
 	@make -C $(LIBFTDIR) fclean
 	@make -C $(RTMATHDIR) fclean
-	@make -C $(MLXDIR) fclean
+	@make -C $(MLXDIR) clean
 
 .PHONY: re
 re:	fclean all
