@@ -24,28 +24,28 @@ SRC = $(addprefix ft_,\
    putnbr_fd.c lstnew.c lstdelone.c lstdel.c lstadd.c lstiter.c lstmap.c isspace.c\
    strndup.c wc.c strtol.c swap.c isbase.c) get_next_line.c
 CFLAGS = -Wall -Wextra -Werror
-TARGET = libft.a
+NAME = libft.a
 OBJ = $(SRC:.c=.o)
 
 .PHONY: all
 all : $(TARGET)
 
-$(TARGET): $(OBJ)
-	@ar rc $(TARGET) $^
-	@echo '$(TARGET) created'
+$(NAME): $(OBJ)
+	@ar rc $(NAME) $^
+	@echo '$(NAME) created'
 
 $(OBJ): %.o: %.c $(INC_DIR)libft.h
 	@$(CC) $(CFLAGS) -c $*.c -I $(INC_DIR)
 
 .PHONY: clean
 clean:
-	@echo 'deliting $(TARGET) object files'
+	@echo 'deliting $(NAME) object files'
 	@rm -rf $(OBJ)
 
 .PHONY: fclean
 fclean: clean
-	@echo 'deliting $(TARGET)'
-	@rm -f $(TARGET)
+	@echo 'deliting $(NAME)'
+	@rm -f $(NAME)
 
 .PHONY: re
 re: fclean all
