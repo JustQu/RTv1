@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 17:24:00 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 18:21:42 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ static t_color	calc_color(t_obj *obj, float diff_light, float spec_light)
 {
 	t_color	color;
 
-	color.bgra[0] = obj->mat.diff_color.bgra[0] * (diff_light *
-	obj->mat.kd + spec_light * obj->mat.ks);
-	color.bgra[1] = obj->mat.diff_color.bgra[1] * (diff_light *
-	obj->mat.kd + spec_light * obj->mat.ks);
-	color.bgra[2] = obj->mat.diff_color.bgra[2] * (diff_light *
-	obj->mat.kd + spec_light * obj->mat.ks);
-	color.bgra[3] = obj->mat.diff_color.bgra[3] * (diff_light *
-	obj->mat.kd + spec_light * obj->mat.ks);
+	color.bgra[0] = clamp(obj->mat.diff_color.bgra[0] * (diff_light *
+										obj->mat.kd + spec_light * obj->mat.ks), 0, 255);
+	color.bgra[1] = clamp(obj->mat.diff_color.bgra[1] * (diff_light *
+										obj->mat.kd + spec_light * obj->mat.ks), 0, 255);
+	color.bgra[2] = clamp(obj->mat.diff_color.bgra[2] * (diff_light *
+										obj->mat.kd + spec_light * obj->mat.ks), 0, 255);
+	color.bgra[3] = clamp(obj->mat.diff_color.bgra[3] * (diff_light *
+										obj->mat.kd + spec_light * obj->mat.ks), 0, 255);
 	return (color);
 }
 

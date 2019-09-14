@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    makefile                                           :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+         #
+#    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
-#    Updated: 2019/09/14 15:55:57 by dwalda-r         ###   ########.fr        #
+#    Updated: 2019/09/14 18:44:01 by dmelessa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,19 +32,19 @@ all : $(TARGET)
 
 $(TARGET): $(OBJ)
 	@ar rc $(TARGET) $^
-	@echo 'libft.a created'
+	@echo '$(TARGET) created'
 
 $(OBJ): %.o: %.c $(INC_DIR)libft.h
 	@$(CC) $(CFLAGS) -c $*.c -I $(INC_DIR)
 
 .PHONY: clean
 clean:
-	@echo 'deliting object files'
+	@echo 'deliting $(TARGET) object files'
 	@rm -rf $(OBJ)
 
 .PHONY: fclean
 fclean: clean
-	@echo 'deliting libft.a'
+	@echo 'deliting $(TARGET)'
 	@rm -f $(TARGET)
 
 .PHONY: re

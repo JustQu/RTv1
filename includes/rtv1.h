@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 17:09:02 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 18:31:19 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,7 @@ typedef enum	e_objs
 
 typedef enum	e_eqparams
 {
-	a,
-	b,
-	c,
-	d
+	a, b, c, d
 }				t_eqparams;
 
 typedef struct	s_material
@@ -204,57 +201,64 @@ typedef struct	s_param
 	int			fd;
 }				t_param;
 
-int				key_press(int keycode, void *param);
 void			render(t_param *p);
-t_bool			sphere_intersection(t_obj *obj, t_ray *ray);
-int				read_all(int fd, t_param *p);
-int				mouse_press(int button, int x, int y, void *param);
+t_color			trace_ray(t_param *p, t_ray *ray);
 t_obj			*get_intersection(t_obj *objs, int nobjs, t_ray *ray);
-void			file_save(t_param *p);
-void			world_to_camera(t_param *p);
-void			rotate_camera(t_param *p);
-void			move_obj_to_camera(t_obj *obj, t_camera *camera);
-void			init_sphere(t_list *t, t_obj *p);
-void			init_plane(t_list *t, t_obj *p);
-void			init_cone(t_list *t, t_obj *p);
-void			init_cylinder(t_list *t, t_obj *p);
-void			read_vec3_param(char *str, t_vec3 v3param,
-				char *param, t_vec3 v3def);
-float			read_fparam(char *str, char *param, float dfval);
-void			init_light(t_list *t, t_light_source *light);
-void			init_camera(t_list *t, t_camera *camera);
-void			set_default_camera(t_camera *camera);
-int				parse_list(t_param *p, t_list *l);
-void			delete_lst(void *s, size_t size);
-size_t			list_len(t_list *l, t_param *p);
-t_obj_type		find_type(t_list *l);
-char			*str_to_low(char *str);
-void			normalize_light(t_param *p);
-t_material		read_material(t_color dcolor);
-char			*ft_itoaf(float val, int fdigits);
-void			print_fnumber(float val, int fd, int fdigits);
-void			out_fparam(float val, char *param, int fd);
-void			out_v3_param(t_vec3 val, char *param, int fd);
-void			convert_to16(int val, char *num, char *ax);
-void			out_plane(t_obj obj, int fd);
-void			out_sphere(t_obj obj, int fd);
-void			out_cone(t_obj obj, int fd);
-void			out_cylinder(t_obj obj, int fd);
-void			output_obj(t_obj obj, int fd);
-void			out_camera(t_camera cam, int fd);
-void			output_light(t_light_source l, int fd);
-void			output_data(t_param *p);
-void			parse_obj(t_list *l, t_param *p, t_obj_type t);
+t_bool			sphere_intersection(t_obj *obj, t_ray *ray);
 t_bool			cylinder_intersection(t_obj *obj, t_ray *ray);
 t_bool			plane_intersection(t_obj *obj, t_ray *ray);
 t_bool			cone_intersection(t_obj *obj, t_ray *ray);
+t_color			get_point_color(t_world *world, t_obj *obj, t_ray *ray, int i);
+t_ray			cast_shadow_ray(t_vec3 start, t_light_source *light);
 void			get_sphere_normal(t_obj *obj);
 void			get_plane_normal(t_obj *obj);
 void			get_cone_normal(t_obj *obj);
 void			get_cylinder_normal(t_obj *obj);
 void			get_surface_normal(t_obj *obj);
-t_ray			cast_shadow_ray(t_vec3 start, t_light_source *light);
-t_color			trace_ray(t_param *p, t_ray *ray);
-t_color			get_point_color(t_world *world, t_obj *obj, t_ray *ray, int i);
+
+int				mouse_press(int button, int x, int y, void *param);
+int				key_press(int keycode, void *param);
+
+void			world_to_camera(t_param *p);
+void			rotate_camera(t_param *p);
+void			move_obj_to_camera(t_obj *obj, t_camera *camera);
+
+void			init_sphere(t_list *t, t_obj *p);
+void			init_plane(t_list *t, t_obj *p);
+void			init_cone(t_list *t, t_obj *p);
+void			init_cylinder(t_list *t, t_obj *p);
+void			init_light(t_list *t, t_light_source *light);
+void			init_camera(t_list *t, t_camera *camera);
+
+void			set_default_camera(t_camera *camera);
+int				read_all(int fd, t_param *p);
+void			read_vec3_param(char *str, t_vec3 v3param,
+				char *param, t_vec3 v3def);
+float			read_fparam(char *str, char *param, float dfval);
+void			parse_obj(t_list *l, t_param *p, t_obj_type t);
+t_material		read_material(t_color dcolor);
+
+int				parse_list(t_param *p, t_list *l);
+size_t			list_len(t_list *l, t_param *p);
+void			delete_lst(void *s, size_t size);
+
+void			normalize_light(t_param *p);
+t_obj_type		find_type(t_list *l);
+char			*str_to_low(char *str);
+void			convert_to16(int val, char *num, char *ax);
+char			*ft_itoaf(float val, int fdigits);
+
+void			file_save(t_param *p);
+void			print_fnumber(float val, int fd, int fdigits);
+void			out_fparam(float val, char *param, int fd);
+void			out_v3_param(t_vec3 val, char *param, int fd);
+void			out_plane(t_obj obj, int fd);
+void			out_sphere(t_obj obj, int fd);
+void			out_cone(t_obj obj, int fd);
+void			out_cylinder(t_obj obj, int fd);
+void			out_camera(t_camera cam, int fd);
+void			output_obj(t_obj obj, int fd);
+void			output_light(t_light_source l, int fd);
+void			output_data(t_param *p);
 
 #endif

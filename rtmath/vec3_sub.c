@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 22:18:17 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/14 16:21:54 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 18:48:47 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	vec3_subs(t_vec3 v, float s, t_vec3 dest)
 {
 	dest[0] = v[0] - s;
-	dest[1] = v[1] - s;
+	dest[1] = v[1] + s;
 	dest[2] = v[2] - s;
 }
 

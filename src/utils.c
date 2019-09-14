@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 15:59:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:12:38 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 18:22:32 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,7 @@
 
 void		normalize_light(t_param *p)
 {
-	float			summ;
-	int				i;
-	t_light_source	*light;
-
-	summ = 0;
-	i = -1;
-	while (++i < p->world.nlights)
-	{
-		light = p->world.lights + i;
-		summ += light->intensity;
-	}
-	i = -1;
-	while (++i < p->world.nlights)
-	{
-		light = p->world.lights + i;
-		light->intensity /= summ;
-	}
+	(void)p;
 }
 
 char		*str_to_low(char *str)

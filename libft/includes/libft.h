@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 16:59:08 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/13 16:02:47 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 18:32:39 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <unistd.h>
 
 # define BUFF_SIZE 32
-# define ABS(x) (((x) < 0) ? (-(x)) : (x))
 
 typedef struct s_list	t_list;
 struct			s_list

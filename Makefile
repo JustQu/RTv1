@@ -52,7 +52,7 @@ OBJS = $(SRCS:.c=.o)
 TARGET = RTv1
 
 .PHONY: all
-all: $(LIBFT) $(RTMATH) $(TARGET)
+all: $(TARGET)
 
 $(LIBFT):
 	make -C $(LIBFTDIR)
@@ -61,7 +61,7 @@ $(LIBFT):
 $(RTMATH):
 	@make -C $(RTMATHDIR)
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) $(LIBFT) $(RTMATH)
 	@echo 'making executable'
 	@$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 	@echo DONE!
