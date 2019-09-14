@@ -6,7 +6,7 @@
 #    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
-#    Updated: 2019/09/07 19:20:10 by dmelessa         ###   ########.fr        #
+#    Updated: 2019/09/14 16:06:29 by dmelessa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC = mat3_init.c mat3_inv.c mat3_mul.c mat3_transpose.c mat4_copy.c mat4_init.c
 INCS = rtmath.h mat3.h mat4.h rt_types.h utils.h vec3.h vec4.h
 INCS := $(addprefix $(INCDIR), $(INCS))
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 TARGET = librtmath.a
 OBJ = $(SRC:.c=.o)
 

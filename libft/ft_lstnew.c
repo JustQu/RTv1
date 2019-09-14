@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 04:47:48 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/02/06 09:00:06 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/10 18:03:23 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 	else
 	{
 		if (!(node->content = malloc(content_size)))
+		{
+			free(node);
 			return (NULL);
+		}
 		ft_memcpy(node->content, content, content_size);
 		node->content_size = content_size;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/07 18:00:27 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:18:51 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include "get_next_line.h"
+# include "libft.h"
 # include <math.h>
 # include "rtmath.h"
 
@@ -71,20 +71,13 @@
 # define KEY_ESC 53
 # define KEY_TAB 48
 
+# define BACKGROUND 0x303841
 # define WIDTH 1920
 # define HEIGHT 1080
 
 typedef int		t_bool;
 # define TRUE	1
 # define FALSE	0
-
-typedef float	t_vec2[2];
-typedef float	t_vec3[3];
-typedef float	t_vec4[4];
-typedef float	t_mat3[3][3];
-typedef float	t_mat4[4][4];
-typedef struct	s_obj	t_obj;
-typedef void	(*t_initf)(char **str, t_obj *obj);
 
 typedef union	u_color
 {
@@ -101,14 +94,15 @@ typedef struct	s_image
 	int			endian;
 }				t_image;
 
-typedef enum	e_objects
+typedef enum	e_objs
 {
+	none,
 	sphere,
 	plane,
 	cone,
 	cylinder,
 	light,
-	none
+	camera
 }				t_obj_type;
 
 typedef enum	e_eqparams
@@ -121,41 +115,30 @@ typedef enum	e_eqparams
 
 typedef struct	s_material
 {
-	t_color		diffuse_color;
-	float		reflect_coef;
-	float		refract_coef;
-    float		Kd; // phong model diffuse weight 
-    float		Ks;// phong model specular weight 
-    float		n;   // phong specular exponent 
+	t_color		diff_color;
+	float		kd;
+	float		ks;
+	float		n;
 }				t_material;
 
 typedef struct	s_light_source
 {
 	t_vec4		origin;
 	float		intensity;
+	t_vec4		c_s;
 }				t_light_source;
-
-/*
-**
-*/
 
 typedef struct	s_obj
 {
 	t_obj_type	type;
-	t_vec4		camera_space;
-	t_vec4		origin; /*world coordiantes */
+	t_vec4		c_s;
+	t_vec4		origin;
 	t_vec4		hit_point;
-	t_vec4		surface_normal;
-	t_material	material;
+	t_vec4		surf_normal;
+	t_material	mat;
 	float		t;
-	void		*data;//object type specific information
+	void		*data;
 }				t_obj;
-
-/*
-** s_ray store information about rays
-** point - coordinate of plane view where ray starts
-** vec - direction of ray at point position
-*/
 
 typedef struct	s_ray
 {
@@ -184,54 +167,31 @@ typedef struct	s_cone
 
 typedef struct	s_cylinder
 {
-	t_vec4		direction;
+	t_vec4		dir;
 	float		radius;
-	float		m;
 }				t_cylinder;
-
-/*
-** we store here all our objects
-** objects - all object in world
-** nobjects - total number of objects
-** lights - all light sources in world
-** nlights - total number if light sources
-*/
 
 typedef	struct	s_world
 {
-	t_obj		*objects;
-	int			nobjects;
-	t_light_source		*lights;
-	int			nlights;
+	t_obj			*objs;
+	int				nobjs;
+	t_light_source	*lights;
+	int				nlights;
 }				t_world;
-
-/*
-** s_camera store information about camera that we control
-** pos - current postion of camera
-** orientation - direction of camera
-*/
 
 typedef struct	s_camera
 {
-	t_vec4		pos;
-	t_vec4		orientation;
+	t_vec4		origin;
+	t_vec4		orient;
+	t_mat4		inv_rot;
 	int			fov;
 	float		near_z;
 	float		far_z;
-	float		inv_width;
-	float		inv_height;
-	float		aspectratio;
+	float		inv_w;
+	float		inv_h;
+	float		ratio;
 	float		angle;
 }				t_camera;
-
-/*
-** s_param store all information that we need in our program
-** mlx_ptr - the connection identifier
-** win_ptr - window identifier
-** img - store information about displaying image
-** world - store information about all objects and light sources
-** camera - store information about controlled camera
-*/
 
 typedef struct	s_param
 {
@@ -240,10 +200,61 @@ typedef struct	s_param
 	t_image		img;
 	t_world		world;
 	t_camera	camera;
+	t_obj		*cntrld_obj;
+	int			fd;
 }				t_param;
 
-int		key_press(int keycode, void *param);
-void	render(t_param *p);
-t_bool	sphere_intersection(t_obj *obj, t_ray *ray);
+int				key_press(int keycode, void *param);
+void			render(t_param *p);
+t_bool			sphere_intersection(t_obj *obj, t_ray *ray);
+int				read_all(int fd, t_param *p);
+int				mouse_press(int button, int x, int y, void *param);
+t_obj			*get_first_intesection(t_obj *objs, int nobjs, t_ray *ray);
+void			file_save(t_param *p);
+void			world_to_camera(t_param *p);
+void			rotate_camera(t_param *p);
+void			move_obj_to_camera(t_obj *obj, t_camera *camera);
+void			init_sphere(t_list *t, t_obj *p);
+void			init_plane(t_list *t, t_obj *p);
+void			init_cone(t_list *t, t_obj *p);
+void			init_cylinder(t_list *t, t_obj *p);
+void			read_vec3_param(char *str, t_vec3 v3param,
+				char *param, t_vec3 v3def);
+float			read_fparam(char *str, char *param, float dfval);
+void			init_light(t_list *t, t_light_source *light);
+void			init_camera(t_list *t, t_camera *camera);
+void			set_default_camera(t_camera *camera);
+int				parse_list(t_param *p, t_list *l);
+void			delete_lst(void *s, size_t size);
+size_t			list_len(t_list *l, t_param *p);
+t_obj_type		find_type(t_list *l);
+char			*str_to_low(char *str);
+void			normalize_light(t_param *p);
+t_material		read_material(t_color dcolor);
+char			*ft_itoaf(float val, int fdigits);
+void			print_fnumber(float val, int fd, int fdigits);
+void			out_fparam(float val, char *param, int fd);
+void			out_v3_param(t_vec3 val, char *param, int fd);
+void			convert_to16(int val, char *num, char *ax);
+void			out_plane(t_obj obj, int fd);
+void			out_sphere(t_obj obj, int fd);
+void			out_cone(t_obj obj, int fd);
+void			out_cylinder(t_obj obj, int fd);
+void			output_obj(t_obj obj, int fd);
+void			out_camera(t_camera cam, int fd);
+void			output_light(t_light_source l, int fd);
+void			output_data(t_param *p);
+void			parse_obj(t_list *l, t_param *p, t_obj_type t);
+t_bool			cylinder_intersection(t_obj *obj, t_ray *ray);
+t_bool			plane_intersection(t_obj *obj, t_ray *ray);
+t_bool			cone_intersection(t_obj *obj, t_ray *ray);
+void			get_sphere_normal(t_obj *obj);
+void			get_plane_normal(t_obj *obj);
+void			get_cone_normal(t_obj *obj);
+void			get_cylinder_normal(t_obj *obj);
+void			get_surface_normal(t_obj *obj);
+t_ray			cast_shadow_ray(t_vec3 start, t_light_source *light);
+t_color			trace_ray(t_param *p, t_ray *ray);
+t_color			get_point_color(t_world *world, t_obj *obj, t_ray *ray, int i);
 
 #endif

@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   saver.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/28 20:47:22 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/02 20:46:51 by dmelessa         ###   ########.fr       */
+/*   Created: 2019/09/10 10:06:00 by dwalda-r          #+#    #+#             */
+/*   Updated: 2019/09/13 16:13:29 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_GET_NEXT_LINE_H
-# define FT_GET_NEXT_LINE_H
+#include "rtv1.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <limits.h>
-# include "libft.h"
+void	file_save(t_param *p)
+{
+	int	fd;
 
-# define BUFF_SIZE 32
-
-int		get_next_line(const int fd, char **line);
-
-#endif
+	fd = open("save", O_RDWR | O_CREAT | O_TRUNC, 0640);
+	p->fd = fd;
+	output_data(p);
+	close(fd);
+}
