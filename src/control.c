@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   control.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:06:16 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 15:13:23 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 17:10:59 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int			mouse_press(int button, int x, int y, void *param)
 	p = param;
 	if (button == 1)
 	{
-		vec4_copy((t_vec4){1, 1, 1, 1}, ray.vec);
+		vec4_one(ray.vec);
 		vec3_zero(ray.point);
-		ray.vec[oy] = (1 - 2 * ((y + 0.5) * p->camera.inv_h)) *
-		p->camera.angle;
-		ray.vec[ox] = (2 * ((x + 0.5) * p->camera.inv_w) - 1) *
-		p->camera.angle * p->camera.ratio;
+		ray.vec[oy] = (1.0f - 2.0f * ((y + 0.5f) * p->camera.inv_h)) *
+																p->camera.angle;
+		ray.vec[ox] = (2.0f * ((x + 0.5f) * p->camera.inv_w) - 1.0f) *
+											p->camera.angle * p->camera.ratio;
 		normalize(ray.vec);
-		p->cntrld_obj = get_first_intesection(p->world.objs,
+		p->cntrld_obj = get_intersection(p->world.objs,
 		p->world.nobjs, &ray);
 	}
 	return (0);
@@ -43,17 +43,17 @@ int			close_w(void *param)
 void		move_obj_key_press(int keycode, t_param *p)
 {
 	if (keycode == KEY_W && p->cntrld_obj)
-		p->cntrld_obj->origin[oz] += 0.5;
+		p->cntrld_obj->origin[oz] += 0.5f;
 	if (keycode == KEY_S && p->cntrld_obj)
-		p->cntrld_obj->origin[oz] -= 0.5;
+		p->cntrld_obj->origin[oz] -= 0.5f;
 	if (keycode == KEY_A && p->cntrld_obj)
-		p->cntrld_obj->origin[ox] -= 0.5;
+		p->cntrld_obj->origin[ox] -= 0.5f;
 	if (keycode == KEY_D && p->cntrld_obj)
-		p->cntrld_obj->origin[ox] += 0.5;
+		p->cntrld_obj->origin[ox] += 0.5f;
 	if (keycode == KEY_UP && p->cntrld_obj)
-		p->cntrld_obj->origin[oy] += 0.5;
+		p->cntrld_obj->origin[oy] += 0.5f;
 	if (keycode == KEY_DOWN && p->cntrld_obj)
-		p->cntrld_obj->origin[oy] -= 0.5;
+		p->cntrld_obj->origin[oy] -= 0.5f;
 	if (p->cntrld_obj)
 		move_obj_to_camera(p->cntrld_obj, &p->camera);
 }

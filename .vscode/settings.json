@@ -19,7 +19,11 @@
 		"bitset": "c",
 		"chrono": "c",
 		"unordered_map": "c",
-		"hashtable": "c"
+		"hashtable": "c",
+		"array": "c",
+		"string_view": "c",
+		"string": "c",
+		"vector": "c"
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",

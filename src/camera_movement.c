@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera_movement.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 15:19:57 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:13:02 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 17:11:39 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void		rotate_camera(t_param *p)
 
 	i = -1;
 	vec3_copy(p->camera.orient, cam_rot);
-	cam_rot[ox] *= -1;
-	cam_rot[oy] *= -1;
-	cam_rot[oz] *= -1;
+	cam_rot[ox] *= -1.0f;
+	cam_rot[oy] *= -1.0f;
+	cam_rot[oz] *= -1.0f;
 	while (++i < p->world.nobjs)
 	{
 		rot_obj_to_cam(p->world.objs[i].c_s, cam_rot);

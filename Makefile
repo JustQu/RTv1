@@ -2,7 +2,7 @@ CC = gcc
 RM = rm -rf
 UNAME_S := $(shell uname -s)
 
-CFLAGS = \
+CFLAGS = -O3\
 		 -I.\
 		 -I$(INCDIR)\
 		 -I$(LIBFTINC)\

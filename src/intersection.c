@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 14:12:29 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 15:19:57 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 17:24:57 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-int			intersection(t_obj *obj, t_ray *ray)
+int			is_intersect(t_obj *obj, t_ray *ray)
 {
 	t_bool	is_hit;
 
@@ -34,7 +34,7 @@ void		get_hit_point(t_obj *obj, t_ray *ray)
 	vec3_sum(obj->hit_point, ray->point, obj->hit_point);
 }
 
-t_obj		*get_first_intesection(t_obj *objs, int nobjs, t_ray *ray)
+t_obj		*get_intersection(t_obj *objs, int nobjs, t_ray *ray)
 {
 	int		i;
 	int		hit_id;
@@ -45,7 +45,7 @@ t_obj		*get_first_intesection(t_obj *objs, int nobjs, t_ray *ray)
 	hit_distance = __FLT_MAX__;
 	while (++i < nobjs)
 	{
-		if (intersection(objs + i, ray) && (objs + i)->t < hit_distance)
+		if (is_intersect(objs + i, ray) && (objs + i)->t < hit_distance)
 		{
 			if (hit_id != -1)
 				(objs + hit_id)->t = INFINITY;

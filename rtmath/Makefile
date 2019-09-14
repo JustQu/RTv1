@@ -6,7 +6,7 @@
 #    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
-#    Updated: 2019/09/14 16:13:37 by dmelessa         ###   ########.fr        #
+#    Updated: 2019/09/14 17:16:30 by dmelessa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ INCS := $(addprefix $(INCDIR), $(INCS))
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -O3
 
 TARGET = librtmath.a
 

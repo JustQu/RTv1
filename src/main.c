@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:24:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 15:46:22 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 17:24:13 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		main(int ac, char **arg)
 
 	init_param(&p);
 	if (!catch_errors(&p, arg, ac))
-		return (0);
+		return (1);
 	world_to_camera(&p);
 	rotate_camera(&p);
 	render(&p);

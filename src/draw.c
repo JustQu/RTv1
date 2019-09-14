@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:44:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 15:10:33 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 17:24:00 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,19 @@ t_color			get_point_color(t_world *world, t_obj *obj, t_ray *ray, int i)
 	while (++i < world->nlights)
 	{
 		shadow_ray = cast_shadow_ray(obj->hit_point, world->lights + i);
-		if ((shadow_obj = get_first_intesection(world->objs, world->nobjs,
-		&shadow_ray)) != NULL)
-			if (shadow_obj != obj && vec3_distance(obj->hit_point,
-			(world->lights + i)->c_s) > vec3_distance(obj->hit_point,
-			shadow_obj->hit_point))
+		if ((shadow_obj = get_intersection(world->objs,
+											world->nobjs, &shadow_ray)) != NULL)
+			if (shadow_obj != obj &&
+			vec3_distance(obj->hit_point, (world->lights + i)->c_s) >
+				vec3_distance(obj->hit_point, shadow_obj->hit_point))
 				continue;
 		vec3_sub((world->lights + i)->c_s, obj->hit_point, light_dir);
 		vec3_normalize(light_dir);
-		ds_light[ox] += (world->lights + i)->intensity * max(0,
-		vec3_dot(light_dir, obj->surf_normal));
+		ds_light[ox] += (world->lights + i)->intensity *
+								max(0, vec3_dot(light_dir, obj->surf_normal));
 		reflect(light_dir, obj->surf_normal, r);
 		ds_light[oy] += (world->lights + i)->intensity *
-		powf(max(0.0f, dot(r, ray->vec)), obj->mat.n);
+								powf(max(0.0f, dot(r, ray->vec)), obj->mat.n);
 	}
 	return (calc_color(obj, ds_light[ox], ds_light[oy]));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rays.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 14:57:14 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 15:21:54 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 17:22:13 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_color		trace_ray(t_param *p, t_ray *ray)
 
 	i = -1;
 	color.color = BACKGROUND;
-	obj = get_first_intesection(p->world.objs, p->world.nobjs, ray);
+	obj = get_intersection(p->world.objs, p->world.nobjs, ray);
 	if (obj)
 	{
 		return (color = get_point_color(&(p->world), obj, ray, i));

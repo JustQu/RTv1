@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 15:13:59 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:54:16 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_material	read_material(t_color dcolor)
 	t_material	mat;
 
 	mat.diff_color.color = dcolor.color;
-	mat.kd = 0.8;
-	mat.ks = 0.2;
-	mat.n = 50;
+	mat.kd = 0.8f;
+	mat.ks = 0.2f;
+	mat.n = 50.0f;
 	return (mat);
 }
 

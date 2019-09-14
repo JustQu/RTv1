@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 15:18:51 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 17:09:02 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ void			render(t_param *p);
 t_bool			sphere_intersection(t_obj *obj, t_ray *ray);
 int				read_all(int fd, t_param *p);
 int				mouse_press(int button, int x, int y, void *param);
-t_obj			*get_first_intesection(t_obj *objs, int nobjs, t_ray *ray);
+t_obj			*get_intersection(t_obj *objs, int nobjs, t_ray *ray);
 void			file_save(t_param *p);
 void			world_to_camera(t_param *p);
 void			rotate_camera(t_param *p);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 17:36:36 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 17:37:40 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:52:34 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_bool	plane_intersection(t_obj *obj, t_ray *ray)
 	{
 		vec3_sub(obj->c_s, ray->point, tmp);
 		obj->t = vec3_dot(tmp, pl.nv) / denom;
-		return (obj->t >= 0);
+		return (obj->t >= 0.0f);
 		if ((obj->t = coefs[a] / coefs[b]) >= 0.0f)
 			return (TRUE);
 		if (coefs[b] < 0.0f)

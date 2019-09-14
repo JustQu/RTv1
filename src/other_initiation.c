@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   other_initiation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 15:48:35 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/13 16:46:51 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:58:11 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void		init_light(t_list *t, t_light_source *light)
 {
-	read_vec3_param(t->content, light->origin, "origin", (t_vec3){0, 1, 0});
-	light->intensity = read_fparam(t->content, "intensity", 0.8);
+	read_vec3_param(t->content, light->origin, "origin", RTM_YUP);
+	light->intensity = read_fparam(t->content, "intensity", 0.8f);
 }
 
 void		set_default_camera(t_camera *camera)
@@ -23,7 +23,7 @@ void		set_default_camera(t_camera *camera)
 	camera->origin[ox] = 0.0f;
 	camera->origin[oy] = 0.0f;
 	camera->origin[oz] = 0.0f;
-	camera->near_z = 1;
+	camera->near_z = 1.0f;
 	camera->orient[ox] = 0.0f;
 	camera->orient[oy] = 0.0f;
 	camera->orient[oz] = 0.0f;
@@ -36,11 +36,9 @@ void		set_default_camera(t_camera *camera)
 
 void		init_camera(t_list *t, t_camera *camera)
 {
-	read_vec3_param(t->content, camera->origin, "origin",
-	(t_vec3){0, 0, 1});
+	read_vec3_param(t->content, camera->origin, "origin", RTM_ZUP);
 	camera->near_z = read_fparam(t->content, "near_z", 1);
-	read_vec3_param(t->content, camera->orient,
-	"orientation", (t_vec3){0, 0, 0});
+	read_vec3_param(t->content, camera->orient, "orientation", RTM_VEC3_ZERO);
 	camera->fov = read_fparam(t->content, "fov", 45);
 	camera->inv_w = 1.0f / WIDTH;
 	camera->inv_h = 1.0f / HEIGHT;
