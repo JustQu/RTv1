@@ -6,7 +6,7 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 23:55:20 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/04 17:46:23 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:11:30 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
 ** init vec4 using vec3
 */
+
 void	vec3_to_vec4(t_vec3 v3, float last, t_vec4 dest)
 {
 	dest[0] = v3[0];
@@ -26,6 +27,7 @@ void	vec3_to_vec4(t_vec3 v3, float last, t_vec4 dest)
 /*
 **fill a vectir with specified value
 */
+
 void	vec4_broadcast(float val, t_vec4 d)
 {
 	d[0] = val;
@@ -37,6 +39,7 @@ void	vec4_broadcast(float val, t_vec4 d)
 /*
 **copy all members of [v] to dest
 */
+
 void	vec4_copy(t_vec4 v, t_vec4 dest)
 {
 	dest[0] = v[0];
@@ -48,6 +51,7 @@ void	vec4_copy(t_vec4 v, t_vec4 dest)
 /*
 **make vector zero
 */
+
 void	vec4_zero(t_vec4 v)
 {
 	v[0] = 0.0f;
@@ -59,6 +63,7 @@ void	vec4_zero(t_vec4 v)
 /*
 **make vector one
 */
+
 void	vec4_one(t_vec4 v)
 {
 	v[0] = 1.0f;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec4.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 22:29:51 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/13 16:38:38 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:30:32 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	vec4_mul(t_vec4 a, t_vec4 b, t_vec4 dest);
 void	vec4_scale(t_vec4 a, float s, t_vec4 dest);
 void	vec4_scale_as(t_vec4 v, float s, t_vec4 dest);
 void	vec4_negate_to(t_vec4 v, t_vec4 dest);
-void 	vec4_negate(t_vec4 v);
+void	vec4_negate(t_vec4 v);
 void	vec4_normalize_to(t_vec4 v, t_vec4 dest);
 void	vec4_normalize(t_vec4 v);
 float	vec4_distance(t_vec4 a, t_vec4 b);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mat4_transpose.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 00:32:29 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 00:32:29 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:21:36 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** source matrix will not be transposed unless dest is m
 ** todo: error when dest and m is the same matrix
 */
+
 void	mat4_transpose_to(t_mat4 m, t_mat4 dest)
 {
 	dest[0][0] = m[0][0];
@@ -40,6 +41,7 @@ void	mat4_transpose_to(t_mat4 m, t_mat4 dest)
 /*
 ** tranpose mat4 and store result in same matrix
 */
+
 void	mat4_transpose(t_mat4 m)
 {
 	t_mat4 d;
@@ -48,22 +50,23 @@ void	mat4_transpose(t_mat4 m)
 	mat4_copy(d, m);
 }
 
-
 /*
 ** swap two matrix columns
 */
+
 void	mat4_swap_col(t_mat4 mat, int col1, int col2)
 {
 	t_vec4 tmp;
 
-  	vec4_copy(mat[col1], tmp);
-  	vec4_copy(mat[col2], mat[col1]);
-  	vec4_copy(tmp, mat[col2]);
+	vec4_copy(mat[col1], tmp);
+	vec4_copy(mat[col2], mat[col1]);
+	vec4_copy(tmp, mat[col2]);
 }
 
 /*
 ** swap two matrix rows
 */
+
 void	mat4_swap_row(t_mat4 mat, int row1, int row2)
 {
 	t_vec4 tmp;

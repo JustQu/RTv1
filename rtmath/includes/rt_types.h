@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   rt_types.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 21:55:57 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/13 16:39:23 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:37:14 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RTM_TYPES_H
-# define RTM_TYPES_H
+#ifndef RT_TYPES_H
+# define RT_TYPES_H
 
 # define RTM_E				2.71828182845904523536028747135266250
 # define RTM_LOG2E			1.44269504088896340735992468100189214
@@ -34,10 +34,9 @@ typedef float	t_mat3[3][3];
 typedef float	t_mat4[4][4];
 typedef t_vec4	t_versor;
 
-enum f
+enum	e_axis
 {
 	ox, oy, oz, ok
 };
 
 #endif
-

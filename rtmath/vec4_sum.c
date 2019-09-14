@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec4_sum.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 00:02:49 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 00:02:49 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:11:06 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /*
 **add b vector to a vector store result in dest
 */
+
 void	vec4_sum(t_vec4 a, t_vec4 b, t_vec4 dest)
 {
 	dest[0] = a[0] + b[0];
@@ -28,6 +29,7 @@ void	vec4_sum(t_vec4 a, t_vec4 b, t_vec4 dest)
 /*
 **add scalar to v vector store result in dest (d = v + vec(s))
 */
+
 void	vec4_adds(t_vec4 v, float s, t_vec4 dest)
 {
 	dest[0] = v[0] + s;
@@ -41,6 +43,7 @@ void	vec4_adds(t_vec4 v, float s, t_vec4 dest)
 **formula: from + s * (to - from)
 **t - interpolant (amount) clamped between 0 and 1
 */
+
 void	vec4_lerp(t_vec4 from, t_vec4 to, float t, t_vec4 dest)
 {
 	t_vec4 s;
@@ -55,6 +58,7 @@ void	vec4_lerp(t_vec4 from, t_vec4 to, float t, t_vec4 dest)
 /*
 **distance between two vectors
 */
+
 float	vec4_distance(t_vec4 a, t_vec4 b)
 {
 	return (sqrtf(pow2(b[0] - a[0])

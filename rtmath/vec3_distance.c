@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_distance.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 22:17:00 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/30 22:17:00 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:23:33 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
 **find center point of two vector
 */
+
 void	vec3_center(t_vec3 a, t_vec3 b, t_vec3 dest)
 {
 	vec3_sum(a, b, dest);
@@ -24,6 +25,7 @@ void	vec3_center(t_vec3 a, t_vec3 b, t_vec3 dest)
 /*
 **squared distance between two vectors
 */
+
 float	t_vec3_distance2(t_vec3 a, t_vec3 b)
 {
 	return (pow2(b[0] - a[0])
@@ -34,7 +36,8 @@ float	t_vec3_distance2(t_vec3 a, t_vec3 b)
 /*
 **distance beween two vector
 */
-float vec3_distance(t_vec3 a, t_vec3 b)
+
+float	vec3_distance(t_vec3 a, t_vec3 b)
 {
 	return (sqrtf(t_vec3_distance2(a, b)));
 }
@@ -44,6 +47,7 @@ float vec3_distance(t_vec3 a, t_vec3 b)
 **formula: from + s * (to - from)
 **t	interpolant (amount) clamped between 0 and 1
 */
+
 void	vec3_lerp(t_vec3 from, t_vec3 to, float t, t_vec3 dest)
 {
 	t_vec3 s;

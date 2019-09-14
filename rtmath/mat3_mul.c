@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mat3_mul.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 00:13:15 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 00:13:15 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:25:00 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 ** mat3 m = MAT3_IDENTITY_INIT;
 ** mat3_mul(m, m, m);
 */
+
 void	mat3_mul(t_mat3 m1, t_mat3 m2, t_mat3 dest)
 {
 	t_mat3	tmp;
@@ -50,6 +51,7 @@ void	mat3_mul(t_mat3 m1, t_mat3 m2, t_mat3 dest)
 /*
 ** multiply mat3 with vec3 (column vector) and store in dest vector
 */
+
 void	mat3_mulv(t_mat3 m, t_vec3 v, t_vec3 dest)
 {
 	dest[0] = m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2];
@@ -61,6 +63,7 @@ void	mat3_mulv(t_mat3 m, t_vec3 v, t_vec3 dest)
 ** scale (multiply with scalar) matrix
 ** multiply matrix with scalar
 */
+
 void	mat3_scale(t_mat3 m, float s)
 {
 	m[0][0] *= s;
@@ -80,10 +83,11 @@ void	mat3_scale(t_mat3 m, float s)
 ** the result is scalar because R * M = Matrix1x3 (row vector),
 ** then Matrix1x3 * Vec3 (column vector) = Matrix1x1 (Scalar)
 */
+
 float	mat3_rmc(t_vec3 r, t_mat3 m, t_vec3 c)
 {
 	t_vec3	tmp;
 
-  	mat3_mulv(m, c, tmp);
+	mat3_mulv(m, c, tmp);
 	return (vec3_dot(r, tmp));
 }

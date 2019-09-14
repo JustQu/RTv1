@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mat3_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 00:10:09 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 00:10:09 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:28:33 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
 ** make given matrix zero.
 */
+
 void	mat3_zero(t_mat3 mat)
 {
 	mat3_copy(MAT3_ZERO, mat);
@@ -23,6 +24,7 @@ void	mat3_zero(t_mat3 mat)
 /*
 **copy all members of [mat] to [dest]
 */
+
 void	mat3_copy(t_mat3 mat, t_mat3 dest)
 {
 	dest[0][0] = mat[0][0];
@@ -46,6 +48,7 @@ void	mat3_copy(t_mat3 mat, t_mat3 dest)
 ** mat3 mat = MAT3_IDENTITY_INIT;
 ** @endcode
 */
+
 void	mat3_identity(t_mat3 mat)
 {
 	mat3_copy(MAT3_IDENTITY, mat);
@@ -54,6 +57,7 @@ void	mat3_identity(t_mat3 mat)
 /*
 ** make given matrix array's each element identity matrix
 */
+
 void	mat3_identity_array(t_mat3 *mat, size_t count)
 {
 	t_mat3	t;
@@ -72,6 +76,7 @@ void	mat3_identity_array(t_mat3 *mat, size_t count)
 ** trace of matrix
 ** sum of the elements on the main diagonal from upper left to the lower right
 */
+
 float	mat3_trace(t_mat3 m)
 {
 	return (m[0][0] + m[1][1] + m[2][2]);

@@ -6,25 +6,25 @@
 /*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 21:58:53 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/04 17:46:52 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:30:16 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VEC3_H
 # define VEC3_H
 
-#include "rt_types.h"
-#include "math.h"
-#include "vec4.h"
-#include "utils.h"
+# include "rt_types.h"
+# include "math.h"
+# include "vec4.h"
+# include "utils.h"
 
-#define RTM_VEC3_ONE_INIT	{1.0f, 1.0f, 1.0f}
-#define RTM_VEC3_ZERO_INIT	{0.0f, 0.0f, 0.0f}
-#define RTM_VEC3_ONE		((t_vec3)VEC3_ONE_INIT)
-#define RTM_VEC3_ZERO		((t_vec3)VEC3_ZERO_INIT)
-#define RTM_YUP				((t_vec3){0.0f, 1.0f, 0.0f})
-#define RTM_ZUP				((t_vec3){0.0f, 0.0f, 1.0f})
-#define RTM_XUP				((t_vec3){1.0f, 0.0f, 0.0f})
+# define RTM_VEC3_ONE_INIT  {1.0f, 1.0f, 1.0f}
+# define RTM_VEC3_ZERO_INIT {0.0f, 0.0f, 0.0f}
+# define RTM_VEC3_ONE       ((t_vec3)VEC3_ONE_INIT)
+# define RTM_VEC3_ZERO      ((t_vec3)VEC3_ZERO_INIT)
+# define RTM_YUP            ((t_vec3){0.0f, 1.0f, 0.0f})
+# define RTM_ZUP            ((t_vec3){0.0f, 0.0f, 1.0f})
+# define RTM_XUP            ((t_vec3){1.0f, 0.0f, 0.0f})
 
 /*
 **init vec3 using vec4

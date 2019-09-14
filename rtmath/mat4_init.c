@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mat4_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 00:24:16 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 00:24:16 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:26:21 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,20 @@
 ** // or
 ** mat4 mat = MAT4_IDENTITY_INIT;
 */
+
 void	mat4_identity(t_mat4 mat)
 {
-  	mat4_copy(MAT4_IDENTITY, mat);
+	mat4_copy(MAT4_IDENTITY, mat);
 }
 
 /*
 **make given matrix array's each element identity matrix
 */
+
 void	mat4_identity_array(t_mat4 *mat, size_t count)
 {
-	t_mat4 	t;
-	size_t 	i;
+	t_mat4	t;
+	size_t	i;
 
 	mat4_identity(t);
 	i = 0;
@@ -46,6 +48,7 @@ void	mat4_identity_array(t_mat4 *mat, size_t count)
 /*
 ** make given matrix zero.
 */
+
 void	mat4_zero(t_mat4 mat)
 {
 	mat4_copy(MAT4_ZERO, mat);

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   mat3.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 23:16:54 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/09/13 16:41:08 by dwalda-r         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:37:47 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAT3_H
 # define MAT3_H
 
-#include "rt_types.h"
-#include "stddef.h"
+# include "rt_types.h"
+# include "stddef.h"
 
-#define MAT3_IDENTITY_INIT  {{1.f, .0f, .0f}, {.0f, 1.f, .0f}, {.0f, .0f, 1.f}}
-#define MAT3_ZERO_INIT      {{.0f, .0f, .0f}, {.0f, .0f, .0f}, {.0f, .0f, .0f}}
-#define MAT3_IDENTITY 		((t_mat3)MAT3_IDENTITY_INIT)
-#define MAT3_ZERO     		((t_mat3)MAT3_ZERO_INIT)
+# define MAT3_IDENTITY_INIT  {{1.f, .0f, .0f}, {.0f, 1.f, .0f}, {.0f, .0f, 1.f}}
+# define MAT3_ZERO_INIT      {{.0f, .0f, .0f}, {.0f, .0f, .0f}, {.0f, .0f, .0f}}
+# define MAT3_IDENTITY 		((t_mat3)MAT3_IDENTITY_INIT)
+# define MAT3_ZERO     		((t_mat3)MAT3_ZERO_INIT)
 
 /*
 **copy all members of [mat] to [dest]
@@ -89,7 +89,7 @@ float	mat3_trace(t_mat3 m);
 */
 void	mat3_quat(t_mat3 m, t_versor dest);
 
-/*!
+/*
 ** scale (multiply with scalar) matrix
 ** multiply matrix with scalar
 */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mat3_transpose.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 00:16:25 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/31 00:16:25 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:26:28 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 **
 ** source matrix will not be transposed unless dest is m
 */
+
 void	mat3_transpose_to(t_mat3 m, t_mat3 dest)
 {
 	dest[0][0] = m[0][0];
@@ -34,6 +35,7 @@ void	mat3_transpose_to(t_mat3 m, t_mat3 dest)
 /*
 **tranpose mat3 and store result in same matrix
 */
+
 void	mat3_transpose(t_mat3 m)
 {
 	t_mat3 tmp;
@@ -55,6 +57,7 @@ void	mat3_transpose(t_mat3 m)
 /*
 ** swap two matrix columns
 */
+
 void	mat3_swap_col(t_mat3 mat, int col1, int col2)
 {
 	t_vec3 tmp;

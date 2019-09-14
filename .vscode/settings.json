@@ -14,7 +14,12 @@
 		"rt_types.h": "c",
 		"utils.h": "c",
 		"cstdio": "c",
-		"memory": "c"
+		"memory": "c",
+		"__bit_reference": "c",
+		"bitset": "c",
+		"chrono": "c",
+		"unordered_map": "c",
+		"hashtable": "c"
 	},
 	"C_Cpp.default.includePath": [
 		"./includes/",

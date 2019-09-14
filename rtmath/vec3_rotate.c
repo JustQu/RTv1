@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_rotate.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 22:09:22 by dmelessa          #+#    #+#             */
-/*   Updated: 2019/08/30 22:09:22 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:20:47 by dmelessa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,30 @@
 ** angle between two vector
 */
 
+/*
+** maybe compiler generate approximation instruction (rcp)
+*/
+
 float	vec3_angle(t_vec3 a, t_vec3 b)
 {
 	float	norm;
 	float	dot;
 
-	/* maybe compiler generate approximation instruction (rcp) */
 	norm = 1.0f / (vec3_norm(a) * vec3_norm(b));
-	dot  = vec3_dot(a, b) * norm;
+	dot = vec3_dot(a, b) * norm;
 	if (dot > 1.0f)
-		return 0.0f;
+		return (0.0f);
 	else if (dot < -1.0f)
-		return RTM_PI;
-	return acosf(dot);
+		return (RTM_PI);
+	return (acosf(dot));
 }
 
 /*
 ** rotate vec3 around axis by angle using Rodrigues' rotation formula
+** Right Hand, Rodrigues' rotation formula:
+** v = v*cos(t) + (kxv)sin(t) + k*(k.v)(1 - cos(t))
 */
+
 void	vec3_rotate(t_vec3 v, float angle, t_vec3 axis)
 {
 	t_vec3	v1;
@@ -45,8 +51,6 @@ void	vec3_rotate(t_vec3 v, float angle, t_vec3 axis)
 	c = cosf(angle);
 	s = sinf(angle);
 	vec3_normalize_to(axis, k);
-	/* Right Hand, Rodrigues' rotation formula:
-        v = v*cos(t) + (kxv)sin(t) + k*(k.v)(1 - cos(t))*/
 	vec3_scale(v, c, v1);
 	vec3_cross(k, v, v2);
 	vec3_scale(v2, s, v2);
@@ -55,10 +59,10 @@ void	vec3_rotate(t_vec3 v, float angle, t_vec3 axis)
 	vec3_sum(v1, v2, v);
 }
 
-
 /*
 ** apply rotation matrix to vector
 */
+
 void	vec3_rotate_m4(t_mat4 m, t_vec3 v, t_vec3 dest)
 {
 	t_vec4	x;
@@ -69,11 +73,9 @@ void	vec3_rotate_m4(t_mat4 m, t_vec3 v, t_vec3 dest)
 	vec4_normalize_to(m[0], x);
 	vec4_normalize_to(m[1], y);
 	vec4_normalize_to(m[2], z);
-
 	vec4_scale(x, v[0], res);
 	vec4_muladds(y, v[1], res);
 	vec4_muladds(z, v[2], res);
-
 	vec4_to_vec3(res, dest);
 }
 
