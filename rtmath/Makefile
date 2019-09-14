@@ -27,15 +27,14 @@ OBJ = $(SRC:.c=.o)
 
 CFLAGS = -Wall -Wextra -Werror -O3
 
-TARGET = librtmath.a
-
+NAME = librtmath.a
 
 .PHONY: all
 all : $(TARGET)
 
-$(TARGET): $(OBJ)
-	@ar rc $(TARGET) $^
-	@echo '$(TARGET) created'
+$(NAME): $(OBJ)
+	@ar rc $(NAME) $^
+	@echo '$(NAME) created'
 
 VPATH = ./includes/
 
@@ -44,13 +43,13 @@ $(OBJ): %.o: %.c $(INCS)
 
 .PHONY: clean
 clean:
-	@echo 'deliting $(TARGET) object files'
+	@echo 'deliting $(NAME) object files'
 	@rm -rf $(OBJ)
 
 .PHONY: fclean
 fclean: clean
-	@echo 'deliting $(TARGET)'
-	@rm -f $(TARGET)
+	@echo 'deliting $(NAME)'
+	@rm -f $(NAME)
 
 .PHONY: re
 re: fclean all
