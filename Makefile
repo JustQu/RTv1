@@ -49,10 +49,10 @@ SRCS = main.c draw.c control.c sphere.c reader.c saver.c camera_movement.c\
 		other_out.c out_objects.c out_params.c param_reading.c utils.c cone.c cylinder.c normals.c\
 		plane.c intersection.c rays.c
 OBJS = $(SRCS:.c=.o)
-TARGET = RTv1
+NAME = RTv1
 
 .PHONY: all
-all: $(TARGET)
+all: $(NAME)
 
 $(LIBFT):
 	make -C $(LIBFTDIR)
@@ -61,7 +61,7 @@ $(LIBFT):
 $(RTMATH):
 	@make -C $(RTMATHDIR)
 
-$(TARGET): $(OBJS) $(LIBFT) $(RTMATH)
+$(NAME): $(OBJS) $(LIBFT) $(RTMATH)
 	@echo 'making executable'
 	@$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 	@echo DONE!
