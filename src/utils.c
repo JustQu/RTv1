@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 15:59:47 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 18:22:32 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/17 15:23:48 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-
-void		normalize_light(t_param *p)
-{
-	(void)p;
-}
 
 char		*str_to_low(char *str)
 {

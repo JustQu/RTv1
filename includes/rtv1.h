@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 15:26:15 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 18:31:19 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/17 15:24:30 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,6 @@ int				parse_list(t_param *p, t_list *l);
 size_t			list_len(t_list *l, t_param *p);
 void			delete_lst(void *s, size_t size);
 
-void			normalize_light(t_param *p);
 t_obj_type		find_type(t_list *l);
 char			*str_to_low(char *str);
 void			convert_to16(int val, char *num, char *ax);

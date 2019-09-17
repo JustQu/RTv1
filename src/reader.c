@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:23:23 by dwalda-r          #+#    #+#             */
-/*   Updated: 2019/09/14 18:10:10 by dmelessa         ###   ########.fr       */
+/*   Updated: 2019/09/17 15:24:00 by dwalda-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,5 @@ int			read_all(int fd, t_param *p)
 		return (0);
 	parse_list(p, list);
 	ft_lstdel(&list, delete_lst);
-	normalize_light(p);
 	return (1);
 }

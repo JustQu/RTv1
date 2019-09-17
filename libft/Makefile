@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
+#    By: dwalda-r <dwalda-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/06 05:49:36 by dmelessa          #+#    #+#              #
-#    Updated: 2019/09/14 18:44:01 by dmelessa         ###   ########.fr        #
+#    Updated: 2019/09/17 15:15:20 by dwalda-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ NAME = libft.a
 OBJ = $(SRC:.c=.o)
 
 .PHONY: all
-all : $(TARGET)
+all : $(NAME)
 
 $(NAME): $(OBJ)
 	@ar rc $(NAME) $^

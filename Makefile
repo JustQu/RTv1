@@ -80,7 +80,7 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@echo deliting executable file
-	@$(RM) $(TARGET)
+	@$(RM) $(NAME)
 	@make -C $(LIBFTDIR) fclean
 	@make -C $(RTMATHDIR) fclean
 	@make -C $(MLXDIR) clean
