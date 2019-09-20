@@ -1,5 +1,17 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/09/20 12:23:32 by dmelessa          #+#    #+#              #
+#    Updated: 2019/09/20 12:25:01 by dmelessa         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 UNAME_S := $(shell uname -s)
-TARGET := libmlx.a
+NAME := libmlx.a
 MINILIBX_DIR :=
 ifeq ($(UNAME_S), Linux)
 	MINILIBX_DIR := ./X11
@@ -9,21 +21,20 @@ ifeq ($(UNAME_S), Darwin)
 endif
 
 .PHONY: all
-all : $(TARGET)
+all : $(NAME)
 
-$(TARGET):
-	echo $(MINILIBX_DIR)
-	make -C $(MINILIBX_DIR) all
-	cp $(MINILIBX_DIR)/$(TARGET) ./
+$(NAME):
+	@echo creating $(NAME)
+	@make -C $(MINILIBX_DIR) all
+	@cp $(MINILIBX_DIR)/$(NAME) ./
 
 .PHONY: clean
 clean:
 	@make -C $(MINILIBX_DIR) clean
 
-
 .PHONY: fclean
 fclean: clean
-	rm $(TARGET)
+	-@rm -f $(NAME)
 
 .PHONY: re
 re: fclean all

@@ -1,5 +1,19 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: dmelessa <dmelessa@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/09/20 12:27:08 by dmelessa          #+#    #+#              #
+#    Updated: 2019/09/20 12:27:08 by dmelessa         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = gcc
-RM = rm -rf
+
+RM = rm -f
+
 UNAME_S := $(shell uname -s)
 
 CFLAGS = -O3\
@@ -24,50 +38,59 @@ ifeq ($(UNAME_S), Darwin)
 	LDLIBS += -framework OpenGL -framework AppKit
 endif
 
-LDFLAGS	= \
-		-L$(LIBFTDIR)\
-		-L$(RTMATHDIR)\
-		-L$(MLXDIR)
+LDFLAGS	=	-L$(LIBFTDIR)\
+			-L$(RTMATHDIR)\
+			-L$(MLXDIR)
 
 LIBFT = libft.a
-LIBFTDIR = ./libft
+LIBFTDIR = ./libft/
 LIBFTINC = $(LIBFTDIR)/includes
 
-MLXDIR = ./minilibx
+MLXDIR = ./minilibx/
 MLXINC = ./minilibx/include
 
-RTMATH = rtmath.a
-RTMATHDIR = ./rtmath
+RTMATH = librtmath.a
+RTMATHDIR = ./rtmath/
 RTMATHINC = $(RTMATHDIR)/includes
 
 INCDIR = ./includes/
-SRCSDIR = ./src/
 INCS = rtv1.h
 INCS := $(addprefix $(INCDIR), $(INCS))
+
+SRCSDIR = ./src/
 SRCS = main.c draw.c control.c sphere.c reader.c saver.c camera_movement.c\
-		convert_to_16.c ft_itoaf.c list_funcs.c object_initiation.c other_initiation.c\
-		other_out.c out_objects.c out_params.c param_reading.c utils.c cone.c cylinder.c normals.c\
+		convert_to_16.c ft_itoaf.c list_funcs.c object_initiation.c\
+		other_initiation.c other_out.c out_objects.c out_params.c\
+		param_reading.c utils.c cone.c cylinder.c normals.c\
 		plane.c intersection.c rays.c
-OBJS = $(SRCS:.c=.o)
-NAME = RTv1
+
+OBJSDIR	=	./objs/
+OBJS	=	$(addprefix $(OBJSDIR), $(SRCS:.c=.o))
+
+NAME = ./RTv1
 
 .PHONY: all
-all: $(NAME)
+all: $(LIBFT) $(RTMATH) $(NAME)
+
+$(NAME): $(OBJS) 
+	@echo 'making executable'
+	$(CC) $(LDLIBS) $(LDFLAGS) -o $@ $(OBJS) 
+	@echo DONE!
 
 $(LIBFT):
-	make -C $(LIBFTDIR)
-	make -C $(MLXDIR)
+	@make -C $(LIBFTDIR)
+	@make -C $(MLXDIR)
 
 $(RTMATH):
 	@make -C $(RTMATHDIR)
 
-$(NAME): $(OBJS) $(LIBFT) $(RTMATH)
-	@echo 'making executable'
-	@$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
-	@echo DONE!
+$(OBJS): $(OBJSDIR)%.o: $(SRCSDIR)%.c | $(OBJSDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJS): %.o: $(SRCSDIR)%.c $(INCS)
-	@$(CC) -c $< $(CFLAGS)
+$(OBJS): $(INCS)
+
+$(OBJSDIR):
+	mkdir $@
 
 .PHONY: clean
 clean:
@@ -83,7 +106,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@make -C $(LIBFTDIR) fclean
 	@make -C $(RTMATHDIR) fclean
-	@make -C $(MLXDIR) clean
+	@make -C $(MLXDIR) fclean
 
 .PHONY: re
 re:	fclean all
