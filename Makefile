@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
+CC = clang
 
 RM = rm -f
 
@@ -44,14 +44,14 @@ LDFLAGS	=	-L$(LIBFTDIR)\
 
 LIBFT = libft.a
 LIBFTDIR = ./libft/
-LIBFTINC = $(LIBFTDIR)/includes
+LIBFTINC = $(LIBFTDIR)includes
 
 MLXDIR = ./minilibx/
 MLXINC = ./minilibx/include
 
 RTMATH = librtmath.a
 RTMATHDIR = ./rtmath/
-RTMATHINC = $(RTMATHDIR)/includes
+RTMATHINC = $(RTMATHDIR)includes
 
 INCDIR = ./includes/
 INCS = rtv1.h
@@ -72,9 +72,9 @@ NAME = ./RTv1
 .PHONY: all
 all: $(LIBFT) $(RTMATH) $(NAME)
 
-$(NAME): $(OBJS) 
+$(NAME): $(OBJS)
 	@echo 'making executable'
-	$(CC) $(LDLIBS) $(LDFLAGS) -o $@ $(OBJS) 
+	$(CC) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
 	@echo DONE!
 
 $(LIBFT):

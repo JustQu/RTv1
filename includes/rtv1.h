@@ -72,8 +72,8 @@
 # define KEY_TAB 48
 
 # define BACKGROUND 0x303841
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 800
+# define HEIGHT 800
 
 typedef int		t_bool;
 # define TRUE	1
