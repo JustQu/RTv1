@@ -12,5 +12,5 @@ $make
 ## Howe to use
 
 
-##Collaborators
+## Collaborators
 [dwalda-r](https://github.com/borislavfra)
